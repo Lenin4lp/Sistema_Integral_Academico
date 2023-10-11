@@ -2,10 +2,10 @@ import React, {useState} from 'react'
 
 function Navbar() {
     let Links =[
-        {name:"INICIO",link:"/home"},
-        {name:"CURSOS",link:"/cursos"},
-        {name:"BIBLIOTECA",link:"/biblioteca"},
-        {name:"SOPORTE",link:"/soporte"},
+        {name:"Inicio",link:"/home"},
+        {name:"Cursos",link:"/cursos"},
+        {name:"Biblioteca",link:"/biblioteca"},
+        {name:"Soporte",link:"/soporte"},
       ];
       let [open,setOpen]=useState(false);
     return (

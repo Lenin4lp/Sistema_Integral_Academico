@@ -3,7 +3,7 @@ import Navbar from "../../components/navbar";
 
 function Courses() {
   return (
-    <div className="font-[Poppins]">
+    <div>
       <div>
         <Navbar />
       </div>

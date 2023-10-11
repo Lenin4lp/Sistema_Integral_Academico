@@ -20,7 +20,7 @@ const CardOptions = [
 
 function Home() {
   return (
-    <div className="font-[Poppins]">
+    <div >
       <div>
         <Navbar />
       </div>

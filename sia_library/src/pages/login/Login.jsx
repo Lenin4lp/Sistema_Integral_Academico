@@ -1,5 +1,7 @@
 import React from 'react'
 import { useForm } from "react-hook-form";
+import { useAuth } from '../../auth/AuthProvider';
+import { Navigate } from 'react-router-dom';
 
 
 function Login() {
@@ -9,7 +11,11 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const auth = useAuth()
 
+  if(auth.isAuthenticated){
+    return <Navigate to="/home"/>
+  }
 
   return (
     <section className="h-fit lg:h-screen bg-neutral-200 dark:bg-[#19172e] lg:overflow-hidden flex justify-center items-center">
