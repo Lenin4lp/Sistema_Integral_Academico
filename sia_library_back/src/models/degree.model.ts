@@ -43,13 +43,6 @@ import { Book } from "./book.model";
     degree_duration!: number;
   
     @Column({
-      type: DataType.STRING(100),
-      allowNull: true,
-      field: "malla_curricular",
-    })
-    degree_curriculum_framework!: string;
-  
-    @Column({
       type: DataType.STRING(3),
       allowNull: false,
       field: "acronimo",

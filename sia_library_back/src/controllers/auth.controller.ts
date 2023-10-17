@@ -137,6 +137,7 @@ export const login = async (req: Request, res: Response) => {
       user_lastname: userFound.user_lastname,
       user_email: userFound.user_email,
       role_id: userFound.role_id,
+      token
     });
   } catch (error) {
     console.log(error);
