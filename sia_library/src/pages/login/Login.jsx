@@ -1,21 +1,23 @@
-import React from 'react'
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useAuth } from '../../auth/AuthProvider';
-import { Navigate } from 'react-router-dom';
-
+import { useAuth } from "../../auth/AuthProvider";
+import { Navigate } from "react-router-dom";
 
 function Login() {
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const auth = useAuth()
+  const { signin, errors: SigninErrors, isAuthenticated } = useAuth();
 
-  if(auth.isAuthenticated){
-    return <Navigate to="/home"/>
+  if (isAuthenticated) {
+    return <Navigate to="/home" />;
   }
+
+  const onSubmit = handleSubmit((data) => {
+    signin(data);
+  });
 
   return (
     <section className="h-fit lg:h-screen bg-neutral-200 dark:bg-[#19172e] lg:overflow-hidden flex justify-center items-center">
@@ -35,12 +37,11 @@ function Login() {
                           className=" w-full h-20 object-contain"
                           src={"/images/logo-Istvc.webp"}
                           alt="istvc-logo"
-                          
                         />
                       </div>
                     </div>
 
-                    <form  className=" sm:p-5 md:p-0 mt-8">
+                    <form onSubmit={onSubmit} className=" sm:p-5 md:p-0 mt-8">
                       <p className="mb-4 select-none">
                         Por favor ingrese su usuario y contraseña
                       </p>
@@ -54,7 +55,7 @@ function Login() {
                         })}
                         placeholder="Usuario"
                       />
-                      
+
                       {/* <!--Password input--> */}
                       <input
                         className="w-full bg-gray-200 text-black border border-gray-200 rounded py-3 px-4 mb-3"
@@ -65,9 +66,15 @@ function Login() {
                         })}
                         placeholder="Contraseña"
                       />
-                      
-                      
-                      
+                      {SigninErrors &&
+                        SigninErrors.map((error, i) => (
+                          <div
+                            className=" bg-red-800 p-1 text-white text-center rounded"
+                            key={i}
+                          >
+                            {error}
+                          </div>
+                        ))}
                       <div className="py-5 h-fit text-center grid grid-rows-2">
                         <button
                           type="submit"
@@ -75,7 +82,7 @@ function Login() {
                         >
                           Ingresar
                         </button>
-                        
+
                         <a
                           className=" hover:text-blue-900 dark:hover:text-black transition duration-700 pt-5"
                           href="#!"
@@ -87,7 +94,6 @@ function Login() {
                   </div>
                 </div>
 
-                
                 <div
                   className="flex items-center rounded-b-lg lg:w-6/12 lg:rounded-r-lg lg:rounded-bl-none"
                   style={{
@@ -116,4 +122,4 @@ function Login() {
   );
 }
 
-export default Login
+export default Login;
