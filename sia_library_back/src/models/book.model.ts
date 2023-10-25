@@ -37,6 +37,27 @@ import {
       field: "autor_libro",
     })
     book_author!: string;
+
+    @Column({
+      type: DataType.STRING(20),
+      allowNull: true,
+      field: "anio_libro",
+    })
+    book_year!: string;
+
+    @Column({
+      type: DataType.STRING(20),
+      allowNull: true,
+      field: "edicion_libro",
+    })
+    book_edition!: string;
+
+    @Column({
+      type: DataType.STRING(20),
+      allowNull: true,
+      field: "autor_editorial",
+    })
+    book_editorial!: string;
   
     @Column({
       type: DataType.STRING(80),
@@ -44,11 +65,18 @@ import {
       field: "url_libro",
     })
     book_url!: string;
+
+    @Column({
+      type: DataType.STRING(20),
+      allowNull: true,
+      field: "clasificacion_libro",
+    })
+    book_classification!: string;
   
     @ForeignKey(() => Degree)
     @Column({
       type: DataType.STRING(10),
-      allowNull: false,
+      allowNull: true,
       field: "id_carrera",
     })
     degree_id!: string;

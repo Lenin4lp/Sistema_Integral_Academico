@@ -2,6 +2,8 @@ import { useContext, createContext, useState, useEffect } from "react";
 import { loginRequest, veryTokenRequest, logoutRequest } from "../api/auth";
 import Cookies from "js-cookie";
 
+//TODO Se debe corregir el bug quer hay en las rutas protegidas
+
 const AuthContext = createContext();
 
 export const useAuth = () => {
@@ -12,11 +14,12 @@ export const useAuth = () => {
   return context;
 };
 
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     if (errors.length > 0) {
@@ -75,9 +78,9 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ signin, logout, loading, user, isAuthenticated, errors }}
+      value={{ signin, isLoading, logout, user, isAuthenticated, errors }}
     >
-      {children}
+       {isLoading ? <div>Loading...</div> : children}
     </AuthContext.Provider>
   );
 }
