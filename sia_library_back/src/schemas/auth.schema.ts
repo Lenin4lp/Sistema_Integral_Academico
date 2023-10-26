@@ -39,15 +39,14 @@ export const registerSchema = z.object({
       message: "La contraseña de debe tener como mínimo 6 caracteres",
     }),
   user_ci: z
-    .string({
-      required_error: "La cédula es requerida",
-    })
+    .string()
     .min(9, {
       message: "La cédula debe tener como mínimo 9 caracteres",
     })
     .max(10, {
       message: "La cédula debe tener como máximo 10 caracteres",
-    }),
+    })
+    .optional(),
   user_genre: z.enum(["Masculino", "Femenino", "Otros"]),
   user_direction: z
     .string()
