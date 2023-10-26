@@ -22,12 +22,11 @@ export const getStudent = async (req: Request, res: Response) => {
 
 //? Actualizar un estudiante
 export const updateStudent = async (req: Request, res: Response) => {
-  const { degree_id, modality_id } = req.body;
+  const { degree_id } = req.body;
   const student = await Student.findByPk(req.params.id);
   if (student) {
     await student.update({
       degree_id,
-      modality_id,
     });
   } else {
     return res.status(404).json({ message: "No se encontró el estudiante" });

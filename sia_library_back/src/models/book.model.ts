@@ -56,7 +56,7 @@ export class Book extends Model {
   @Column({
     type: DataType.STRING(50),
     allowNull: true,
-    field: "autor_editorial",
+    field: "editorial_libro",
   })
   book_editorial!: string;
 
