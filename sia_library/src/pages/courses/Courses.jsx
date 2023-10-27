@@ -5,7 +5,7 @@ import { useAuth } from "../../auth/AuthProvider";
 
 function Courses() {
   const { user } = useAuth();
-  const [erros, setErrors] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [student, setStudent] = useState([]);
   const [teacher, setTeacher] = useState([]);
 
