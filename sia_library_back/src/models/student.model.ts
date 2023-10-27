@@ -12,6 +12,7 @@ import {
 } from "sequelize-typescript";
 import { User } from "./user.model";
 import { Degree } from "./degree.model";
+import { Subject } from "./subject.model";
 
 @Table({
   tableName: "estudiante",
@@ -48,11 +49,11 @@ export class Student extends Model {
   @BelongsTo(() => Degree)
   degree!: Degree;
 
-  @BelongsToMany(() => Student, {
+  @BelongsToMany(() => Subject, {
     through: "estudiante_materia",
     foreignKey: "id_estudiante",
     otherKey: "id_materia",
     timestamps: false,
   })
-  students!: Student[];
+  subjects!: Subject[];
 }

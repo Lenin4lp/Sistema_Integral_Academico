@@ -10,6 +10,7 @@ import {
     HasMany,
   } from "sequelize-typescript";
   import { User } from "./user.model";
+import { Subject } from "./subject.model";
   
   @Table({
     tableName: "docente",
@@ -38,6 +39,9 @@ import {
       field: "id_usuario",
     })
     user_id!: string;
+
+    @HasMany(() => Subject)
+  subject!: Subject[];
   
     @BelongsTo(() => User, { onDelete: "CASCADE" })
     user!: User;
