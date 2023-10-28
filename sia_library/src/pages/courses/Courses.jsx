@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/navbar";
 import { getStudent, getTeacher } from "../../api/user";
 import { useAuth } from "../../auth/AuthProvider";
+import { Link } from "react-router-dom";
+import SubjectCard from "../../components/SubjectCard";
 
 function Courses() {
   const { user } = useAuth();
@@ -49,28 +51,28 @@ function Courses() {
   } else {
     console.log(teacher);
   }
-
-  console.log(role);
-
+  console.log(student.subjects);
   return (
     <div>
       <div>
         <Navbar />
       </div>
-      <div className=" mt-24 md:mt-32  mb-5 md:mb-10 mx-3 md:mx-10 flex items-center  text-2xl md:text-3xl font-bold text-[#1C274C] text-left">
+      <div className=" mt-24 md:mt-28  mb-5 md:mb-10 mx-3 md:mx-10 flex items-center  text-2xl md:text-3xl font-bold text-[#1C274C] text-left">
         Mis Cursos
       </div>
       <div className=" flex justify-center items-center">
-        <div className=" grid grid-cols-3 mt-3">
-          <div className=" bg-gradient-to-br from-[#1C274C] to-[#146898] rounded m-3 p-3 h-[20vh] w-[40vh] flex justify-center items-center cursor-pointer hover:shadow-lg hover:shadow-[#31444ead] dark:hover:shadow-[#090a0e] duration-300 active:transform active:scale-90 hover:z-10">
-            <p className=" text-white text-center">Prueba</p>
-          </div>
-          <div className=" bg-gradient-to-br from-[#1C274C] to-[#146898] rounded m-3 p-3 h-[20vh] w-[40vh] flex justify-center items-center cursor-pointer hover:shadow-lg hover:shadow-[#31444ead] dark:hover:shadow-[#090a0e] duration-300 active:transform active:scale-90 hover:z-10">
-            <p className=" text-white text-center">Prueba</p>
-          </div>
-          <div className=" bg-gradient-to-br from-[#1C274C] to-[#146898] rounded m-3 p-3 h-[20vh] w-[40vh] flex justify-center items-center cursor-pointer hover:shadow-lg hover:shadow-[#31444ead] dark:hover:shadow-[#090a0e] duration-300 active:transform active:scale-90 hover:z-10">
-            <p className=" text-white text-center">Prueba</p>
-          </div>
+        <div className=" grid sm:grid-cols-2 md:grid-cols-3 m-3">
+          {role === 1 ? (
+            student.subjects &&
+            student.subjects.map((subject) => (
+              <SubjectCard
+                key={subject.subject_id}
+                cardTitle={subject.subject_name}
+              />
+            ))
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>
