@@ -43,6 +43,39 @@ export const createBook = async (req: Request, res: Response) => {
   }
 };
 
+// ? Actualizar libro
+
+export const updateBook = async (req: Request, res: Response) => {
+  const {
+    book_name,
+    book_author,
+    book_year,
+    book_edition,
+    book_editorial,
+    book_classification,
+    book_cover,
+    book_url,
+    degree_id,
+  } = req.body;
+  const book = await Book.findByPk(req.params.id);
+  if (book) {
+    await book.update({
+      book_name,
+      book_author,
+      book_year,
+      book_edition,
+      book_editorial,
+      book_classification,
+      book_cover,
+      book_url,
+      degree_id,
+    });
+  } else {
+    return res.status(404).json({ message: "No se encontró el libro" });
+  }
+  res.json(book);
+};
+
 // ? Obtener todos los libros
 
 export const getBooks = async (req: Request, res: Response) => {
