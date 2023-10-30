@@ -8,7 +8,6 @@ import { Teacher } from "../models/teacher.model";
 import { Admin } from "../models/admin.model";
 import { TOKEN_SECRET } from "../config/config";
 import jwt from "jsonwebtoken";
-import { type } from "os";
 import { Degree } from "../models/degree.model";
 import { Subject } from "../models/subject.model";
 
@@ -137,7 +136,7 @@ export const login = async (req: Request, res: Response) => {
       user_lastname: userFound.user_lastname,
       user_email: userFound.user_email,
       role_id: userFound.role_id,
-      token
+      token,
     });
   } catch (error) {
     console.log(error);
@@ -151,26 +150,27 @@ export const logout = (req: Request, res: Response) => {
   res.cookie("token", "", {
     expires: new Date(0),
   });
+  res.redirect("/");
   return res.sendStatus(200);
 };
 
 // ? Verificar Token
 export const verifyToken = async (req: Request, res: Response) => {
-    const { token } = req.cookies;
-  
-    if (!token) return res.status(401).json({ message: "Unauthorized" });
-  
-    jwt.verify(token, TOKEN_SECRET, async (error: any, user: any) => {
-      if (error) return res.status(401).json({ message: "Unauthorized" });
-  
-      const userFound = await User.findByPk(user.id);
-      if (!userFound) return res.status(401).json({ message: "Unauthorized" });
-  
-      return res.json({
-        user_id: userFound.user_id,
-        user_name: userFound.user_name,
-        role_id: userFound.role_id,
-        user_email: userFound.user_email,
-      });
+  const { token } = req.cookies;
+
+  if (!token) return res.status(401).json({ message: "Unauthorized" });
+
+  jwt.verify(token, TOKEN_SECRET, async (error: any, user: any) => {
+    if (error) return res.status(401).json({ message: "Unauthorized" });
+
+    const userFound = await User.findByPk(user.id);
+    if (!userFound) return res.status(401).json({ message: "Unauthorized" });
+
+    return res.json({
+      user_id: userFound.user_id,
+      user_name: userFound.user_name,
+      role_id: userFound.role_id,
+      user_email: userFound.user_email,
     });
-  };
+  });
+};

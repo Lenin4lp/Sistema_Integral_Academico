@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../components/navbar";
 import { getStudent, getTeacher } from "../../api/user";
 import { useAuth } from "../../auth/AuthProvider";
 import { Link } from "react-router-dom";
@@ -49,7 +48,7 @@ function Courses() {
   if (role === 1) {
     console.log(student);
   } else {
-    console.log(teacher);
+    console.log(teacher.subject);
   }
   return (
     <div>
@@ -58,7 +57,7 @@ function Courses() {
       </div>
       <div className=" flex justify-center items-center overflow-y-auto">
         <div className=" grid sm:grid-cols-2 md:grid-cols-3 m-3">
-          {role === 1
+          {role && role === 1
             ? student.subjects &&
               student.subjects.map((subject) => (
                 <Link
@@ -69,14 +68,13 @@ function Courses() {
                 </Link>
               ))
             : teacher.subject &&
-              teacher.subject.map((subject) => (
-                <Link
-                  key={subject.subject_id}
-                  to={`/cursos/${subject.subject_id}`}
-                >
-                  <SubjectCard cardTitle={subject.subject_name} />
-                </Link>
-              ))}
+            teacher.subject.map((subject) => (
+              <Link
+                key={subject.subject_id}
+                to={`/cursos/${subject.subject_id}`}
+              >
+                <SubjectCard cardTitle={subject.subject_name} />
+              </Link>))}
         </div>
       </div>
     </div>

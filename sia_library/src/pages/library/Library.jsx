@@ -121,11 +121,12 @@ function Library() {
                 {category === 0
                   ? books &&
                     books.map((book) => (
-                      <a href={book.book_url} target="_blank">
-                        <div
-                          key={book.book_id}
-                          className="  h-[282px] w-[200px] my-5 mx-7 cursor-pointer hover:shadow-lg hover:shadow-[#31444ead] dark:hover:shadow-[#090a0e] duration-300 active:transform active:scale-90 hover:z-10"
-                        >
+                      <a
+                        key={book.book_id}
+                        href={book.book_url}
+                        target="_blank"
+                      >
+                        <div className="  h-[282px] w-[200px] my-5 mx-7 cursor-pointer hover:shadow-lg hover:shadow-[#31444ead] dark:hover:shadow-[#090a0e] duration-300 active:transform active:scale-90 hover:z-10">
                           <img
                             className=" object-contain"
                             src={book.book_cover}

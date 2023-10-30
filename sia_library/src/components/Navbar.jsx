@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../auth/AuthProvider";
 
 function Navbar() {
+  const {logout} = useAuth();
   let Links = [
     { name: "Inicio", link: "/home" },
     { name: "Cursos", link: "/cursos" },
@@ -37,16 +39,27 @@ function Navbar() {
           }`}
         >
           {Links.map((link) => (
+            link && link.name === "Cursos"? 
             <li key={link.name} className="md:ml-8 text-xl md:my-0 my-7">
-              <Link
+            <a relative="route"
+              href={link.link}
+              className="text-[#1C274C] hover:text-[#146898] duration-500"
+            >
+              {link.name}
+            </a>
+          </li>
+            :
+            <li key={link.name} className="md:ml-8 text-xl md:my-0 my-7">
+              <Link relative="route"
                 to={link.link}
                 className="text-[#1C274C] hover:text-[#146898] duration-500"
               >
                 {link.name}
               </Link>
             </li>
+            
           ))}
-          <button className=" md:mx-10 p-2 rounded bg-gradient-to-br from-[#3bafc4] to-[#146898] text-white">
+          <button onClick={()=>logout()} className=" md:mx-10 p-2 rounded bg-gradient-to-br from-[#3bafc4] to-[#146898] text-white">
             Cerrar sesión
           </button>
         </ul>
