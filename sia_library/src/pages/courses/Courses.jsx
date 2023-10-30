@@ -51,28 +51,32 @@ function Courses() {
   } else {
     console.log(teacher);
   }
-  console.log(student.subjects);
   return (
     <div>
-      <div>
-        <Navbar />
-      </div>
       <div className=" mt-24 md:mt-28  mb-5 md:mb-10 mx-3 md:mx-10 flex items-center  text-2xl md:text-3xl font-bold text-[#1C274C] text-left">
         Mis Cursos
       </div>
       <div className=" flex justify-center items-center overflow-y-auto">
         <div className=" grid sm:grid-cols-2 md:grid-cols-3 m-3">
-          {role === 1 ? (
-            student.subjects &&
-            student.subjects.map((subject) => (
-              <SubjectCard
-                key={subject.subject_id}
-                cardTitle={subject.subject_name}
-              />
-            ))
-          ) : (
-            <></>
-          )}
+          {role === 1
+            ? student.subjects &&
+              student.subjects.map((subject) => (
+                <Link
+                  key={subject.subject_id}
+                  to={`/cursos/${subject.subject_id}`}
+                >
+                  <SubjectCard cardTitle={subject.subject_name} />
+                </Link>
+              ))
+            : teacher.subject &&
+              teacher.subject.map((subject) => (
+                <Link
+                  key={subject.subject_id}
+                  to={`/cursos/${subject.subject_id}`}
+                >
+                  <SubjectCard cardTitle={subject.subject_name} />
+                </Link>
+              ))}
         </div>
       </div>
     </div>

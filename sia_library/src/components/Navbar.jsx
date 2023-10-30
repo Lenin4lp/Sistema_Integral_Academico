@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   let Links = [
@@ -37,12 +38,12 @@ function Navbar() {
         >
           {Links.map((link) => (
             <li key={link.name} className="md:ml-8 text-xl md:my-0 my-7">
-              <a
-                href={link.link}
+              <Link
+                to={link.link}
                 className="text-[#1C274C] hover:text-[#146898] duration-500"
               >
                 {link.name}
-              </a>
+              </Link>
             </li>
           ))}
           <button className=" md:mx-10 p-2 rounded bg-gradient-to-br from-[#3bafc4] to-[#146898] text-white">
@@ -54,4 +55,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default React.memo(Navbar);

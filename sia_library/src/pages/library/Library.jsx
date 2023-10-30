@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../../components/navbar";
-import { getBook, getBooks } from "../../api/book";
+import { getBooks } from "../../api/book";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const categories = [
   {
@@ -33,7 +33,10 @@ function Library() {
   const [category, setCategory] = useState(0);
   const [books, setBooks] = useState([]);
   const [errors, setErrors] = useState([]);
-  const [booksTable, setBooksTable] = useState([]);
+
+  const handleChange = (e) => {
+    searchedBooks(e.target.value);
+  };
 
   const getAllBooks = async () => {
     try {
@@ -55,13 +58,8 @@ function Library() {
     getAllBooks();
   }, []);
 
-  category === 0 ? console.log(books) : console.log(filteredBooks);
-  console.log(books.book_cover);
   return (
     <div>
-      <div>
-        <Navbar />
-      </div>
       <div className=" mt-24 md:mt-32  mb-5 md:mb-10 mx-3 md:mx-10 flex items-center  text-2xl md:text-3xl font-bold text-[#1C274C] text-left">
         Biblioteca académica
       </div>
@@ -97,6 +95,7 @@ function Library() {
                 placeholder="Search"
                 aria-label="Search"
                 aria-describedby="button-addon2"
+                onChange={handleChange}
               />
               <span
                 className="input-group-text flex items-center whitespace-nowrap rounded px-3 py-1.5 text-center text-base font-normal text-neutral-700 dark:text-neutral-200"
@@ -122,21 +121,33 @@ function Library() {
                 {category === 0
                   ? books &&
                     books.map((book) => (
-                      <div
-                        key={book.book_id}
-                        className="  h-[282px] w-[200px] my-5 mx-7"
-                      >
-                        <img src={book.book_cover} alt="" />
-                      </div>
+                      <a href={book.book_url} target="_blank">
+                        <div
+                          key={book.book_id}
+                          className="  h-[282px] w-[200px] my-5 mx-7 cursor-pointer hover:shadow-lg hover:shadow-[#31444ead] dark:hover:shadow-[#090a0e] duration-300 active:transform active:scale-90 hover:z-10"
+                        >
+                          <img
+                            className=" object-contain"
+                            src={book.book_cover}
+                            alt=""
+                          />
+                        </div>
+                      </a>
                     ))
                   : filteredBooks &&
                     filteredBooks.map((book) => (
-                      <div
-                        key={book.book_id}
-                        className=" h-[282px] w-[200px] my-5 mx-7"
-                      >
-                        <img src={book.book_cover} alt="" />
-                      </div>
+                      <a href={book.book_url} target="_blank">
+                        <div
+                          key={book.book_id}
+                          className=" h-[282px] w-[200px] relative my-5 mx-7 cursor-pointer hover:shadow-lg hover:shadow-[#31444ead] dark:hover:shadow-[#090a0e] duration-300 active:transform active:scale-90 hover:z-10"
+                        >
+                          <LazyLoadImage
+                            className=" object-contain h-[282px] w-[200px]"
+                            src={book.book_cover}
+                            alt=""
+                          />
+                        </div>
+                      </a>
                     ))}
               </div>
             </div>
