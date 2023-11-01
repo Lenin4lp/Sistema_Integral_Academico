@@ -46,7 +46,7 @@ export class Subject extends Model {
   subject_acronym!: string;
 
   @Column({
-    type: DataType.STRING(30),
+    type: DataType.STRING(100),
     allowNull: true,
     field: "syllabus",
   })

@@ -23,6 +23,16 @@ function CourseInfo() {
     getASubject(id);
   }, []);
 
+  const onButtonClick = () => {
+    const pdfUrl = `${subject && subject.syllabus}`;
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = `Syllabus ${subject && subject.subject_name}.pdf`; // specify the filename
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   console.log(id);
   return (
     <div>
@@ -127,14 +137,11 @@ function CourseInfo() {
               de asistencia, y otros detalles relevantes.
             </div>
             <div className=" flex justify-center items-center">
-              <div className=" grid grid-cols-2">
-                <button className=" w-fit my-8 mx-3 p-2 bg-gradient-to-br from-[#156436] to-[#55966e] hover:from-[#1C274C] hover:to-[#146898] transition hover:scale-105 duration-300 text-white rounded-lg">
+              <button className=" w-fit my-8 mx-3 p-2 bg-gradient-to-br from-[#156436] to-[#55966e] hover:from-[#1C274C] hover:to-[#146898] transition hover:scale-105 duration-300 text-white rounded-lg">
+                <a href={subject && subject.syllabus} target="_blank">
                   Visualizar PDF
-                </button>
-                <button className=" w-fit my-8 mx-3 p-2 bg-gradient-to-br from-[#ff7322] to-[#c28d52] hover:from-[#1C274C] hover:to-[#146898] transition hover:scale-105 duration-300 text-white rounded-lg">
-                  Descargar PDF
-                </button>
-              </div>
+                </a>
+              </button>
             </div>
           </div>
         </div>
