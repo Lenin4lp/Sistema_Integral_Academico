@@ -52,7 +52,18 @@ function Courses() {
   }
   return (
     <div>
-      <div className=" mt-24 md:mt-28  mb-5 md:mb-10 mx-3 md:mx-10 flex items-center  text-2xl md:text-3xl font-bold text-[#1C274C] text-left">
+      {role && role === 1 ? (
+        <div className=" mt-24 md:mt-28  mb-2 md:mb-5 mx-3 md:mx-10 flex items-center  text-lg md:text-2xl font-bold text-[#1C274C] text-left">
+          Carrera:{" "}
+          <span className=" font-medium ml-2">
+            {student.degree && student.degree.degree_name}
+          </span>
+        </div>
+      ) : (
+        <div className=" mt-24 md:mt-28  mb-2 md:mb-5 mx-3 md:mx-10 flex items-center  text-2xl md:text-3xl font-bold text-[#1C274C] text-left"></div>
+      )}
+
+      <div className="  mb-5 md:mb-10 mx-3 md:mx-10 flex items-center  text-2xl md:text-3xl font-bold text-[#1C274C] text-left">
         Mis Cursos
       </div>
       <div className=" flex justify-center items-center overflow-y-auto">
@@ -68,13 +79,14 @@ function Courses() {
                 </Link>
               ))
             : teacher.subject &&
-            teacher.subject.map((subject) => (
-              <Link
-                key={subject.subject_id}
-                to={`/cursos/${subject.subject_id}`}
-              >
-                <SubjectCard cardTitle={subject.subject_name} />
-              </Link>))}
+              teacher.subject.map((subject) => (
+                <Link
+                  key={subject.subject_id}
+                  to={`/cursos/${subject.subject_id}`}
+                >
+                  <SubjectCard cardTitle={subject.subject_name} />
+                </Link>
+              ))}
         </div>
       </div>
     </div>

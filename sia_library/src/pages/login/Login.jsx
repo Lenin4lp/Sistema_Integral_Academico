@@ -85,7 +85,7 @@ function Login() {
 
                         <a
                           className=" hover:text-blue-900 dark:hover:text-black transition duration-700 pt-5"
-                          href="#!"
+                          href="mailto:tics.plataforma@istvc.edu.ec"
                         >
                           ¿Olvidaste la contraseña?
                         </a>

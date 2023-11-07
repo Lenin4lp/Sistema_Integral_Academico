@@ -35,7 +35,7 @@ function CourseInfo() {
 
   console.log(id);
   return (
-    <div>
+    <div className=" overflow-x-hidden">
       <div className=" block">
         <div className=" mt-24 md:mt-28 mb-3 md:mb-5 mx-3 md:mx-10 flex items-center  text-2xl md:text-3xl font-bold text-[#1C274C] text-left">
           {subject && subject.subject_name}
