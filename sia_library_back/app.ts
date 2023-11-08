@@ -4,11 +4,11 @@ import express, { urlencoded } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import { connectionDB } from "./connection/connection";
-import authRoutes from "./routes/auth.routes";
-import academicRoutes from "./routes/academic.routes";
-import bookRoutes from "./routes/book.routes";
-import rolesRoutes from "./routes/roles.routes";
+import { connectionDB } from "./src/connection/connection";
+import authRoutes from "./src/routes/auth.routes";
+import academicRoutes from "./src/routes/academic.routes";
+import bookRoutes from "./src/routes/book.routes";
+import rolesRoutes from "./src/routes/roles.routes";
 
 const app = express();
 
@@ -25,6 +25,10 @@ app.use("/api", authRoutes);
 app.use("/api", academicRoutes);
 app.use("/api", bookRoutes);
 app.use("/api", rolesRoutes);
+// Se define el puerto. A Port se le da el valor que tiene Port en las variables de entorno o se le asigna el puerto 8080
+const PORT = process.env.PORT || 8080;
+// Se hace que la app escuche al puerto asignado
+app.listen(PORT, () => console.log(`Ready from the port: ${PORT}`));
 
 connectionDB();
 
