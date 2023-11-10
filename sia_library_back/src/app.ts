@@ -4,11 +4,11 @@ import express, { urlencoded } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import { connectionDB } from "./src/connection/connection";
-import authRoutes from "./src/routes/auth.routes";
-import academicRoutes from "./src/routes/academic.routes";
-import bookRoutes from "./src/routes/book.routes";
-import rolesRoutes from "./src/routes/roles.routes";
+import { connectionDB } from "./connection/connection";
+import authRoutes from "./routes/auth.routes";
+import academicRoutes from "./routes/academic.routes";
+import bookRoutes from "./routes/book.routes";
+import rolesRoutes from "./routes/roles.routes";
 
 const app = express();
 

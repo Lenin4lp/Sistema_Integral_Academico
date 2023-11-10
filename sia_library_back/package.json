@@ -2,12 +2,13 @@
   "name": "sia_library_back",
   "version": "1.0.0",
   "description": "",
-  "main": "app.ts",
+  "main": "app.js",
   "scripts": {
     "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --files ./app.ts",
-    "start:prod": "node build/app.ts"
+    "build": "rimraf ./dist && tsc",
+    "start": "node ./dist/src/app.js"
   },
   "keywords": [],
   "author": "",
