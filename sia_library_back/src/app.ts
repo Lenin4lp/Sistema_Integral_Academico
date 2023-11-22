@@ -9,6 +9,7 @@ import authRoutes from "./routes/auth.routes";
 import academicRoutes from "./routes/academic.routes";
 import bookRoutes from "./routes/book.routes";
 import rolesRoutes from "./routes/roles.routes";
+import session from "express-session";
 
 const app = express();
 
@@ -20,6 +21,17 @@ app.use(urlencoded({ extended: false }));
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24,
+    },
+  })
+);
 
 app.use("/api", authRoutes);
 app.use("/api", academicRoutes);

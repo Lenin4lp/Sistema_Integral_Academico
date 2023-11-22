@@ -23,9 +23,9 @@ const book_model_1 = require("../models/book.model");
 exports.connection = new sequelize_typescript_1.Sequelize({
     dialect: "mysql",
     host: "localhost",
-    username: "root",
-    password: process.env.DB_PASSWORD || "302816",
-    database: "sia_library",
+    username: "istvcedu_sia_library",
+    password: process.env.DB_PASSWORD,
+    database: "istvcedu_sia_library",
     port: 3306,
     models: [role_model_1.Role, user_model_1.User, student_model_1.Student, teacher_model_1.Teacher, admin_model_1.Admin, degree_model_1.Degree, subject_model_1.Subject, book_model_1.Book],
     sync: { alter: true },

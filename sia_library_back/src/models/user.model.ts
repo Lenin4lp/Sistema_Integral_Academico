@@ -5,24 +5,15 @@ import {
   Table,
   Column,
   BeforeCreate,
-  BeforeUpdate,
   ForeignKey,
   BelongsTo,
   HasOne,
-  AfterSync,
 } from "sequelize-typescript";
 import { v4 as uuidv4 } from "uuid";
 import { Role } from "./role.model";
 import { Student } from "./student.model";
 import { Teacher } from "./teacher.model";
 import { Admin } from "./admin.model";
-import bcrypt from "bcryptjs";
-import getUserInfo from "../libs/getUserInfo";
-import { jwtUtils } from "../auth/sign";
-import { Token } from "./token.model";
-
-const generateAccessToken = jwtUtils.generateAccessToken;
-const generateRefreshToken = jwtUtils.generateRefreshToken;
 
 @Table({
   tableName: "usuario",
@@ -139,14 +130,6 @@ export class User extends Model {
     }
   }
 
-  @BeforeCreate
-  static async automatizePassword(user: User) {
-    if (user.changed('user_password')) {
-      const hash = await bcrypt.hash(user.user_password, 10);
-      user.user_password = hash;
-    }
-  }
-
   @BelongsTo(() => Role)
   role!: Role;
 
@@ -158,41 +141,6 @@ export class User extends Model {
 
   @HasOne(() => Admin, { onDelete: "CASCADE" })
   admin!: Admin;
-
-  public async isCorrectPassword(password: string, hash: string): Promise<boolean> {
-    const same = await bcrypt.compare(password, hash);
-    return same;
-  }
-  public createAccessToken(): string {
-    return generateAccessToken(getUserInfo(this));
-  }
-  public async createRefreshToken(): Promise<string> {
-    const refreshToken = generateRefreshToken(getUserInfo(this));
-    try {
-      await Token.create({ token: refreshToken });
-      console.log('Token saved', refreshToken);
-      return refreshToken;
-    } catch (error) {
-      console.error(error);
-      //next(new Error("Error creating token"));
-      throw new Error('Error creating token');
-    }
-  }
-  public async userNameExists(user_name: string): Promise<boolean> {
-    const result = await User.findAll({
-      where: {
-        user_name,
-      },
-    });
-    return result.length > 0;
-  }
 }
 
 export default User;
-
-
-
-
-
-
-

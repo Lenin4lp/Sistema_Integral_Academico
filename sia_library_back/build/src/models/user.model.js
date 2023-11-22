@@ -160,3 +160,4 @@ exports.User = User = __decorate([
         timestamps: true,
     })
 ], User);
+exports.default = User;

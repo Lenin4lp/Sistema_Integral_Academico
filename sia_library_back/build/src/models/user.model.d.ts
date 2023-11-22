@@ -22,3 +22,4 @@ export declare class User extends Model {
     teacher: Teacher;
     admin: Admin;
 }
+export default User;

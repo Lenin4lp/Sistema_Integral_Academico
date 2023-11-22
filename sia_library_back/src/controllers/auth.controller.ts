@@ -10,7 +10,6 @@ import { TOKEN_SECRET } from "../config/config";
 import jwt from "jsonwebtoken";
 import { Degree } from "../models/degree.model";
 import { Subject } from "../models/subject.model";
-import jsonResponse from "../libs/jsonResponse";
 
 // ? Registro de usuario
 export const register = async (req: Request, res: Response) => {
@@ -96,25 +95,11 @@ export const login = async (req: Request, res: Response) => {
     });
     if (!userFound) return res.status(400).json(["El usuario no existe"]);
 
-    const passwordCorrect = await userFound.isCorrectPassword(user_password, userFound.user_password);
-    if (passwordCorrect) {
-      const accessToken = userFound.createAccessToken();
-      const refreshToken = await userFound.createRefreshToken();
-      console.log(accessToken, refreshToken);
-      return res.json(
-        jsonResponse(200, {
-          accessToken,
-          refreshToken,
-          id: userFound.user_id,
-          user_name: userFound.user_name,
-          user_lastname: userFound.user_lastname,
-          user_email: userFound.user_email,
-          role_id: userFound.role_id,
-          message: "Ingreso Exitoso",
-        })
-      );
-      
-    }
+    const isMatch = await bcrypt.compare(
+      user_password,
+      userFound.user_password
+    );
+    if (!isMatch) return res.status(400).json(["Contraseña incorrecta"]);
 
     const token = await createAccesToken({
       id: userFound.user_id,
