@@ -99,11 +99,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const token = yield (0, jwt_1.createAccesToken)({
             id: userFound.user_id,
         });
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: true,
-            expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
-        });
+        res.cookie("token", token);
         let roleTable;
         if (userFound.role_id === 1) {
             roleTable = yield student_model_1.Student.findOne({
