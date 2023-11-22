@@ -12,9 +12,9 @@ import { Book } from "../models/book.model";
 export const connection = new Sequelize({
   dialect: "mysql",
   host: "localhost",
-  username: "istvcedu_sia_library",
-  password: process.env.DB_PASSWORD,
-  database: "istvcedu_sia_library",
+  username: "root",
+  password: process.env.DB_PASSWORD || "302816",
+  database: "sia_library",
   port: 3306,
   models: [Role, User, Student, Teacher, Admin, Degree, Subject, Book],
   sync: { alter: true },
