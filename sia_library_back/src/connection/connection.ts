@@ -8,6 +8,9 @@ import { Admin } from "../models/admin.model";
 import { Degree } from "../models/degree.model";
 import { Subject } from "../models/subject.model";
 import { Book } from "../models/book.model";
+import { Group } from "../models/group.model";
+import { Modality } from "../models/modality.model";
+import { Period } from "../models/period.model";
 
 export const connection = new Sequelize({
   dialect: "mysql",
@@ -16,8 +19,20 @@ export const connection = new Sequelize({
   password: process.env.DB_PASSWORD || "302816",
   database: "sia_library",
   port: 3306,
-  models: [Role, User, Student, Teacher, Admin, Degree, Subject, Book],
-  sync: { alter: true },
+  models: [
+    Role,
+    User,
+    Modality,
+    Student,
+    Teacher,
+    Admin,
+    Degree,
+    Subject,
+    Period,
+    Group,
+    Book,
+  ],
+  sync: { force: true },
 });
 
 export async function connectionDB() {

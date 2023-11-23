@@ -12,7 +12,7 @@ import {
 } from "sequelize-typescript";
 import { Teacher } from "./teacher.model";
 import { v4 as uuidv4 } from "uuid";
-import { Student } from "./student.model";
+import { Group } from "./group.model";
 
 // TODO Tengo que pedir una lista de todas las materias de las carreras existentes para crearlas por defecto
 
@@ -63,13 +63,8 @@ export class Subject extends Model {
   @BelongsTo(() => Teacher)
   teacher!: Teacher;
 
-  @BelongsToMany(() => Student, {
-    through: "estudiante_materia",
-    foreignKey: "id_materia",
-    otherKey: "id_estudiante",
-    timestamps: false,
-  })
-  students!: Student[];
+  @HasMany(() => Group)
+  group!: Group[];
 
   @BeforeCreate
   static async automatizeSubjectId(subject: Subject) {

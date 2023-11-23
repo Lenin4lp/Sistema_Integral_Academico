@@ -13,6 +13,7 @@ import {
 import { User } from "./user.model";
 import { Degree } from "./degree.model";
 import { Subject } from "./subject.model";
+import { Modality } from "./modality.model";
 
 @Table({
   tableName: "estudiante",
@@ -43,17 +44,20 @@ export class Student extends Model {
   })
   degree_id!: string;
 
+  @ForeignKey(() => Modality)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+    field: "id_modalidad",
+  })
+  modality_id!: number;
+
   @BelongsTo(() => User, { onDelete: "CASCADE" })
   user!: User;
 
   @BelongsTo(() => Degree)
   degree!: Degree;
 
-  @BelongsToMany(() => Subject, {
-    through: "estudiante_materia",
-    foreignKey: "id_estudiante",
-    otherKey: "id_materia",
-    timestamps: false,
-  })
-  subjects!: Subject[];
+  @BelongsTo(() => Modality)
+  modality!: Modality;
 }
