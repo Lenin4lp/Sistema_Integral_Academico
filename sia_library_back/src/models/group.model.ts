@@ -15,6 +15,7 @@ import { Student } from "./student.model";
 import { Subject } from "./subject.model";
 import { Modality } from "./modality.model";
 import { Period } from "./period.model";
+import { Grade } from "./grades.model";
 
 @Table({
   tableName: "grupo",
@@ -76,6 +77,9 @@ export class Group extends Model {
 
   @BelongsTo(() => Period)
   period!: Period;
+
+  @HasMany(() => Grade)
+  grades!: Grade[];
 
   @BeforeCreate
   static async createGroupUUID(group: Group) {

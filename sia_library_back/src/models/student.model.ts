@@ -14,6 +14,7 @@ import { User } from "./user.model";
 import { Degree } from "./degree.model";
 import { Subject } from "./subject.model";
 import { Modality } from "./modality.model";
+import { Grade } from "./grades.model";
 
 @Table({
   tableName: "estudiante",
@@ -51,6 +52,9 @@ export class Student extends Model {
     field: "id_modalidad",
   })
   modality_id!: number;
+
+  @HasMany(() => Grade)
+  grades!: Grade[];
 
   @BelongsTo(() => User, { onDelete: "CASCADE" })
   user!: User;

@@ -11,6 +11,7 @@ import { Book } from "../models/book.model";
 import { Group } from "../models/group.model";
 import { Modality } from "../models/modality.model";
 import { Period } from "../models/period.model";
+import { Grade } from "../models/grades.model";
 
 export const connection = new Sequelize({
   dialect: "mysql",
@@ -30,6 +31,7 @@ export const connection = new Sequelize({
     Subject,
     Period,
     Group,
+    Grade,
     Book,
   ],
   sync: { force: true },
