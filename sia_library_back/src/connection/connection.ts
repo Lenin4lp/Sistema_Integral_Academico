@@ -34,7 +34,7 @@ export const connection = new Sequelize({
     Grade,
     Book,
   ],
-  sync: { force: true },
+  sync: { alter: true },
 });
 
 export async function connectionDB() {

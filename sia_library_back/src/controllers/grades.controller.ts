@@ -22,3 +22,59 @@ export const getGrade = async (req: Request, res: Response) => {
   if (!grade) return res.status(404).json({ message: "Grade not found" });
   res.json(grade);
 };
+
+// ? Crear una nota
+export const createGrade = async (req: Request, res: Response) => {
+  const { student_id, group_id } = req.body;
+  try {
+    const newGrade = await Grade.create({
+      grade_1:0,
+      grade_2:0,
+      test_1:0,
+      exam_1:0,
+      grade_3:0,
+      grade_4:0,
+      test_2:0,
+      exam_2:0,
+      final_grade:0,
+      student_id,
+      group_id,
+    });
+    res.json(newGrade);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(["Ha ocurrido un error con el servidor"]);
+  }
+};
+
+// ? Actualizar una nota
+export const updateGrade = async (req: Request, res: Response) => {
+  const { grade_1, grade_2, test_1, exam_1, grade_3, grade_4, test_2, exam_2, final_grade } = req.body;
+  const grade = await Grade.findByPk(req.params.id);
+  if (grade) {
+    await grade.update({
+      grade_1,
+      grade_2,
+      test_1,
+      exam_1,
+      grade_3,
+      grade_4,
+      test_2,
+      exam_2,
+      final_grade,
+    });
+  } else {
+    return res.status(404).json({ message: "No se encontró el reporte de notas" });
+  }
+};
+
+// ? Eliminar una nota
+export const deleteGrade = async (req: Request, res: Response) => {
+  const grade = await Grade.findByPk(req.params.id);
+  if (grade) {
+    await grade.destroy();
+    return res.sendStatus(204);
+  } else {
+    return res.status(404).json({ message: "No se encontró el reporte de notas" });
+  }
+};
