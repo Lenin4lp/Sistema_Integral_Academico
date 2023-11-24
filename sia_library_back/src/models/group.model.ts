@@ -9,13 +9,13 @@ import {
   HasMany,
   BelongsToMany,
   BeforeCreate,
-  AfterSync,
 } from "sequelize-typescript";
 import { Student } from "./student.model";
 import { Subject } from "./subject.model";
 import { Modality } from "./modality.model";
 import { Period } from "./period.model";
 import { Grade } from "./grades.model";
+import { Teacher } from "./teacher.model";
 
 @Table({
   tableName: "grupo",
@@ -61,6 +61,14 @@ export class Group extends Model {
     field: "id_periodo",
   })
   period_id!: string;
+
+  @ForeignKey(() => Teacher)
+  @Column({
+    type: DataType.STRING(10),
+    allowNull: true,
+    field: "id_docente",
+  })
+  teacher_id!: string;
 
   @BelongsToMany(() => Student, {
     through: "grupo_estudiante",

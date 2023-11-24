@@ -9,7 +9,7 @@ import { Admin } from "../models/admin.model";
 import { TOKEN_SECRET } from "../config/config";
 import jwt from "jsonwebtoken";
 import { Degree } from "../models/degree.model";
-import { Subject } from "../models/subject.model";
+import { Group } from "../models/group.model";
 
 // ? Registro de usuario
 export const register = async (req: Request, res: Response) => {
@@ -113,14 +113,14 @@ export const login = async (req: Request, res: Response) => {
         where: {
           user_id: userFound.user_id,
         },
-        include: [Degree, Subject],
+        include: [Degree, Group],
       });
     } else if (userFound.role_id === 2) {
       roleTable = await Teacher.findOne({
         where: {
           user_id: userFound.user_id,
         },
-        include: [Subject],
+        include: [Group],
       });
     } else if (userFound.role_id === 3) {
       roleTable = await Admin.findOne({

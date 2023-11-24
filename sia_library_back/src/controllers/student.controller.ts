@@ -4,6 +4,7 @@ import { Degree } from "../models/degree.model";
 import { Subject } from "../models/subject.model";
 import { User } from "../models/user.model";
 import { connection } from "../connection/connection";
+import { Group } from "../models/group.model";
 
 //? Obtener todos los estudiantes
 export const getStudents = async (req: Request, res: Response) => {
@@ -14,7 +15,11 @@ export const getStudents = async (req: Request, res: Response) => {
 //? Obtener un estudiante
 export const getStudent = async (req: Request, res: Response) => {
   const student = await Student.findByPk(req.params.id, {
-    include: [{ model: Degree }, { model: Subject }, { model: User }],
+    include: [
+      { model: Degree },
+      { model: Group, include: [{ model: Subject }] },
+      { model: User },
+    ],
   });
   if (!student) return res.status(404).json(["No se encontró el estudiante"]);
   res.json(student);

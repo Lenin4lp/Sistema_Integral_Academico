@@ -91,3 +91,14 @@ export const getBook = async (req: Request, res: Response) => {
 
   res.json(book);
 };
+
+// ? Eliminar libro
+export const deleteBook = async (req: Request, res: Response) => {
+  const book = await Book.findByPk(req.params.id);
+  if (book) {
+    await book.destroy();
+    return res.sendStatus(204);
+  } else {
+    return res.status(404).json({ message: "No se encontró el libro" });
+  }
+};

@@ -47,13 +47,6 @@ export class Modality extends Model {
   })
   modality_schedule!: string;
 
-  @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-    field: "estado_modalidad",
-  })
-  modality_status!: boolean;
-
   @BelongsToMany(() => Degree, {
     through: "carrera_modalidad",
     foreignKey: "id_modalidad",

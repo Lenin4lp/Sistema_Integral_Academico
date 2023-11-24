@@ -52,17 +52,6 @@ export class Subject extends Model {
   })
   syllabus!: string;
 
-  @ForeignKey(() => Teacher)
-  @Column({
-    type: DataType.STRING(10),
-    allowNull: true,
-    field: "id_docente",
-  })
-  teacher_id!: string;
-
-  @BelongsTo(() => Teacher)
-  teacher!: Teacher;
-
   @HasMany(() => Group)
   group!: Group[];
 
