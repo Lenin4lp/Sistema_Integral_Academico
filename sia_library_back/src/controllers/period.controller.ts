@@ -16,7 +16,7 @@ export const getPeriod = async (req: Request, res: Response) => {
 
 // ? Crear un nuevo periodo
 export const createPeriod = async (req: Request, res: Response) => {
-  const { period_name } = req.body;
+  const { period_id, period_name } = req.body;
   try {
     const periodFound = await Period.findOne({
       where: { period_name: period_name },
@@ -26,6 +26,7 @@ export const createPeriod = async (req: Request, res: Response) => {
 
     const newPeriod = await Period.create({
       period_name,
+      period_id,
     });
     res.json(newPeriod);
   } catch (error) {

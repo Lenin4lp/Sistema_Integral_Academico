@@ -6,6 +6,7 @@ import { Subject } from "../models/subject.model";
 import { Period } from "../models/period.model";
 import { connection } from "../connection/connection";
 import { Grade } from "../models/grades.model";
+import { Teacher } from "../models/teacher.model";
 
 // ? Obtener todos los grupos
 export const getGroups = async (req: Request, res: Response) => {
@@ -20,6 +21,7 @@ export const getGroup = async (req: Request, res: Response) => {
       { model: Student, include: [{ model: User }] },
       { model: Subject },
       { model: Period },
+      { model: Teacher, include: [{ model: User }] },
     ],
   });
   if (!group) return res.status(404).json({ message: "Group not found" });
@@ -28,17 +30,15 @@ export const getGroup = async (req: Request, res: Response) => {
 
 // ? Crear un grupo
 export const createGroup = async (req: Request, res: Response) => {
-  const { group_name, group_acronym } = req.body;
+  const { group_name, subject_id, modality_id, period_id, teacher_id } =
+    req.body;
   try {
-    const groupFound = await Group.findOne({
-      where: { group_name: group_name },
-    });
-    if (groupFound)
-      return res.status(400).json({ message: "El grupo ya existe" });
-
     const newGroup = await Group.create({
       group_name,
-      group_acronym,
+      subject_id,
+      modality_id,
+      period_id,
+      teacher_id,
     });
     res.json(newGroup);
   } catch (error) {
@@ -49,12 +49,12 @@ export const createGroup = async (req: Request, res: Response) => {
 
 // ? Actualizar un grupo
 export const updateGroup = async (req: Request, res: Response) => {
-  const { group_name, group_acronym } = req.body;
+  const { group_name, teacher_id } = req.body;
   const group = await Group.findByPk(req.params.id);
   if (group) {
     await group.update({
       group_name,
-      group_acronym,
+      teacher_id,
     });
   } else {
     return res.status(404).json({ message: "Grupo no encontrado" });
@@ -85,20 +85,19 @@ export const addStudentToGroup = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Estudiante agregado al grupo" });
 
     if (res.statusCode === 200) {
-      
       await Grade.create({
-        grade_1:0,
-        grade_2:0,
-        test_1:0,
-        exam_1:0,
-        grade_3:0,
-        grade_4:0,
-        test_2:0,
-        exam_2:0,
-        final_grade:0,
-        student_id:student_id,
-        group_id:group_id  
-      })
+        grade_1: 0,
+        grade_2: 0,
+        test_1: 0,
+        exam_1: 0,
+        grade_3: 0,
+        grade_4: 0,
+        test_2: 0,
+        exam_2: 0,
+        final_grade: 0,
+        student_id: student_id,
+        group_id: group_id,
+      });
     }
   } catch (error) {
     console.log("Algo malio sal: ", error);
@@ -120,4 +119,3 @@ export const deleteStudentFromGroup = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error al eliminar estudiante del grupo" });
   }
 };
-

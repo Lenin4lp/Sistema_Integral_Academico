@@ -74,6 +74,7 @@ export class Group extends Model {
     through: "grupo_estudiante",
     foreignKey: "id_grupo",
     otherKey: "id_estudiante",
+    timestamps: false,
   })
   student!: Student[];
 
@@ -88,6 +89,9 @@ export class Group extends Model {
 
   @HasMany(() => Grade)
   grades!: Grade[];
+
+  @BelongsTo(() => Teacher)
+  teacher!: Teacher;
 
   @BeforeCreate
   static async createGroupUUID(group: Group) {
