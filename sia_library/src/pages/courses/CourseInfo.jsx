@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getSubject } from "../../api/academic";
+import { getGroup } from "../../api/academic";
 
 function CourseInfo() {
-  const [subject, setSubject] = useState([]);
+  const [group, setGroup] = useState([]);
   const [errors, setErrors] = useState([]);
   let { id } = useParams();
 
-  const getASubject = async (subjectId) => {
+  const getAGroup = async (groupId) => {
     try {
-      const res = await getSubject(subjectId);
+      const res = await getGroup(groupId);
       if (res.status === 200) {
-        setSubject(res.data);
+        setGroup(res.data);
+        console.log(res.data);
       }
     } catch (error) {
       console.log(error);
@@ -20,27 +21,19 @@ function CourseInfo() {
   };
 
   useEffect(() => {
-    getASubject(id);
+    getAGroup(id);
   }, []);
 
-  const onButtonClick = () => {
-    const pdfUrl = `${subject && subject.syllabus}`;
-    const link = document.createElement("a");
-    link.href = pdfUrl;
-    link.download = `Syllabus ${subject && subject.subject_name}.pdf`; // specify the filename
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+  
 
-  console.log(id);
+
   return (
     <div className=" overflow-x-hidden">
       <div className=" block">
-        <div className=" mt-24 md:mt-28 mb-3 md:mb-5 mx-3 md:mx-10 flex items-center  text-2xl md:text-3xl font-bold text-[#1C274C] text-left">
-          {subject && subject.subject_name}
+        <div className=" mt-24 md:mt-28 mb-3 mx-3 md:mx-10 flex items-center  text-2xl md:text-3xl font-bold text-[#1C274C] text-left">
+          {group.subject && group.subject.subject_name}
         </div>
-        <div className=" mx-3 md:mx-10 text-md md:text-lg font-bold text-slate-500">
+        <div className=" mx-3 md:mx-10 text-md md:text-lg font-bold text-slate-400">
           {id}
         </div>
         <div className=" w-screen h-fit mt-3 flex justify-center items-center">
@@ -79,17 +72,17 @@ function CourseInfo() {
           Docente
         </div>
         <div className=" font-semibold text-[#1C274C] mx-3 md:mx-10 text-md md:text-lg flex justify-center items-center">
-          {subject.teacher
-            ? subject.teacher.user.user_name
+          {group.teacher
+            ? group.teacher.user.user_name
             : "Docente no registrado"}
         </div>
         <div className=" font-semibold text-[#1C274C] mx-3 md:mx-10 text-md md:text-lg flex justify-center items-center">
-          {subject.teacher ? subject.teacher.user.user_lastname : ""}
+          {group.teacher ? group.teacher.user.user_lastname : ""}
         </div>
         <div className=" flex justify-center items-center mt-3">
           <a
             href={`mailto:${
-              subject.teacher && subject.teacher.user.user_email
+              group.teacher && group.teacher.user.user_email
             }`}
           >
             <button className=" m-3 p-2 bg-gradient-to-br from-[#ad2845] to-[#9e1264] hover:from-[#1C274C] hover:to-[#146898] transition hover:scale-105 duration-300 text-white rounded-lg">
@@ -100,7 +93,7 @@ function CourseInfo() {
         <div className=" mt-10 md:mt-20 mb-12 mx-3 md:mx-10 flex justify-center items-center">
           <div className=" block">
             <div className=" font-extrabold text-[#1C274C] text-xl md:text-2xl text-center">
-              Syllabus de {subject && subject.subject_name}
+              Syllabus de {group.subject && group.subject.subject_name}
             </div>
             <div className=" mt-7 md:mt-10 flex justify-center items-center">
               <svg
@@ -138,7 +131,7 @@ function CourseInfo() {
             </div>
             <div className=" flex justify-center items-center">
               <button className=" w-fit my-8 mx-3 p-2 bg-gradient-to-br from-[#156436] to-[#55966e] hover:from-[#1C274C] hover:to-[#146898] transition hover:scale-105 duration-300 text-white rounded-lg">
-                <a href={subject && subject.syllabus} target="_blank">
+                <a href={group.subject && group.subject.syllabus} target="_blank">
                   Visualizar PDF
                 </a>
               </button>

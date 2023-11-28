@@ -48,7 +48,7 @@ function Courses() {
   if (role === 1) {
     console.log(student);
   } else {
-    console.log(teacher.subject);
+    console.log(teacher.group);
   }
   return (
     <div>
@@ -69,22 +69,22 @@ function Courses() {
       <div className=" flex justify-center items-center overflow-y-auto">
         <div className=" grid sm:grid-cols-2 md:grid-cols-3 m-3">
           {role && role === 1
-            ? student.subjects &&
-              student.subjects.map((subject) => (
+            ? student.group &&
+              student.group.map((group) => (
                 <Link
-                  key={subject.subject_id}
-                  to={`/cursos/${subject.subject_id}`}
+                  key={group.group_id}
+                  to={`/cursos/${group.group_id}`}
                 >
-                  <SubjectCard cardTitle={subject.subject_name} />
+                  <SubjectCard cardTitle={group.subject.subject_name} />
                 </Link>
               ))
-            : teacher.subject &&
-              teacher.subject.map((subject) => (
+            : teacher.group &&
+              teacher.group.map((group) => (
                 <Link
-                  key={subject.subject_id}
-                  to={`/cursos/${subject.subject_id}`}
+                  key={group.group_id}
+                  to={`/cursos/${group.group_id}`}
                 >
-                  <SubjectCard cardTitle={subject.subject_name} />
+                  <SubjectCard cardTitle={group.subject.subject_name} />
                 </Link>
               ))}
         </div>

@@ -55,6 +55,7 @@ import { Book } from "./book.model";
     @HasMany(()=> Book)
   book!: Book[];
   
+  
     @BeforeCreate
     static async automatizeDegreeId(degree: Degree) {
       const acronym = degree.degree_acronym;

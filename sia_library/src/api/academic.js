@@ -15,3 +15,13 @@ export const getSubjects = () => axios.get("/subjects");
 export const registerSubject = (subject) => axios.post("/subject", subject);
 export const updateSubject = (id, subject) => axios.put(`/subject/${id}`, subject);
 export const deleteSubject = (id) => axios.delete(`/subject/${id}`);
+
+// ? Grupo
+
+export const getGroup = (id) => axios.get(`/group/${id}`);
+export const getGroups = () => axios.get("/groups");
+export const registerGroup = (group) => axios.post("/group", group);
+export const updateGroup = (id, group) => axios.put(`/group/${id}`, group);
+export const deleteGroup = (id) => axios.delete(`/group/${id}`);
+export const assignStudentToGroup = (id, student) => axios.put(`/group/${id}/student`, student);
+export const removeStudentFromGroup = (id, student) => axios.delete(`/group/${id}/student`, student);

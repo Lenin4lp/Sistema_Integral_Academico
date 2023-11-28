@@ -19,9 +19,9 @@ export const getGroup = async (req: Request, res: Response) => {
   const group = await Group.findByPk(req.params.id, {
     include: [
       { model: Student, include: [{ model: User }] },
+      { model: Teacher, include: [{ model: User }] },
       { model: Subject },
       { model: Period },
-      { model: Teacher, include: [{ model: User }] },
     ],
   });
   if (!group) return res.status(404).json({ message: "Group not found" });

@@ -74,9 +74,9 @@ export const register = async (req: Request, res: Response) => {
       message: "Usuario registrado con exito",
       id: newUser.user_id,
       user_name: newUser.user_name,
-      user_lastname: newUser.user_lastname,
       user_email: newUser.user_email,
       role_id: newUser.role_id,
+      user_lastname: newUser.user_lastname,
     });
   } catch (error) {
     console.log(error);
@@ -133,9 +133,9 @@ export const login = async (req: Request, res: Response) => {
       message: "Ingreso Exitoso",
       id: userFound.user_id,
       user_name: userFound.user_name,
-      user_lastname: userFound.user_lastname,
       user_email: userFound.user_email,
       role_id: userFound.role_id,
+      user_lastname: userFound.user_lastname,
       token,
     });
   } catch (error) {
@@ -169,6 +169,7 @@ export const verifyToken = async (req: Request, res: Response) => {
     return res.json({
       user_id: userFound.user_id,
       user_name: userFound.user_name,
+      user_lastname: userFound.user_lastname,
       role_id: userFound.role_id,
       user_email: userFound.user_email,
     });
