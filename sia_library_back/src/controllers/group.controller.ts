@@ -22,6 +22,7 @@ export const getGroup = async (req: Request, res: Response) => {
       { model: Teacher, include: [{ model: User }] },
       { model: Subject },
       { model: Period },
+      { model: Grade, include: [{model: Student, include:[{model:User}]}] },
     ],
   });
   if (!group) return res.status(404).json({ message: "Group not found" });

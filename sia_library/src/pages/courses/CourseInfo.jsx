@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getGroup } from "../../api/academic";
+import { getGroup, updateGrade } from "../../api/academic";
 import { useAuth } from "../../auth/AuthProvider";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 function CourseInfo() {
   const { user } = useAuth();
   const [group, setGroup] = useState([]);
   const [errors, setErrors] = useState([]);
+  const [isOnEdit, setIsOnEdit] = useState(false);
+  const { register, handleSubmit } = useForm();
   let { id } = useParams();
+  const navigate = useNavigate();
 
   const getAGroup = async (groupId) => {
     try {
@@ -22,9 +27,32 @@ function CourseInfo() {
     }
   };
 
+  const updateAGrade = async (gradeId, grade) => {
+    try {
+      const res = await updateGrade(gradeId, grade);
+      if (res.status === 200) {
+        alert("Calificaciones modificadas");
+        navigate(`/cursos/${id}`);
+      }
+    } catch (error) {
+      console.log(error);
+      setErrors(error.response.data);
+    }
+  }
+
+  const handleEdit = () => {
+    setIsOnEdit(!isOnEdit);
+  };
+
   useEffect(() => {
     getAGroup(id);
+    setIsOnEdit(false);
   }, []);
+
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
+  })
+  console.log(group);
 
   return (
     <div className=" overflow-x-hidden">
@@ -146,22 +174,281 @@ function CourseInfo() {
           </div>
         ) : (
           <div>
-            <div className=" w-screen h-fit mt-7 items-center mx-3 md:mx-10 text-[#1C274C] font-semibold text-lg">
-              <div className=" block">
-                <p>
-                  N° de estudiantes:
-                  <span className=" font-normal">{` ${
-                    group.student && group.student.length
-                  }`}</span>
-                </p>
-                <p className=" mt-3">
-                  Modalidad:
-                  <span className=" font-normal">{` ${
-                    group.modality_id && group.modality_id === 1
-                      ? "Presencial"
-                      : "En línea"
-                  }`}</span>
-                </p>
+            <div className=" grid grid-cols-4">
+              <div className=" w-screen h-fit mt-7 items-center mx-3 md:mx-10 text-[#1C274C] font-semibold text-lg col-span-1">
+                <div className=" block">
+                  <p>
+                    N° de estudiantes:
+                    <span className=" font-normal">{` ${
+                      group.student && group.student.length
+                    }`}</span>
+                  </p>
+                  <p className=" mt-3">
+                    Modalidad:
+                    <span className=" font-normal">{` ${
+                      group.modality_id && group.modality_id === 1
+                        ? "Presencial"
+                        : "En línea"
+                    }`}</span>
+                  </p>
+                  <p className=" mt-3">
+                    Periodo:
+                    <span className=" font-normal">{` ${
+                      group.period_id && group.period_id 
+                    }`}</span>
+                  </p>
+                </div>
+              </div>
+              <div className=" m-7 col-span-3">
+                {isOnEdit?<form><div>
+                  <table className=" border-collapse border border-slate-400 text-sm">
+                    <thead className=" rounded">
+                      <tr>
+                        <th className=" border border-white font-semibold text-[#1C274C]"></th>
+                        <th
+                          className="border bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold "
+                          colSpan="4"
+                        >
+                          1er hemisemestre
+                        </th>
+                        <th
+                          className="border bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold"
+                          colSpan="4"
+                        >
+                          2do hemisemestre
+                        </th>
+                        <th className=" border border-white font-semibold text-[#1C274C]"></th>
+                      </tr>
+                      <tr>
+                        <th className=" border bg-[#1C274C] py-2 px-28 border-slate-300 font-semibold text-white">
+                          Estudiante
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Nota 1
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Nota 2
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Prueba
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Examen
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Nota 1
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Nota 2
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Prueba
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Examen
+                        </th>
+                        <th className=" border p-2 bg-[#1C274C] border-slate-300 font-semibold text-white">
+                          Nota final
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {group.grades &&
+                        group.grades.map((grade) => (
+                          <tr key={grade.grade_id}>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                              {grade &&
+                                grade.student.user.user_name +
+                                  " " +
+                                  grade.student.user.user_lastname}
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                              <input type="number" step="0.01" min="0" max="10" className="w-10" placeholder={grade && grade.grade_1} {...register("grade_1",{
+                                maxLength:10,
+                                required:false,
+                                
+                              })} />
+                            
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                            <input type="number" step="0.01" min="0" max="10" className="w-10" placeholder={grade && grade.grade_2} {...register("grade_2",{
+                              maxLength:10,
+                              required:false,
+                              
+                            })} />
+                              
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                            <input type="number" step="0.01" min="0" max="10" className="w-10" placeholder={grade && grade.test_1} {...register("test_1",{
+                              maxLength:10,
+                              required:false,
+                              
+                            })} />
+                              
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                            <input type="number" step="0.01" min="0" max="10" className="w-10" placeholder={grade && grade.exam_1} {...register("exam_1",{
+                              maxLength:10,
+                              required:false,
+                              
+                            })} />
+                              
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                            <input type="number" step="0.01" min="0" max="10" className="w-10" placeholder={grade && grade.grade_3} {...register("grade_3",{
+                              maxLength:10,
+                              required:false,
+                              
+                            })} />
+                              
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                            <input type="number" step="0.01" min="0" max="10" className="w-10" placeholder={grade && grade.grade_4} {...register("grade_4",{
+                              maxLength:10,
+                              required:false,
+                              
+                            })} />
+                              
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                            <input type="number" step="0.01" min="0" max="10" className="w-10" placeholder={grade && grade.test_2} {...register("test_2",{
+                              maxLength:10,
+                              required:false,
+                              
+                            })} />
+                              
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                            <input type="number" step="0.01" min="0" max="10" className="w-10" placeholder={grade && grade.exam_2} {...register("exam_2",{
+                              maxLength:10,
+                              required:false,
+                              
+                            })} />
+                              
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                              {grade && grade.final_grade}
+                            </th>
+                            <th className="border p-2 border-white font-semibold text-[#1C274C]">
+                            <input type="hidden" value={grade && grade.grade_id} className="w-10" placeholder={grade && grade.grade_2} {...register("grade_2",{
+                            })} />
+                              
+                            </th>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                  <div className=" flex justify-center items-center mt-5">
+                    <button
+                      onClick={onSubmit}
+                      className=" m-3 p-2 bg-gradient-to-br from-[#3a3b5f] to-[#7151bb] hover:from-[#1C274C] hover:to-[#146898] transition hover:scale-105 duration-300 text-white rounded-lg"
+                    >Guardar cambios</button>
+                    
+                     
+                  </div>
+                </div></form>:<><div>
+                  <table className=" border-collapse border border-slate-400 text-sm">
+                    <thead className=" rounded">
+                      <tr>
+                        <th className=" border border-white font-semibold text-[#1C274C]"></th>
+                        <th
+                          className="border bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold "
+                          colSpan="4"
+                        >
+                          1er hemisemestre
+                        </th>
+                        <th
+                          className="border bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold"
+                          colSpan="4"
+                        >
+                          2do hemisemestre
+                        </th>
+                        <th className=" border border-white font-semibold text-[#1C274C]"></th>
+                      </tr>
+                      <tr>
+                        <th className=" border bg-[#1C274C] py-2 px-28 border-slate-300 font-semibold text-white">
+                          Estudiante
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Nota 1
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Nota 2
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Prueba
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Examen
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Nota 1
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Nota 2
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Prueba
+                        </th>
+                        <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          Examen
+                        </th>
+                        <th className=" border p-2 bg-[#1C274C] border-slate-300 font-semibold text-white">
+                          Nota final
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {group.grades &&
+                        group.grades.map((grade) => (
+                          <tr key={grade.grade_id}>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                              {grade &&
+                                grade.student.user.user_name +
+                                  " " +
+                                  grade.student.user.user_lastname}
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                              {grade && grade.grade_1}
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                              {grade && grade.grade_2}
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                              {grade && grade.test_1}
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                              {grade && grade.exam_1}
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                              {grade && grade.grade_3}
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                              {grade && grade.grade_4}
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                              {grade && grade.test_2}
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                              {grade && grade.exam_2}
+                            </th>
+                            <th className="border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                              {grade && grade.final_grade}
+                            </th>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                  <div className=" flex justify-center items-center mt-5">
+                  <button
+                      onClick={handleEdit}
+                      className=" m-3 p-2 bg-gradient-to-br from-[#3a3b5f] to-[#7151bb] hover:from-[#1C274C] hover:to-[#146898] transition hover:scale-105 duration-300 text-white rounded-lg"
+                    >Modificar calificaciones</button>
+                    
+                     
+                  </div>
+                </div></>}
+                
               </div>
             </div>
           </div>

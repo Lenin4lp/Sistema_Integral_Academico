@@ -25,3 +25,9 @@ export const updateGroup = (id, group) => axios.put(`/group/${id}`, group);
 export const deleteGroup = (id) => axios.delete(`/group/${id}`);
 export const assignStudentToGroup = (id, student) => axios.put(`/group/${id}/student`, student);
 export const removeStudentFromGroup = (id, student) => axios.delete(`/group/${id}/student`, student);
+
+// ? Notas
+
+export const getGrade = (id) => axios.get(`/grade/${id}`);
+export const getGrades = () => axios.get("/grades");
+export const updateGrade = (id, grade) => axios.put(`/grade/${id}`, grade);
