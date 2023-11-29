@@ -172,6 +172,8 @@ export const verifyToken = async (req: Request, res: Response) => {
       user_lastname: userFound.user_lastname,
       role_id: userFound.role_id,
       user_email: userFound.user_email,
+      createdAt: userFound.createdAt,
+      updatedAt: userFound.updatedAt,
     });
   });
 };

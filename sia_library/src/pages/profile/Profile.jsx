@@ -1,9 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../auth/AuthProvider";
+import { getStudent } from "../../api/user";
+import { getTeacher } from "../../api/user";
 
 function Profile() {
   const { user } = useAuth();
-  console.log(user);
+  const [errors, setErrors] = useState([]);
+  const [student, setStudent] = useState([]);
+  const [teacher, setTeacher] = useState([]);
+
+  const getAStudent = async (userId) => {
+    try {
+      const res = await getStudent(userId);
+      if (res.status === 200) {
+        setStudent(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+      setErrors(error.response.data);
+    }
+  };
+
+  const getATeacher = async (userId) => {
+    try {
+      const res = await getTeacher(userId);
+      if (res.status === 200) {
+        setTeacher(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+      setErrors(error.response.data);
+    }
+  };
+
+  useEffect(() => {
+    if (user.role_id === 1) {
+      getAStudent(user.user_id);
+    } else {
+      getATeacher(user.user_id);
+    }
+  }, []);
+
+  if (user.role_id === 1) {
+    console.log(student.group);
+  } else {
+    console.log(teacher);
+  }
   return (
     <div className=" overflow-x-hidden">
       <div className=" block">
@@ -43,20 +85,114 @@ function Profile() {
           </div>
         </div>
         <div className=" font-semibold text-[#1C274C] mx-3 md:mx-10 text-md md:text-lg flex justify-center items-center">
-          {user ? user.user_name : "Docente no registrado"}
+          {user && user.user_name}
         </div>
         <div className=" font-semibold text-[#1C274C] mx-3 md:mx-10 text-md md:text-lg flex justify-center items-center">
-          {user ? user.user_lastname : ""}
+          {user && user.user_lastname}
         </div>
         <div className=" font-bold text-[#1C274C] mx-3 md:mx-10 mt-2 text-sm md:text-md mb-3 flex justify-center items-center">
           {user.role_id === 1 ? "Estudiante" : "Docente"}
         </div>
         <div className=" mt-14 flex justify-center items-center">
-          <div className=" grid grid-cols-3">
-            <div className=" h-[20vh] w-[10vw] border border-slate-300"></div>
-            <div className=" h-[20vh] w-[10vw] border border-slate-300"></div>
-            <div className=" h-[20vh] w-[10vw] border border-slate-300"></div>
+          <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 text-sm sm:text-base text-[#1C274C] gap-4">
+            <div className=" h-[318px] md:h-[400px] lg:h-[368px]   sm:w-[40vw] md:w-[28vw] lg:w-[20vw] border border-slate-300">
+              <div>
+                {user && user.role_id === 1 ? (
+                  <div className="block m-3">
+                    <p className=" font-semibold mb-2">Carrera</p>
+                    <p className=" mb-3">
+                      {student.degree && student.degree.degree_name}
+                    </p>
+                    <p className=" font-semibold mb-2">Nivel</p>
+                    <p className=" mb-3">-------</p>
+                    <p className=" font-semibold mb-2">N° de Cursos</p>
+                    <p className=" mb-3">
+                      {student.group && student.group.length}
+                    </p>
+                    <p className=" font-semibold mb-2">Modalidad</p>
+                    <p className=" mb-5">
+                      {student.group && student.group[0].modality_id === 1
+                        ? "Presencial"
+                        : "En línea"}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="block m-3">
+                    <p className=" font-semibold mb-2">Profesión</p>
+                    <p className=" mb-3">-------</p>
+                    <p className=" font-semibold mb-2">N° de horas</p>
+                    <p className=" mb-3">-------</p>
+                    <p className=" font-semibold mb-2">N° de Cursos</p>
+                    <p className=" mb-3">
+                      {teacher.group && teacher.group.length}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className=" h-[318px] md:h-[400px] lg:h-[368px]   sm:w-[40vw] md:w-[28vw] lg:w-[20vw] border border-slate-300">
+              <div className=" m-3 block ">
+                <p className=" font-semibold mb-3">Cursos</p>
+                <div className=" mb-5">
+                  {user && user.role_id === 1
+                    ? student.group &&
+                      student.group.map((group) => (
+                        <div
+                          key={group.group_id}
+                          className=" my-2 hover:text-[#146898]"
+                        >
+                          <div className=" block">
+                            <a href={`/cursos/${group.group_id}`}>
+                              <p>{group.subject.subject_name}</p>
+                            </a>
+                            <p className=" text-xs md:text-sm opacity-50">
+                              {group.group_id}
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    : teacher.group &&
+                      teacher.group.map((group) => (
+                        <div
+                          key={group.group_id}
+                          className=" my-2 hover:text-[#146898]"
+                        >
+                          <div className=" block">
+                            <a href={`/cursos/${group.group_id}`}>
+                              <p>{group.subject.subject_name}</p>
+                            </a>
+                            <p className=" text-xs md:text-sm opacity-50">
+                              {group.group_id}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                </div>
+              </div>
+            </div>
+
+            <div className=" h-[318px] md:h-[400px] lg:h-[368px]   sm:w-[40vw] md:w-[28vw] lg:w-[20vw] border border-slate-300">
+              <div className=" m-3 block ">
+                <p className=" font-semibold">Correo institucional</p>
+                <p className=" text-[#146898]  mt-1 mb-4">
+                  <a href={`mailto:${user && user.user_email}`}>
+                    {user && user.user_email}
+                  </a>
+                </p>
+                <p className=" font-semibold">Fecha de creación</p>
+                <p className=" text-slate-400">{user && user.createdAt}</p>
+                <p className=" font-semibold">Última actualizacion</p>
+                <p className=" text-slate-400">{user && user.updatedAt}</p>
+              </div>
+            </div>
           </div>
+        </div>
+        <div className=" flex justify-center items-center m-10">
+          <a href="/perfil/modificar">
+            <button className=" m-3 p-2 bg-gradient-to-br from-[#cf7e48] to-[#e0a51c] hover:from-[#1C274C] hover:to-[#146898] transition hover:scale-105 duration-300 text-white rounded-lg">
+              Cambiar contraseña
+            </button>
+          </a>
         </div>
       </div>
     </div>

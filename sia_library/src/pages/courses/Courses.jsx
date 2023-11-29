@@ -71,20 +71,20 @@ function Courses() {
           {role && role === 1
             ? student.group &&
               student.group.map((group) => (
-                <Link
-                  key={group.group_id}
-                  to={`/cursos/${group.group_id}`}
-                >
-                  <SubjectCard cardTitle={group.subject.subject_name} />
+                <Link key={group.group_id} to={`/cursos/${group.group_id}`}>
+                  <SubjectCard
+                    cardTitle={group.subject.subject_name}
+                    cardId={group.group_id}
+                  />
                 </Link>
               ))
             : teacher.group &&
               teacher.group.map((group) => (
-                <Link
-                  key={group.group_id}
-                  to={`/cursos/${group.group_id}`}
-                >
-                  <SubjectCard cardTitle={group.subject.subject_name} />
+                <Link key={group.group_id} to={`/cursos/${group.group_id}`}>
+                  <SubjectCard
+                    cardTitle={group.subject.subject_name}
+                    cardId={group.group_id}
+                  />
                 </Link>
               ))}
         </div>

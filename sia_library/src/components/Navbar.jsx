@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
 
 function Navbar() {
-  const {logout} = useAuth();
+  const { logout } = useAuth();
   let Links = [
     { name: "Inicio", link: "/home" },
+    { name: "Perfil", link: "/perfil" },
     { name: "Cursos", link: "/cursos" },
     { name: "Biblioteca", link: "/biblioteca" },
     { name: "Soporte", link: "/soporte" },
@@ -35,31 +36,36 @@ function Navbar() {
 
         <ul
           className={`md:flex md:items-center md:pb-0 pb-12 absolute md:static bg-white md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 pl-9 transition-all duration-500 ease-in ${
-            open ? "top-20 " : "top-[-490px]"
+            open ? "top-14 " : "top-[-490px]"
           }`}
         >
-          {Links.map((link) => (
-            link && link.name === "Cursos"? 
-            <li key={link.name} className="md:ml-8 text-xl md:my-0 my-7">
-            <a relative="route"
-              href={link.link}
-              className="text-[#1C274C] hover:text-[#146898] duration-500"
-            >
-              {link.name}
-            </a>
-          </li>
-            :
-            <li key={link.name} className="md:ml-8 text-xl md:my-0 my-7">
-              <Link relative="route"
-                to={link.link}
-                className="text-[#1C274C] hover:text-[#146898] duration-500"
-              >
-                {link.name}
-              </Link>
-            </li>
-            
-          ))}
-          <button onClick={()=>logout()} className=" md:mx-10 p-2 rounded bg-gradient-to-br from-[#3bafc4] to-[#146898] text-white">
+          {Links.map((link) =>
+            (link && link.name === "Cursos") || link.name === "Perfil" ? (
+              <li key={link.name} className="md:ml-8 text-xl md:my-0 my-7">
+                <a
+                  relative="route"
+                  href={link.link}
+                  className="text-[#1C274C] hover:text-[#146898] duration-500"
+                >
+                  {link.name}
+                </a>
+              </li>
+            ) : (
+              <li key={link.name} className="md:ml-8 text-xl md:my-0 my-7">
+                <Link
+                  relative="route"
+                  to={link.link}
+                  className="text-[#1C274C] hover:text-[#146898] duration-500"
+                >
+                  {link.name}
+                </Link>
+              </li>
+            )
+          )}
+          <button
+            onClick={() => logout()}
+            className=" md:mx-10 p-2 rounded bg-gradient-to-br from-[#3bafc4] to-[#146898] text-white"
+          >
             Cerrar sesión
           </button>
         </ul>
