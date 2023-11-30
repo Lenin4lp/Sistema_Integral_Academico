@@ -60,6 +60,13 @@ import { v4 as uuidv4 } from "uuid";
     @Column({
       type: DataType.DECIMAL(4, 2),
       allowNull: true,
+      field: "prom_1",
+    })
+    prom_1!: number;
+
+    @Column({
+      type: DataType.DECIMAL(4, 2),
+      allowNull: true,
       field: "grade_3",
     })
     grade_3!: number;
@@ -84,6 +91,13 @@ import { v4 as uuidv4 } from "uuid";
       field: "exam_2",
     })
     exam_2!: number;
+
+    @Column({
+      type: DataType.DECIMAL(4, 2),
+      allowNull: true,
+      field: "prom_2",
+    })
+    prom_2!: number;
 
     @Column({
       type: DataType.DECIMAL(4, 2),
