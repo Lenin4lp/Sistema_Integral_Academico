@@ -28,15 +28,15 @@ export const createGrade = async (req: Request, res: Response) => {
   const { student_id, group_id } = req.body;
   try {
     const newGrade = await Grade.create({
-      grade_1:0,
-      grade_2:0,
-      test_1:0,
-      exam_1:0,
-      grade_3:0,
-      grade_4:0,
-      test_2:0,
-      exam_2:0,
-      final_grade:0,
+      grade_1: 0,
+      grade_2: 0,
+      test_1: 0,
+      exam_1: 0,
+      grade_3: 0,
+      grade_4: 0,
+      test_2: 0,
+      exam_2: 0,
+      final_grade: 0,
       student_id,
       group_id,
     });
@@ -49,7 +49,17 @@ export const createGrade = async (req: Request, res: Response) => {
 
 // ? Actualizar una nota
 export const updateGrade = async (req: Request, res: Response) => {
-  const { grade_1, grade_2, test_1, exam_1, grade_3, grade_4, test_2, exam_2, final_grade } = req.body;
+  const {
+    grade_1,
+    grade_2,
+    test_1,
+    exam_1,
+    grade_3,
+    grade_4,
+    test_2,
+    exam_2,
+    final_grade,
+  } = req.body;
   const grade = await Grade.findByPk(req.params.id);
   if (grade) {
     await grade.update({
@@ -64,8 +74,11 @@ export const updateGrade = async (req: Request, res: Response) => {
       final_grade,
     });
   } else {
-    return res.status(404).json({ message: "No se encontró el reporte de notas" });
+    return res
+      .status(404)
+      .json({ message: "No se encontró el reporte de notas" });
   }
+  res.json(grade);
 };
 
 // ? Eliminar una nota
@@ -75,6 +88,8 @@ export const deleteGrade = async (req: Request, res: Response) => {
     await grade.destroy();
     return res.sendStatus(204);
   } else {
-    return res.status(404).json({ message: "No se encontró el reporte de notas" });
+    return res
+      .status(404)
+      .json({ message: "No se encontró el reporte de notas" });
   }
 };
