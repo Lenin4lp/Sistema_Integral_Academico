@@ -14,6 +14,7 @@ const subject_model_1 = require("../models/subject.model");
 const teacher_model_1 = require("../models/teacher.model");
 const user_model_1 = require("../models/user.model");
 const student_model_1 = require("../models/student.model");
+const group_model_1 = require("../models/group.model");
 // ? Obtener todas las materias
 const getSubjects = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const subjects = yield subject_model_1.Subject.findAll();
@@ -23,7 +24,15 @@ exports.getSubjects = getSubjects;
 // ? Obtener una sola materia
 const getSubject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const subject = yield subject_model_1.Subject.findByPk(req.params.id, {
-        include: [{ model: teacher_model_1.Teacher, include: [{ model: user_model_1.User }] }, { model: student_model_1.Student, include: [{ model: user_model_1.User }] }],
+        include: [
+            {
+                model: group_model_1.Group,
+                include: [
+                    { model: teacher_model_1.Teacher, include: [{ model: user_model_1.User }] },
+                    { model: student_model_1.Student, include: [{ model: user_model_1.User }] },
+                ],
+            },
+        ],
     });
     if (!subject)
         return res.status(404).json({ message: "Subject not found" });
@@ -32,7 +41,7 @@ const getSubject = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.getSubject = getSubject;
 // ? Crear una materia
 const createSubject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { subject_name, subject_acronym, syllabus, teacher_id } = req.body;
+    const { subject_name, subject_acronym, syllabus } = req.body;
     try {
         const subjectFound = yield subject_model_1.Subject.findOne({
             where: { subject_name: subject_name },
@@ -43,7 +52,6 @@ const createSubject = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             subject_name,
             syllabus,
             subject_acronym,
-            teacher_id
         });
         res.json(newSubject);
     }
@@ -54,14 +62,13 @@ const createSubject = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.createSubject = createSubject;
 //? Actualizar una materia
 const updateSubject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { subject_name, syllabus, subject_acronym, teacher_id } = req.body;
+    const { subject_name, syllabus, subject_acronym } = req.body;
     const subject = yield subject_model_1.Subject.findByPk(req.params.id);
     if (subject) {
         yield subject.update({
             subject_name,
             syllabus,
             subject_acronym,
-            teacher_id,
         });
     }
     else {

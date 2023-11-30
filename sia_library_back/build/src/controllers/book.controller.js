@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getBook = exports.getBooks = exports.updateBook = exports.createBook = void 0;
+exports.deleteBook = exports.getBook = exports.getBooks = exports.updateBook = exports.createBook = void 0;
 const book_model_1 = require("../models/book.model");
 // ? Crear libro
 const createBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -79,3 +79,15 @@ const getBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.json(book);
 });
 exports.getBook = getBook;
+// ? Eliminar libro
+const deleteBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const book = yield book_model_1.Book.findByPk(req.params.id);
+    if (book) {
+        yield book.destroy();
+        return res.sendStatus(204);
+    }
+    else {
+        return res.status(404).json({ message: "No se encontró el libro" });
+    }
+});
+exports.deleteBook = deleteBook;

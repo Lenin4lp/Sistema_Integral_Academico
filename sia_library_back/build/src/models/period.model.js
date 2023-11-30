@@ -6,46 +6,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Teacher = void 0;
-// @ts-check
+exports.Period = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
-const user_model_1 = require("./user.model");
 const group_model_1 = require("./group.model");
-let Teacher = class Teacher extends sequelize_typescript_1.Model {
+let Period = class Period extends sequelize_typescript_1.Model {
 };
-exports.Teacher = Teacher;
+exports.Period = Period;
 __decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING(10),
-        allowNull: true,
-        field: "id_docente",
-        primaryKey: true,
-    })
-], Teacher.prototype, "teacher_id", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING(30),
-        allowNull: true,
-        field: "espacialidad_docente",
-    })
-], Teacher.prototype, "speciality", void 0);
-__decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => user_model_1.User),
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING(10),
         allowNull: false,
-        field: "id_usuario",
+        field: "id_periodo",
+        primaryKey: true,
+        unique: true,
     })
-], Teacher.prototype, "user_id", void 0);
+], Period.prototype, "period_id", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.STRING(30),
+        allowNull: false,
+        field: "nombre_periodo",
+        unique: true,
+    })
+], Period.prototype, "period_name", void 0);
 __decorate([
     (0, sequelize_typescript_1.HasMany)(() => group_model_1.Group)
-], Teacher.prototype, "group", void 0);
-__decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => user_model_1.User, { onDelete: "CASCADE" })
-], Teacher.prototype, "user", void 0);
-exports.Teacher = Teacher = __decorate([
+], Period.prototype, "group", void 0);
+exports.Period = Period = __decorate([
     (0, sequelize_typescript_1.Table)({
-        tableName: "docente",
-        timestamps: true,
+        tableName: "periodo_academico",
+        timestamps: false,
     })
-], Teacher);
+], Period);

@@ -17,9 +17,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Subject = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
-const teacher_model_1 = require("./teacher.model");
 const uuid_1 = require("uuid");
-const student_model_1 = require("./student.model");
+const group_model_1 = require("./group.model");
 // TODO Tengo que pedir una lista de todas las materias de las carreras existentes para crearlas por defecto
 let Subject = class Subject extends sequelize_typescript_1.Model {
     static automatizeSubjectId(subject) {
@@ -63,24 +62,8 @@ __decorate([
     })
 ], Subject.prototype, "syllabus", void 0);
 __decorate([
-    (0, sequelize_typescript_1.ForeignKey)(() => teacher_model_1.Teacher),
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING(10),
-        allowNull: true,
-        field: "id_docente",
-    })
-], Subject.prototype, "teacher_id", void 0);
-__decorate([
-    (0, sequelize_typescript_1.BelongsTo)(() => teacher_model_1.Teacher)
-], Subject.prototype, "teacher", void 0);
-__decorate([
-    (0, sequelize_typescript_1.BelongsToMany)(() => student_model_1.Student, {
-        through: "estudiante_materia",
-        foreignKey: "id_materia",
-        otherKey: "id_estudiante",
-        timestamps: false,
-    })
-], Subject.prototype, "students", void 0);
+    (0, sequelize_typescript_1.HasMany)(() => group_model_1.Group)
+], Subject.prototype, "group", void 0);
 __decorate([
     sequelize_typescript_1.BeforeCreate
 ], Subject, "automatizeSubjectId", null);

@@ -13,6 +13,7 @@ exports.updateTeacher = exports.getTeacher = exports.getTeachers = void 0;
 const teacher_model_1 = require("../models/teacher.model");
 const subject_model_1 = require("../models/subject.model");
 const user_model_1 = require("../models/user.model");
+const group_model_1 = require("../models/group.model");
 //? Obtener todos los docentes
 const getTeachers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const teachers = yield teacher_model_1.Teacher.findAll();
@@ -21,7 +22,9 @@ const getTeachers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getTeachers = getTeachers;
 //? Obtener un docente
 const getTeacher = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const teacher = yield teacher_model_1.Teacher.findByPk(req.params.id, { include: [{ model: subject_model_1.Subject }, { model: user_model_1.User }] });
+    const teacher = yield teacher_model_1.Teacher.findByPk(req.params.id, {
+        include: [{ model: group_model_1.Group, include: [{ model: subject_model_1.Subject }] }, { model: user_model_1.User }],
+    });
     if (!teacher)
         return res.status(404).json(["No se encontró el docente"]);
     res.json(teacher);

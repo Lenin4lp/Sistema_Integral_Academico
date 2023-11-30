@@ -15,6 +15,8 @@ const degree_model_1 = require("../models/degree.model");
 const subject_model_1 = require("../models/subject.model");
 const user_model_1 = require("../models/user.model");
 const connection_1 = require("../connection/connection");
+const group_model_1 = require("../models/group.model");
+const grades_model_1 = require("../models/grades.model");
 //? Obtener todos los estudiantes
 const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const students = yield student_model_1.Student.findAll();
@@ -24,7 +26,15 @@ exports.getStudents = getStudents;
 //? Obtener un estudiante
 const getStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const student = yield student_model_1.Student.findByPk(req.params.id, {
-        include: [{ model: degree_model_1.Degree }, { model: subject_model_1.Subject }, { model: user_model_1.User }],
+        include: [
+            { model: degree_model_1.Degree },
+            { model: group_model_1.Group, include: [{ model: subject_model_1.Subject }] },
+            { model: user_model_1.User },
+            {
+                model: grades_model_1.Grade,
+                include: [{ model: group_model_1.Group, include: [{ model: subject_model_1.Subject }] }],
+            },
+        ],
     });
     if (!student)
         return res.status(404).json(["No se encontró el estudiante"]);

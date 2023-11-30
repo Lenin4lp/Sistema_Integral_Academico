@@ -17,7 +17,7 @@ export const connection = new Sequelize({
   dialect: "mysql",
   host: "localhost",
   username: "root",
-  password: process.env.DB_PASSWORD || "302816",
+  password: process.env.DB_PASSWORD,
   database: "sia_library",
   port: 3306,
   models: [

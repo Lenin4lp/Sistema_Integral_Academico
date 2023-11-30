@@ -18,9 +18,9 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const sequelize_1 = require("sequelize");
 const admin_model_1 = require("../models/admin.model");
 const teacher_model_1 = require("../models/teacher.model");
-const subject_model_1 = require("../models/subject.model");
 const degree_model_1 = require("../models/degree.model");
 const student_model_1 = require("../models/student.model");
+const group_model_1 = require("../models/group.model");
 //? Visualizar usuarios
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield user_model_1.User.findAll({
@@ -42,7 +42,7 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             where: {
                 student_id: user.user_id,
             },
-            include: [degree_model_1.Degree, subject_model_1.Subject],
+            include: [degree_model_1.Degree, group_model_1.Group],
         });
     }
     else if (user.role_id === 2) {
@@ -50,7 +50,7 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             where: {
                 teacher_id: user.user_id,
             },
-            include: [subject_model_1.Subject],
+            include: [group_model_1.Group],
         });
     }
     else if (user.role_id === 3) {

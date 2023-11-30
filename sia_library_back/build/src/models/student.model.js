@@ -11,7 +11,9 @@ exports.Student = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const user_model_1 = require("./user.model");
 const degree_model_1 = require("./degree.model");
-const subject_model_1 = require("./subject.model");
+const modality_model_1 = require("./modality.model");
+const grades_model_1 = require("./grades.model");
+const group_model_1 = require("./group.model");
 let Student = class Student extends sequelize_typescript_1.Model {
 };
 exports.Student = Student;
@@ -40,19 +42,33 @@ __decorate([
     })
 ], Student.prototype, "degree_id", void 0);
 __decorate([
+    (0, sequelize_typescript_1.ForeignKey)(() => modality_model_1.Modality),
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
+        allowNull: true,
+        field: "id_modalidad",
+    })
+], Student.prototype, "modality_id", void 0);
+__decorate([
+    (0, sequelize_typescript_1.BelongsToMany)(() => group_model_1.Group, {
+        through: "grupo_estudiante",
+        foreignKey: "id_estudiante",
+        otherKey: "id_grupo",
+        timestamps: false,
+    })
+], Student.prototype, "group", void 0);
+__decorate([
+    (0, sequelize_typescript_1.HasMany)(() => grades_model_1.Grade)
+], Student.prototype, "grades", void 0);
+__decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => user_model_1.User, { onDelete: "CASCADE" })
 ], Student.prototype, "user", void 0);
 __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => degree_model_1.Degree)
 ], Student.prototype, "degree", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsToMany)(() => subject_model_1.Subject, {
-        through: "estudiante_materia",
-        foreignKey: "id_estudiante",
-        otherKey: "id_materia",
-        timestamps: false,
-    })
-], Student.prototype, "subjects", void 0);
+    (0, sequelize_typescript_1.BelongsTo)(() => modality_model_1.Modality)
+], Student.prototype, "modality", void 0);
 exports.Student = Student = __decorate([
     (0, sequelize_typescript_1.Table)({
         tableName: "estudiante",

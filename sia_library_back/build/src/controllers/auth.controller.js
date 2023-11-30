@@ -22,7 +22,7 @@ const admin_model_1 = require("../models/admin.model");
 const config_1 = require("../config/config");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const degree_model_1 = require("../models/degree.model");
-const subject_model_1 = require("../models/subject.model");
+const group_model_1 = require("../models/group.model");
 // ? Registro de usuario
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { user_id, user_name, user_lastname, user_email, user_password, user_ci, user_direction, user_Citizenship, user_phone, user_genre: genre, birth_date, role_id, } = req.body;
@@ -71,9 +71,9 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             message: "Usuario registrado con exito",
             id: newUser.user_id,
             user_name: newUser.user_name,
-            user_lastname: newUser.user_lastname,
             user_email: newUser.user_email,
             role_id: newUser.role_id,
+            user_lastname: newUser.user_lastname,
         });
     }
     catch (error) {
@@ -106,7 +106,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 where: {
                     user_id: userFound.user_id,
                 },
-                include: [degree_model_1.Degree, subject_model_1.Subject],
+                include: [degree_model_1.Degree, group_model_1.Group],
             });
         }
         else if (userFound.role_id === 2) {
@@ -114,7 +114,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 where: {
                     user_id: userFound.user_id,
                 },
-                include: [subject_model_1.Subject],
+                include: [group_model_1.Group],
             });
         }
         else if (userFound.role_id === 3) {
@@ -128,9 +128,9 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             message: "Ingreso Exitoso",
             id: userFound.user_id,
             user_name: userFound.user_name,
-            user_lastname: userFound.user_lastname,
             user_email: userFound.user_email,
             role_id: userFound.role_id,
+            user_lastname: userFound.user_lastname,
             token,
         });
     }
@@ -165,8 +165,11 @@ const verifyToken = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         return res.json({
             user_id: userFound.user_id,
             user_name: userFound.user_name,
+            user_lastname: userFound.user_lastname,
             role_id: userFound.role_id,
             user_email: userFound.user_email,
+            createdAt: userFound.createdAt,
+            updatedAt: userFound.updatedAt,
         });
     }));
 });

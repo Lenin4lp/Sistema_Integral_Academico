@@ -20,14 +20,31 @@ const admin_model_1 = require("../models/admin.model");
 const degree_model_1 = require("../models/degree.model");
 const subject_model_1 = require("../models/subject.model");
 const book_model_1 = require("../models/book.model");
+const group_model_1 = require("../models/group.model");
+const modality_model_1 = require("../models/modality.model");
+const period_model_1 = require("../models/period.model");
+const grades_model_1 = require("../models/grades.model");
 exports.connection = new sequelize_typescript_1.Sequelize({
     dialect: "mysql",
     host: "localhost",
-    username: "istvcedu_sia_library",
+    username: "istvcedu_siav1",
     password: process.env.DB_PASSWORD,
-    database: "istvcedu_sia_library",
+    database: "istvcedu_siav1",
     port: 3306,
-    models: [role_model_1.Role, user_model_1.User, student_model_1.Student, teacher_model_1.Teacher, admin_model_1.Admin, degree_model_1.Degree, subject_model_1.Subject, book_model_1.Book],
+    models: [
+        role_model_1.Role,
+        user_model_1.User,
+        modality_model_1.Modality,
+        student_model_1.Student,
+        teacher_model_1.Teacher,
+        admin_model_1.Admin,
+        degree_model_1.Degree,
+        subject_model_1.Subject,
+        period_model_1.Period,
+        group_model_1.Group,
+        grades_model_1.Grade,
+        book_model_1.Book,
+    ],
     sync: { alter: true },
 });
 function connectionDB() {
