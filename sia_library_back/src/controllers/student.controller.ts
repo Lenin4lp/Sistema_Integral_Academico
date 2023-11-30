@@ -5,6 +5,7 @@ import { Subject } from "../models/subject.model";
 import { User } from "../models/user.model";
 import { connection } from "../connection/connection";
 import { Group } from "../models/group.model";
+import { Grade } from "../models/grades.model";
 
 //? Obtener todos los estudiantes
 export const getStudents = async (req: Request, res: Response) => {
@@ -19,6 +20,10 @@ export const getStudent = async (req: Request, res: Response) => {
       { model: Degree },
       { model: Group, include: [{ model: Subject }] },
       { model: User },
+      {
+        model: Grade,
+        include: [{ model: Group, include: [{ model: Subject }] }],
+      },
     ],
   });
   if (!student) return res.status(404).json(["No se encontró el estudiante"]);

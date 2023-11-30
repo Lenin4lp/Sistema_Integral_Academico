@@ -30,12 +30,12 @@ function Modify() {
   return (
     <div className=" overflow-x-hidden">
       <div className=" block">
-        <div className=" mt-24 md:mt-28 mb-5 md:mb-10 mx-7 flex items-center text-xl md:text-3xl font-bold text-[#1C274C] text-left">
+        <div className=" mt-24 md:mt-28 mb-14 md:mb-10 mx-7 flex items-center text-xl md:text-2xl lg:text-3xl font-bold text-[#1C274C] text-left">
           Modificar Contraseña
         </div>
         <div className=" flex justify-center items-center">
           <div className=" block">
-            <p className=" my-5 text-[#1C274C] font-semibold">
+            <p className=" my-5 text-[#1C274C] text-base  font-semibold">
               Escribe tu nueva contraseña
             </p>
             <form>

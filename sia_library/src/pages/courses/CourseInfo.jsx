@@ -29,7 +29,7 @@ function CourseInfo() {
   return (
     <div className=" overflow-x-hidden">
       <div className=" block">
-        <div className=" mt-24 md:mt-28 mb-3 mx-3 md:mx-10 flex items-center  text-2xl md:text-3xl font-bold text-[#1C274C] text-left">
+        <div className=" mt-24 md:mt-28 mb-3 mx-3 md:mx-10 flex items-center text-xl sm:text-2xl md:text-3xl font-bold text-[#1C274C] text-left">
           {group.subject && group.subject.subject_name}
         </div>
         <div className=" mx-3 md:mx-10 text-md md:text-lg font-bold text-slate-400">
@@ -146,8 +146,8 @@ function CourseInfo() {
           </div>
         ) : (
           <div>
-            <div className=" grid grid-cols-4">
-              <div className=" w-screen h-fit mt-7 items-center mx-3 md:mx-10 text-[#1C274C] font-semibold text-lg col-span-1">
+            <div className=" grid grid-cols-1 lg:grid-cols-4">
+              <div className=" w-screen h-fit mt-7 items-center mx-3 md:mx-10 text-[#1C274C] font-semibold text-base lg:text-lg lg:col-span-1">
                 <div className=" block">
                   <p>
                     N° de estudiantes:
@@ -171,21 +171,21 @@ function CourseInfo() {
                   </p>
                 </div>
               </div>
-              <div className=" m-7 col-span-3">
+              <div className=" m-7 lg:col-span-3">
                 <>
-                  <div>
-                    <table className=" border-collapse border border-slate-400 text-sm">
+                  <div className=" flex justify-center items-center ">
+                    <table className=" border-collapse border border-slate-400 text-[10px] sm:text-sm">
                       <thead className=" rounded">
                         <tr>
                           <th className=" border border-white font-semibold text-[#1C274C]"></th>
                           <th
-                            className="border bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold "
+                            className="border hidden lg:table-cell bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold "
                             colSpan="4"
                           >
                             1er hemisemestre
                           </th>
                           <th
-                            className="border bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold"
+                            className="border hidden lg:table-cell bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold"
                             colSpan="4"
                           >
                             2do hemisemestre
@@ -193,31 +193,31 @@ function CourseInfo() {
                           <th className=" border border-white font-semibold text-[#1C274C]"></th>
                         </tr>
                         <tr>
-                          <th className=" border bg-[#1C274C] py-2 px-28 border-slate-300 font-semibold text-white">
+                          <th className=" border bg-[#1C274C] py-2 px-10 sm:px-28 border-slate-300 font-semibold text-white">
                             Estudiante
                           </th>
-                          <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                             Nota 1
                           </th>
-                          <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                             Nota 2
                           </th>
-                          <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                             Prueba
                           </th>
-                          <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                             Examen
                           </th>
-                          <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                             Nota 1
                           </th>
-                          <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                             Nota 2
                           </th>
-                          <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                             Prueba
                           </th>
-                          <th className=" border p-2 border-slate-300 font-semibold text-[#1C274C]">
+                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                             Examen
                           </th>
                           <th className=" border p-2 bg-[#1C274C] border-slate-300 font-semibold text-white">
@@ -235,28 +235,28 @@ function CourseInfo() {
                                     " " +
                                     grade.student.user.user_lastname}
                               </th>
-                              <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                                 {grade && grade.grade_1}
                               </th>
-                              <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                                 {grade && grade.grade_2}
                               </th>
-                              <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                                 {grade && grade.test_1}
                               </th>
-                              <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                                 {grade && grade.exam_1}
                               </th>
-                              <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                                 {grade && grade.grade_3}
                               </th>
-                              <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                                 {grade && grade.grade_4}
                               </th>
-                              <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                                 {grade && grade.test_2}
                               </th>
-                              <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                                 {grade && grade.exam_2}
                               </th>
                               <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
