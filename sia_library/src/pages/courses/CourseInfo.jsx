@@ -27,18 +27,18 @@ function CourseInfo() {
   }, []);
 
   return (
-    <div className=" overflow-x-hidden">
-      <div className=" block">
-        <div className=" mt-24 md:mt-28 mb-3 mx-3 md:mx-10 flex items-center text-xl sm:text-2xl md:text-3xl font-bold text-[#1C274C] text-left">
+    <div className=" overflow-x-hidden bg-[#1C274C]">
+      <div className=" block ">
+        <div className=" mt-20 sm:mt-24 md:mt-28 mb-3 mx-3 md:mx-10 flex items-center text-xl sm:text-2xl md:text-3xl font-bold text-white text-left">
           {group.subject && group.subject.subject_name}
         </div>
         <div className=" mx-3 md:mx-10 text-md md:text-lg font-bold text-slate-400">
           {id}
         </div>
         {user && user.role_id === 1 ? (
-          <div>
-            <div className=" w-screen h-fit mt-3 flex justify-center items-center">
-              <div className="">
+          <div className=" ">
+            <div className="  bg-white z-10 h-fit pt-7 mt-3 flex justify-center items-center">
+              <div className=" ">
                 <svg
                   className=" w-[100px] h-[100px] md:w-[200px] md:h-[200px]"
                   viewBox="0 0 24 24"
@@ -69,18 +69,19 @@ function CourseInfo() {
                 </svg>
               </div>
             </div>
-            <div className=" font-bold text-[#1C274C] mx-3 md:mx-10 text-sm md:text-md mb-3 flex justify-center items-center">
+
+            <div className=" bg-white z-10 font-bold text-[#1C274C] text-sm md:text-md pb-3 flex justify-center items-center">
               Docente
             </div>
-            <div className=" font-semibold text-[#1C274C] mx-3 md:mx-10 text-md md:text-lg flex justify-center items-center">
+            <div className=" bg-white z-10 font-semibold text-[#1C274C]  text-md md:text-lg flex justify-center items-center">
               {group.teacher
                 ? group.teacher.user.user_name
                 : "Docente no registrado"}
             </div>
-            <div className=" font-semibold text-[#1C274C] mx-3 md:mx-10 text-md md:text-lg flex justify-center items-center">
+            <div className=" bg-white z-10 font-semibold text-[#1C274C]  text-md md:text-lg flex justify-center items-center">
               {group.teacher ? group.teacher.user.user_lastname : ""}
             </div>
-            <div className=" flex justify-center items-center mt-3">
+            <div className=" bg-white z-10  flex justify-center items-center pt-3">
               <a
                 href={`mailto:${
                   group.teacher && group.teacher.user.user_email
@@ -91,7 +92,7 @@ function CourseInfo() {
                 </button>
               </a>
             </div>
-            <div className=" mt-10 md:mt-20 mb-12 mx-3 md:mx-10 flex justify-center items-center">
+            <div className=" bg-white z-10  pt-10 md:pt-20 pb-12 flex justify-center items-center">
               <div className=" block">
                 <div className=" font-extrabold text-[#1C274C] text-xl md:text-2xl text-center">
                   Syllabus de {group.subject && group.subject.subject_name}
@@ -146,34 +147,37 @@ function CourseInfo() {
           </div>
         ) : (
           <div>
-            <div className=" grid grid-cols-1 lg:grid-cols-4">
-              <div className=" w-screen h-fit mt-7 items-center mx-3 md:mx-10 text-[#1C274C] font-semibold text-base lg:text-lg lg:col-span-1">
-                <div className=" block">
-                  <p>
-                    N° de estudiantes:
-                    <span className=" font-normal">{` ${
-                      group.student && group.student.length
-                    }`}</span>
-                  </p>
-                  <p className=" mt-3">
-                    Modalidad:
-                    <span className=" font-normal">{` ${
-                      group.modality_id && group.modality_id === 1
-                        ? "Presencial"
-                        : "En línea"
-                    }`}</span>
-                  </p>
-                  <p className=" mt-3">
-                    Periodo:
-                    <span className=" font-normal">{` ${
-                      group.period_id && group.period_id
-                    }`}</span>
-                  </p>
+            <div className="">
+              <div className=" bg-white z-10 w-screen h-fit mt-7 items-center  text-[#1C274C] font-semibold text-base lg:text-lg lg:col-span-1">
+                <div className=" pt-5 flex justify-center ">
+                  <div className=" grid grid-cols-1 sm:grid-cols-3">
+                    <p className=" my-2 sm:my-5 mx-5 md:mx-10">
+                      N° de estudiantes:
+                      <span className=" font-normal">{` ${
+                        group.student && group.student.length
+                      }`}</span>
+                    </p>
+
+                    <p className=" my-2 sm:my-5 mx-5 md:mx-10">
+                      Periodo:
+                      <span className=" font-normal">{` ${
+                        group.period_id && group.period_id
+                      }`}</span>
+                    </p>
+                    <p className=" my-2 sm:my-5 mx-5 md:mx-10">
+                      Modalidad:
+                      <span className=" font-normal">{` ${
+                        group.modality_id && group.modality_id === 1
+                          ? "Presencial"
+                          : "En línea"
+                      }`}</span>
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div className=" m-7 lg:col-span-3">
-                <>
-                  <div className=" flex justify-center items-center ">
+              <div className=" bg-white z-10 ">
+                <div className=" py-10">
+                  <div className="  flex justify-center items-center ">
                     <table className=" border-collapse border border-slate-400 text-[10px] sm:text-sm">
                       <thead className=" rounded">
                         <tr>
@@ -297,7 +301,7 @@ function CourseInfo() {
                     </table>
                     <div className=" flex justify-center items-center mt-5"></div>
                   </div>
-                </>
+                </div>
               </div>
             </div>
           </div>
