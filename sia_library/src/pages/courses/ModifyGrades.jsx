@@ -44,70 +44,37 @@ function ModifyGrades() {
     const modifiedData = {};
 
     if (data.grade_1) {
-      data.grade_1 = parseFloat(data.grade_1).toFixed(2) * 0.15;
+      data.grade_1 = parseFloat(data.grade_1).toFixed(2);
     }
     if (data.grade_2) {
-      data.grade_2 = parseFloat(data.grade_2).toFixed(2) * 0.15;
+      data.grade_2 = parseFloat(data.grade_2).toFixed(2);
     }
     if (data.test_1) {
-      data.test_1 = parseFloat(data.test_1).toFixed(2) * 0.3;
+      data.test_1 = parseFloat(data.test_1).toFixed(2);
     }
     if (data.exam_1) {
-      data.exam_1 = parseFloat(data.exam_1).toFixed(2) * 0.4;
+      data.exam_1 = parseFloat(data.exam_1).toFixed(2);
     }
     if (data.grade_3) {
-      data.grade_3 = parseFloat(data.grade_3).toFixed(2) * 0.15;
+      data.grade_3 = parseFloat(data.grade_3).toFixed(2);
     }
     if (data.grade_4) {
-      data.grade_4 = parseFloat(data.grade_4).toFixed(2) * 0.15;
+      data.grade_4 = parseFloat(data.grade_4).toFixed(2);
     }
     if (data.test_2) {
-      data.test_2 = parseFloat(data.test_2).toFixed(2) * 0.3;
+      data.test_2 = parseFloat(data.test_2).toFixed(2);
     }
     if (data.exam_2) {
-      data.exam_2 = parseFloat(data.exam_2).toFixed(2) * 0.4;
+      data.exam_2 = parseFloat(data.exam_2).toFixed(2);
     }
 
-    const finalGrade =
-      data.grade_1 +
-      data.grade_2 +
-      data.test_1 +
-      data.exam_1 +
-      data.grade_3 +
-      data.grade_4 +
-      data.test_2 +
-      data.exam_2;
 
     for (const key in data) {
       if (data[key] !== "") {
-        modifiedData[key] = parseFloat(data[key]).toFixed(2);
+        modifiedData[key] = data[key];
       }
     }
-    if (modifiedData.grade_1) {
-      modifiedData.grade_1 = parseFloat(modifiedData.grade_1).toFixed(2) / 0.15;
-    }
-    if (modifiedData.grade_2) {
-      modifiedData.grade_2 = parseFloat(modifiedData.grade_2).toFixed(2) / 0.15;
-    }
-    if (modifiedData.test_1) {
-      modifiedData.test_1 = parseFloat(modifiedData.test_1).toFixed(2) / 0.3;
-    }
-    if (modifiedData.exam_1) {
-      modifiedData.exam_1 = parseFloat(modifiedData.exam_1).toFixed(2) / 0.4;
-    }
-    if (modifiedData.grade_3) {
-      modifiedData.grade_3 = parseFloat(modifiedData.grade_3).toFixed(2) / 0.15;
-    }
-    if (modifiedData.grade_4) {
-      modifiedData.grade_4 = parseFloat(modifiedData.grade_4).toFixed(2) / 0.15;
-    }
-    if (modifiedData.test_2) {
-      modifiedData.test_2 = parseFloat(modifiedData.test_2).toFixed(2) / 0.3;
-    }
-    if (modifiedData.exam_2) {
-      modifiedData.exam_2 = parseFloat(modifiedData.exam_2).toFixed(2) / 0.4;
-    }
-    modifiedData.final_grade = parseFloat(finalGrade).toFixed(2) / 2;
+    
     updateAGrade(gradeId, modifiedData);
   });
 

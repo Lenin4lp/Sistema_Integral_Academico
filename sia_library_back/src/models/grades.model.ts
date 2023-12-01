@@ -10,6 +10,9 @@ import {
     BelongsToMany,
     BeforeCreate,
     AfterSync,
+    AfterCreate,
+    AfterUpdate,
+    BeforeUpdate,
   } from "sequelize-typescript";
 import { Student } from "./student.model";
 import { Group } from "./group.model";
@@ -102,9 +105,23 @@ import { v4 as uuidv4 } from "uuid";
     @Column({
       type: DataType.DECIMAL(4, 2),
       allowNull: true,
+      field: "supletorio",
+    })
+    resit!: number;
+
+    @Column({
+      type: DataType.DECIMAL(4, 2),
+      allowNull: true,
       field: "final_grade",
     })
     final_grade!: number;
+
+    @Column({
+      type: DataType.STRING,
+      allowNull: true,
+      field: "estado",
+    })
+    status!: string;
 
     @ForeignKey(() => Student)
     @Column({
@@ -133,5 +150,29 @@ import { v4 as uuidv4 } from "uuid";
       const uuid = uuidv4().substring(0, 6);
       grade.grade_id = uuid;
     }
+
+    @BeforeCreate
+    @BeforeUpdate
+    static async updateProm(grade: Grade) {
+      const grade1 = grade.grade_1*0.15;
+      const grade2 = grade.grade_2*0.15;
+      const test1 = grade.test_1*0.30;
+      const exam1 = grade.exam_1*0.40;
+      const grade3 = grade.grade_3*0.15;
+      const grade4 = grade.grade_4*0.15;
+      const test2 = grade.test_2*0.30;
+      const exam2 = grade.exam_2*0.40;
+      grade.prom_1 = grade1 + grade2 + test1 + exam1;
+      grade.prom_2 = grade3 + grade4 + test2 + exam2;
+    }
+    @BeforeCreate
+    @BeforeUpdate
+    static async updateFinalGrade(grade: Grade) {
+      const prom1 = grade.prom_1;
+      const prom2 = grade.prom_2;
+      const finalGrade = (prom1 + prom2)/2;
+      grade.resit !== 0 ? finalGrade < 7 && finalGrade >= 5  ? grade.final_grade = (finalGrade + grade.resit)/2: grade.final_grade =  finalGrade : grade.final_grade = finalGrade
+    }
+    
 
   }

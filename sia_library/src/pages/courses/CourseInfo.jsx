@@ -184,13 +184,13 @@ function CourseInfo() {
                           <th className=" border border-white font-semibold text-[#1C274C]"></th>
                           <th
                             className="border hidden lg:table-cell bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold "
-                            colSpan="4"
+                            colSpan="5"
                           >
                             1er hemisemestre
                           </th>
                           <th
                             className="border hidden lg:table-cell bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold"
-                            colSpan="4"
+                            colSpan="5"
                           >
                             2do hemisemestre
                           </th>
@@ -212,6 +212,9 @@ function CourseInfo() {
                           <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                             Examen
                           </th>
+                          <th className=" border p-2 hidden bg-[#1C274C]	sm:table-cell border-slate-300 font-semibold lg:bg-white text-white lg:text-[#1C274C]">
+                            Prom 1
+                          </th>
                           <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                             Nota 1
                           </th>
@@ -223,6 +226,12 @@ function CourseInfo() {
                           </th>
                           <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                             Examen
+                          </th>
+                          <th className=" border p-2 hidden bg-[#1C274C]	sm:table-cell border-slate-300 font-semibold lg:bg-white text-white lg:text-[#1C274C]">
+                            Prom 2
+                          </th>
+                          <th className=" border p-2 hidden sm:table-cell bg-[#1C274C] border-slate-300 font-semibold text-white">
+                            Supletorio
                           </th>
                           <th className=" border p-2 bg-[#1C274C] border-slate-300 font-semibold text-white">
                             Nota final
@@ -251,6 +260,9 @@ function CourseInfo() {
                               <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                                 {grade && grade.exam_1}
                               </th>
+                              <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.prom_1}
+                              </th>
                               <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                                 {grade && grade.grade_3}
                               </th>
@@ -262,6 +274,12 @@ function CourseInfo() {
                               </th>
                               <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                                 {grade && grade.exam_2}
+                              </th>
+                              <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.prom_2}
+                              </th>
+                              <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.resit}
                               </th>
                               <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
                                 {grade && grade.final_grade}
