@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const modality_controller_1 = require("../controllers/modality.controller");
+const router = (0, express_1.Router)();
+router.post("/modality", modality_controller_1.createModality);
+router.put("/modality/:id", modality_controller_1.updateModality);
+router.get("/modalities", modality_controller_1.getModalities);
+router.get("/modality/:id", modality_controller_1.getModality);
+router.delete("/modality/:id", modality_controller_1.deleteModality);
+exports.default = router;
