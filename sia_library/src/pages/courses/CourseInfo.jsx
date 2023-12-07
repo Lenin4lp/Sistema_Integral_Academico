@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getGroup } from "../../api/academic";
 import { useAuth } from "../../auth/AuthProvider";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function CourseInfo() {
   const { user } = useAuth();
@@ -20,6 +22,80 @@ function CourseInfo() {
       console.log(error);
       setErrors(error.response.data);
     }
+  };
+
+  const generatePDF = async () => {
+    const doc = new jsPDF();
+    doc.text(`${group?.subject.subject_name}`, 10, 10);
+
+    const firstHeader = [
+      " ",
+      " ",
+      " ",
+      "1er HEMISEMESTRE",
+      "2do HEMISEMESTRE",
+      "RECUP.",
+      "PROMEDIO",
+      "",
+    ];
+    const secondHeader = [
+      "ID",
+      "IDENTIFICACIÓN",
+      "NOMBRES",
+      "NOTA",
+      "ASIST.",
+      "NOTA",
+      "ASIST.",
+      "NOTA",
+      "NOTA",
+      "ASIST.",
+      "ESTADO",
+    ];
+
+    // crear una tabla
+    doc.autoTable({
+      head: [
+        [
+          {
+            content: "",
+            colSpan: 3,
+            styles: { halign: "center" },
+          },
+          {
+            content: "1er HEMISEMESTRE",
+            colSpan: 2,
+            styles: { halign: "center" },
+          },
+          {
+            content: "2do HEMISEMESTRE",
+            colSpan: 2,
+            styles: { halign: "center" },
+          },
+          { content: "RECUP.", colSpan: 1, styles: { halign: "center" } },
+          { content: "PROMEDIO", colSpan: 2, styles: { halign: "center" } },
+          {
+            content: "ESTADO",
+            colSpan: 1,
+            rowSpan: 2,
+            styles: { halign: "center" },
+          },
+        ],
+        [
+          "ID",
+          "IDENTIFICACION",
+          "NOMBRES",
+          "NOTA",
+          "ASIST.",
+          "NOTA",
+          "ASIST.",
+          "NOTA",
+          "NOTA",
+          "ASIST.",
+        ],
+      ],
+    });
+
+    doc.save("a4.pdf");
   };
 
   useEffect(() => {
@@ -178,146 +254,158 @@ function CourseInfo() {
               <div className=" bg-white z-10 ">
                 <div className=" py-10">
                   <div className="  flex justify-center items-center ">
-                    <table className=" border-collapse border border-slate-400 text-[10px] sm:text-sm">
-                      <thead className=" rounded">
-                        <tr>
-                          <th className=" border border-white font-semibold text-[#1C274C]"></th>
-                          <th
-                            className="border hidden lg:table-cell bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold "
-                            colSpan="5"
-                          >
-                            1er hemisemestre
-                          </th>
-                          <th
-                            className="border hidden lg:table-cell bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold"
-                            colSpan="5"
-                          >
-                            2do hemisemestre
-                          </th>
-                          <th className=" border border-white font-semibold text-[#1C274C]"></th>
-                        </tr>
-                        <tr>
-                          <th className=" border bg-[#1C274C] py-2 px-10 sm:px-28 border-slate-300 font-semibold text-white">
-                            Estudiante
-                          </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                            Nota 1
-                          </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                            Nota 2
-                          </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                            Prueba
-                          </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                            Examen
-                          </th>
-                          <th className=" border p-2 hidden bg-[#1C274C]	sm:table-cell border-slate-300 font-semibold lg:bg-white text-white lg:text-[#1C274C]">
-                            Prom 1
-                          </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                            Nota 1
-                          </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                            Nota 2
-                          </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                            Prueba
-                          </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                            Examen
-                          </th>
-                          <th className=" border p-2 hidden bg-[#1C274C]	sm:table-cell border-slate-300 font-semibold lg:bg-white text-white lg:text-[#1C274C]">
-                            Prom 2
-                          </th>
-                          <th className=" border p-2 hidden sm:table-cell bg-[#1C274C] border-slate-300 font-semibold text-white">
-                            Supletorio
-                          </th>
-                          <th className=" border p-2 bg-[#1C274C] border-slate-300 font-semibold text-white">
-                            Nota final
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {group.grades &&
-                          group.grades.map((grade) => (
-                            <tr key={grade.grade_id}>
-                              <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
-                                {grade &&
-                                  grade.student.user.user_name +
-                                    " " +
-                                    grade.student.user.user_lastname}
-                              </th>
-                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                {grade && grade.grade_1}
-                              </th>
-                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                {grade && grade.grade_2}
-                              </th>
-                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                {grade && grade.test_1}
-                              </th>
-                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                {grade && grade.exam_1}
-                              </th>
-                              <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                {grade && grade.prom_1}
-                              </th>
-                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                {grade && grade.grade_3}
-                              </th>
-                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                {grade && grade.grade_4}
-                              </th>
-                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                {grade && grade.test_2}
-                              </th>
-                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                {grade && grade.exam_2}
-                              </th>
-                              <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                {grade && grade.prom_2}
-                              </th>
-                              <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                {grade && grade.resit}
-                              </th>
-                              <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
-                                {grade && grade.final_grade}
-                              </th>
-                              <th className="border p-3 border-white font-semibold group  text-[#1C274C]">
-                                <a href={`/cursos/${id}/${grade.grade_id}`}>
-                                  <svg
-                                    width="20px"
-                                    height="20px"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="cursor-pointer"
-                                  >
-                                    <path
-                                      d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z"
-                                      stroke="#a19b3c"
-                                      strokeWidth="1.5"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      className=" group-hover:stroke-slate-800"
-                                    />
-                                    <path
-                                      d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13"
-                                      stroke="#a19b3c"
-                                      strokeWidth="1.5"
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      className=" group-hover:stroke-slate-800"
-                                    />
-                                  </svg>
-                                </a>
-                              </th>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                    <div className=" flex justify-center items-center mt-5"></div>
+                    <div className=" block">
+                      <table
+                        id="myTable"
+                        className=" border-collapse border border-slate-400 text-[10px] sm:text-sm"
+                      >
+                        <thead className=" rounded">
+                          <tr>
+                            <th className=" border border-white font-semibold text-[#1C274C]"></th>
+                            <th
+                              className="border hidden lg:table-cell bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold "
+                              colSpan="5"
+                            >
+                              1er hemisemestre
+                            </th>
+                            <th
+                              className="border hidden lg:table-cell bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold"
+                              colSpan="5"
+                            >
+                              2do hemisemestre
+                            </th>
+                            <th className=" border border-white font-semibold text-[#1C274C]"></th>
+                          </tr>
+                          <tr>
+                            <th className=" border bg-[#1C274C] py-2 px-10 sm:px-28 border-slate-300 font-semibold text-white">
+                              Estudiante
+                            </th>
+                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                              Nota 1
+                            </th>
+                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                              Nota 2
+                            </th>
+                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                              Prueba
+                            </th>
+                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                              Examen
+                            </th>
+                            <th className=" border p-2 hidden bg-[#1C274C]	sm:table-cell border-slate-300 font-semibold lg:bg-white text-white lg:text-[#1C274C]">
+                              Prom 1
+                            </th>
+                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                              Nota 1
+                            </th>
+                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                              Nota 2
+                            </th>
+                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                              Prueba
+                            </th>
+                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                              Examen
+                            </th>
+                            <th className=" border p-2 hidden bg-[#1C274C]	sm:table-cell border-slate-300 font-semibold lg:bg-white text-white lg:text-[#1C274C]">
+                              Prom 2
+                            </th>
+                            <th className=" border p-2 hidden sm:table-cell bg-[#1C274C] border-slate-300 font-semibold text-white">
+                              Supletorio
+                            </th>
+                            <th className=" border p-2 bg-[#1C274C] border-slate-300 font-semibold text-white">
+                              Nota final
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {group.grades &&
+                            group.grades.map((grade) => (
+                              <tr key={grade.grade_id}>
+                                <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
+                                  {grade &&
+                                    grade.student.user.user_name +
+                                      " " +
+                                      grade.student.user.user_lastname}
+                                </th>
+                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                  {grade && grade.grade_1}
+                                </th>
+                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                  {grade && grade.grade_2}
+                                </th>
+                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                  {grade && grade.test_1}
+                                </th>
+                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                  {grade && grade.exam_1}
+                                </th>
+                                <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                  {grade && grade.prom_1}
+                                </th>
+                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                  {grade && grade.grade_3}
+                                </th>
+                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                  {grade && grade.grade_4}
+                                </th>
+                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                  {grade && grade.test_2}
+                                </th>
+                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                  {grade && grade.exam_2}
+                                </th>
+                                <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                  {grade && grade.prom_2}
+                                </th>
+                                <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                  {grade && grade.resit}
+                                </th>
+                                <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
+                                  {grade && grade.final_grade}
+                                </th>
+                                <th className="border p-3 border-white font-semibold group  text-[#1C274C]">
+                                  <a href={`/cursos/${id}/${grade.grade_id}`}>
+                                    <svg
+                                      width="20px"
+                                      height="20px"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="cursor-pointer"
+                                    >
+                                      <path
+                                        d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z"
+                                        stroke="#a19b3c"
+                                        strokeWidth="1.5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className=" group-hover:stroke-slate-800"
+                                      />
+                                      <path
+                                        d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13"
+                                        stroke="#a19b3c"
+                                        strokeWidth="1.5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className=" group-hover:stroke-slate-800"
+                                      />
+                                    </svg>
+                                  </a>
+                                </th>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                      <div className=" flex justify-center items-center mt-5">
+                        <button
+                          onClick={generatePDF}
+                          className=" w-fit my-8 mx-3 p-2 bg-gradient-to-br from-[#156436] to-[#55966e] hover:from-[#1C274C] hover:to-[#146898] transition hover:scale-105 duration-300 text-white rounded-lg"
+                        >
+                          Obtener Reporte
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

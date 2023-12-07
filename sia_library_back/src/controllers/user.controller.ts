@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "../models/user.model";
 import bcrypt from "bcryptjs";
-import { Op } from "sequelize";
 import { Admin } from "../models/admin.model";
 import { Teacher } from "../models/teacher.model";
 import { Subject } from "../models/subject.model";
@@ -11,11 +10,7 @@ import { Group } from "../models/group.model";
 
 //? Visualizar usuarios
 export const getUsers = async (req: Request, res: Response) => {
-  const users = await User.findAll({
-    where: {
-      user_id: { [Op.ne]: req.user.id },
-    },
-  });
+  const users = await User.findAll();
   res.json(users);
 };
 //? Obtener un solo usuario
