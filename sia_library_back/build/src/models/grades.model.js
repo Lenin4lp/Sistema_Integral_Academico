@@ -32,12 +32,12 @@ let Grade = class Grade extends sequelize_typescript_1.Model {
         return __awaiter(this, void 0, void 0, function* () {
             const grade1 = grade.grade_1 * 0.15;
             const grade2 = grade.grade_2 * 0.15;
-            const test1 = grade.test_1 * 0.30;
-            const exam1 = grade.exam_1 * 0.40;
+            const test1 = grade.test_1 * 0.3;
+            const exam1 = grade.exam_1 * 0.4;
             const grade3 = grade.grade_3 * 0.15;
             const grade4 = grade.grade_4 * 0.15;
-            const test2 = grade.test_2 * 0.30;
-            const exam2 = grade.exam_2 * 0.40;
+            const test2 = grade.test_2 * 0.3;
+            const exam2 = grade.exam_2 * 0.4;
             grade.prom_1 = grade1 + grade2 + test1 + exam1;
             grade.prom_2 = grade3 + grade4 + test2 + exam2;
         });
@@ -47,7 +47,7 @@ let Grade = class Grade extends sequelize_typescript_1.Model {
             const prom1 = grade.prom_1;
             const prom2 = grade.prom_2;
             const finalGrade = (prom1 + prom2) / 2;
-            grade.resit !== 0 ? finalGrade < 7 && finalGrade >= 5 ? grade.final_grade = (finalGrade + grade.resit) / 2 : grade.final_grade = finalGrade : grade.final_grade = finalGrade;
+            grade.final_grade = finalGrade;
         });
     }
 };

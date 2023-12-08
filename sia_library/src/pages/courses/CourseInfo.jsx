@@ -24,33 +24,29 @@ function CourseInfo() {
     }
   };
 
+  const sortedGrades =
+    group.grades &&
+    group.grades.sort((a, b) => {
+      const lastNameA = a.student?.user?.user_lastname || "";
+      const lastNameB = b.student?.user?.user_lastname || "";
+      return lastNameA.localeCompare(lastNameB);
+    });
+
   const generatePDF = async () => {
     const doc = new jsPDF();
-    doc.text(`${group?.subject.subject_name}`, 10, 10);
 
-    const firstHeader = [
-      " ",
-      " ",
-      " ",
-      "1er HEMISEMESTRE",
-      "2do HEMISEMESTRE",
-      "RECUP.",
-      "PROMEDIO",
-      "",
-    ];
-    const secondHeader = [
-      "ID",
-      "IDENTIFICACIÓN",
-      "NOMBRES",
-      "NOTA",
-      "ASIST.",
-      "NOTA",
-      "ASIST.",
-      "NOTA",
-      "NOTA",
-      "ASIST.",
-      "ESTADO",
-    ];
+    doc.text("Instituto Superior Tecnologico de la Vera Cruz", 50, 10);
+    doc.setFontSize(16);
+    doc.text("Hoja de Calificaciones", 10, 30);
+    doc.setFontSize(10);
+    doc.text(`Materia: ${group?.subject.subject_name}`, 10, 50);
+    doc.text(`Grupo: ${group?.group_name}`, 90, 50);
+    doc.text(`Periodo: ${group?.period.period_name}`, 150, 50);
+    doc.text(
+      `Docente: ${group?.teacher.user.user_name} ${group?.teacher.user.user_lastname}`,
+      10,
+      60
+    );
 
     // crear una tabla
     doc.autoTable({
@@ -59,43 +55,140 @@ function CourseInfo() {
           {
             content: "",
             colSpan: 3,
-            styles: { halign: "center" },
+            styles: { halign: "center", lineWidth: 0 },
           },
           {
-            content: "1er HEMISEMESTRE",
+            content: "1er\nHEMISEMESTRE",
             colSpan: 2,
-            styles: { halign: "center" },
+            styles: { halign: "center", valign: "middle" },
           },
           {
-            content: "2do HEMISEMESTRE",
+            content: "2do\nHEMISEMESTRE",
             colSpan: 2,
-            styles: { halign: "center" },
+            styles: { halign: "center", valign: "middle" },
           },
-          { content: "RECUP.", colSpan: 1, styles: { halign: "center" } },
-          { content: "PROMEDIO", colSpan: 2, styles: { halign: "center" } },
+          {
+            content: "RECUP.",
+            colSpan: 1,
+            styles: { halign: "center", valign: "middle" },
+          },
+          {
+            content: "PROMEDIO",
+            colSpan: 2,
+            styles: { halign: "center", valign: "middle" },
+          },
           {
             content: "ESTADO",
             colSpan: 1,
             rowSpan: 2,
-            styles: { halign: "center" },
+            styles: { halign: "center", valign: "middle" },
           },
         ],
         [
-          "ID",
-          "IDENTIFICACION",
-          "NOMBRES",
-          "NOTA",
-          "ASIST.",
-          "NOTA",
-          "ASIST.",
-          "NOTA",
-          "NOTA",
-          "ASIST.",
+          {
+            content: "ID",
+            colSpan: 1,
+            styles: { halign: "center", valign: "middle" },
+          },
+          {
+            content: "CEDULA",
+            colSpan: 1,
+            styles: { halign: "center", valign: "middle" },
+          },
+          {
+            content: "NOMBRES",
+            colSpan: 1,
+            styles: { halign: "center", valign: "middle" },
+          },
+          {
+            content: "NOTA",
+            colSpan: 1,
+            styles: { halign: "center", valign: "middle" },
+          },
+          {
+            content: "ASIST",
+            colSpan: 1,
+            styles: { halign: "center", valign: "middle" },
+          },
+          {
+            content: "NOTA",
+            colSpan: 1,
+            styles: { halign: "center", valign: "middle" },
+          },
+          {
+            content: "ASIST",
+            colSpan: 1,
+            styles: { halign: "center", valign: "middle" },
+          },
+          {
+            content: "NOTA",
+            colSpan: 1,
+            styles: { halign: "center", valign: "middle" },
+          },
+          {
+            content: "NOTA",
+            colSpan: 1,
+            styles: { halign: "center", valign: "middle" },
+          },
+          {
+            content: "ASIST",
+            colSpan: 1,
+            styles: { halign: "center", valign: "middle" },
+          },
         ],
       ],
+      body:
+        sortedGrades &&
+        sortedGrades.map((grade) => {
+          return [
+            `${grade.student && grade.student.student_id}`,
+            `1724063860`,
+
+            {
+              content: `${grade.student && grade.student.user.user_lastname} ${
+                grade.student && grade.student.user.user_name
+              }`,
+              colSpan: 1,
+              styles: { halign: "left", valign: "middle" },
+            },
+            `${grade && grade.prom_1 === null ? `0.00` : grade.prom_1}`,
+            `100%`,
+            `${grade && grade.prom_2 === null ? `0.00` : grade.prom_2}`,
+            `100%`,
+            `${grade && grade.resit === null ? `0.00` : grade.resit}`,
+            `${
+              grade && grade.final_grade === null ? `0.00` : grade.final_grade
+            }`,
+            `100%`,
+            `${grade && grade.final_grade < 7 ? "REPROBADO" : "APROBADO"}`,
+          ];
+        }),
+      theme: "plain",
+      startY: 65,
+      headStyles: {
+        lineWidth: 0.2,
+        lineColor: [0, 0, 0],
+        fontSize: 7,
+      },
+      bodyStyles: {
+        halign: "center",
+        fontSize: 7,
+        lineWidth: 0.05,
+        lineColor: [0, 0, 0],
+      },
     });
 
-    doc.save("a4.pdf");
+    const tableY = doc.lastAutoTable.finalY;
+
+    doc.setFontSize(8);
+    doc.text("______________", 90, tableY + 30);
+    doc.text("Docente", 96, tableY + 37);
+
+    doc.save(
+      `Reporte de Calificaciones ${
+        group.subject && group.subject.subject_name
+      } ${group && group.group_name} ${group && group.period.period_id}.pdf`
+    );
   };
 
   useEffect(() => {
@@ -103,7 +196,7 @@ function CourseInfo() {
   }, []);
 
   return (
-    <div className=" overflow-x-hidden bg-[#1C274C]">
+    <div className=" overflow-x-hidden bg-gradient-to-br from-[#1C274C] to-[#146898]">
       <div className=" block ">
         <div className=" mt-20 sm:mt-24 md:mt-28 mb-3 mx-3 md:mx-10 flex items-center text-xl sm:text-2xl md:text-3xl font-bold text-white text-left">
           {group.subject && group.subject.subject_name}
@@ -319,14 +412,14 @@ function CourseInfo() {
                           </tr>
                         </thead>
                         <tbody>
-                          {group.grades &&
-                            group.grades.map((grade) => (
+                          {sortedGrades &&
+                            sortedGrades.map((grade) => (
                               <tr key={grade.grade_id}>
-                                <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
+                                <th className="border p-3 text-left border-slate-300 font-semibold text-[#1C274C]">
                                   {grade &&
-                                    grade.student.user.user_name +
+                                    grade.student.user.user_lastname +
                                       " " +
-                                      grade.student.user.user_lastname}
+                                      grade.student.user.user_name}
                                 </th>
                                 <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
                                   {grade && grade.grade_1}
