@@ -4,7 +4,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/login/Login.jsx";
 import { Suspense } from "react";
-
+import RoleMiddleware from "./pages/RoleMiddleware.jsx";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import { AuthProvider } from "./auth/AuthProvider";
 const LazyHome = React.lazy(() => import("./pages/home/Home.jsx"));
@@ -19,6 +19,7 @@ const LazyModify = React.lazy(() => import("./pages/profile/Modify.jsx"));
 const LazyModifyGrades = React.lazy(() =>
   import("./pages/courses/ModifyGrades.jsx")
 );
+const LazyDashboard = React.lazy(() => import("./pages/admin/dashboard/Dashboard.jsx"));
 
 const router = createBrowserRouter([
   {
@@ -217,6 +218,28 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+      {
+        path: "/admin/dashboard",
+        element: (
+          <Suspense
+            fallback={
+              <>
+                <>
+                  <div className="flex justify-center items-center w-screen h-screen bg-white">
+                    <div className="block">
+                      <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
+                      <h4 className=" text-center text-[#146898]  font-semibold mt-5">
+                        Cargando...
+                      </h4>
+                    </div>
+                  </div>
+                </>
+              </>
+            }
+          >
+          <RoleMiddleware><LazyDashboard /></RoleMiddleware>  
+          </Suspense>)
+      }
     ],
   },
 ]);
