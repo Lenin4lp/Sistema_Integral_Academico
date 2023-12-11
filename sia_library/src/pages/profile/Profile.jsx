@@ -119,7 +119,11 @@ function Profile() {
                 ) : (
                   <div className="block m-3">
                     <p className=" font-semibold mb-2">Profesión</p>
-                    <p className=" mb-3">-------</p>
+                    <p className=" mb-3">
+                      {teacher && teacher.speciality
+                        ? teacher.speciality
+                        : "-----------"}
+                    </p>
                     <p className=" font-semibold mb-2">N° de horas</p>
                     <p className=" mb-3">-------</p>
                     <p className=" font-semibold mb-2">N° de Cursos</p>
@@ -259,7 +263,7 @@ function Profile() {
                       {student.grades &&
                         student.grades.map((grade) => (
                           <tr key={grade.grade_id}>
-                            <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
+                            <th className="border p-3 text-left border-slate-300 font-semibold text-[#1C274C]">
                               {grade.group.subject &&
                                 grade.group.subject.subject_name}
                             </th>
@@ -313,8 +317,8 @@ function Profile() {
         )}
         <div className=" flex justify-center items-center m-10">
           <a href="/perfil/modificar">
-            <button className=" m-3 p-2 bg-gradient-to-br from-[#cf7e48] to-[#e0a51c] hover:from-[#1C274C] hover:to-[#146898] transition hover:scale-105 duration-300 text-white rounded-lg">
-              Cambiar contraseña
+            <button className=" m-3 p-2 bg-gradient-to-br from-[#2f5683] to-[#42b6b6] hover:from-[#1C274C] hover:to-[#146898] transition hover:scale-105 duration-300 text-white rounded-lg">
+              Actualizar información
             </button>
           </a>
         </div>

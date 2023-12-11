@@ -44,6 +44,7 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     Cookies.remove("token");
+    localStorage.removeItem("token");
     setUser(null);
     setIsAuthenticated(false);
   };
@@ -76,7 +77,6 @@ export function AuthProvider({ children }) {
       console.log(token);
     };
     checkLogin();
-    
   }, []);
 
   return (

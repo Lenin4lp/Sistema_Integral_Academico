@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useAuth } from "../auth/AuthProvider";
 import Navbar from "../components/navbar";
 export default function ProtectedRoute() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   return isAuthenticated ? (
     <>
