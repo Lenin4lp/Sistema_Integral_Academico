@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useAuth } from "../auth/AuthProvider";
 import NavBar from "../components/NavBar";
 import SideBar from "../components/SideBar";
+import { AdministrativeMenu } from "../utils/menuOptions";
 
 export default function AdminRoutes() {
   const { user, isAuthenticated } = useAuth();
