@@ -38,6 +38,13 @@ export class Group extends Model {
   })
   group_name!: string;
 
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: true,
+    field: "estado",
+  })
+  group_status!: boolean;
+
   @ForeignKey(() => Subject)
   @Column({
     type: DataType.STRING(12),

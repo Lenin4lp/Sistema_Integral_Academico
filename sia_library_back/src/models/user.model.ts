@@ -87,6 +87,13 @@ export class User extends Model {
   user_phone!: string;
 
   @Column({
+    type: DataType.BOOLEAN,
+    allowNull: true,
+    field: "estado",
+  })
+  user_status!: boolean;
+
+  @Column({
     type: DataType.STRING(15),
     allowNull: false,
     field: "sexo",

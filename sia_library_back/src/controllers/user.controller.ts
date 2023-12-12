@@ -53,6 +53,7 @@ export const updateUser = async (req: Request, res: Response) => {
     user_direction,
     user_Citizenship,
     user_phone,
+    user_status,
     user_genre: genre,
     birth_date,
   } = req.body;
@@ -73,7 +74,7 @@ export const updateUser = async (req: Request, res: Response) => {
         user_genre: genre,
         birth_date,
         updated_at: new Date(),
-        user_status: false,
+        user_status:true,
       });
     } else {
       // El password no se ha modificado, por lo que no es necesario actualizarlo
@@ -87,6 +88,7 @@ export const updateUser = async (req: Request, res: Response) => {
         user_phone,
         user_genre: genre,
         birth_date,
+        user_status:true,
         updated_at: new Date(),
       });
     }
