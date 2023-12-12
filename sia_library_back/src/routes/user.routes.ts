@@ -11,9 +11,9 @@ import { authRequired } from "../middlewares/validateToken.middleware";
 
 const router = Router();
 
-router.get("/users", authRequired, getUsers);
+router.get("/users", getUsers);
 router.get("/user/:id", authRequired, getUser);
-router.put("/user/:id", authRequired, validateSchema(updateSchema), updateUser);
+router.put("/user/:id", validateSchema(updateSchema), updateUser);
 router.delete("/user/:id", authRequired, deleteUser);
 
 export default router;

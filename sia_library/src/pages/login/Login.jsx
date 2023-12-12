@@ -9,10 +9,14 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { signin, errors: SigninErrors, isAuthenticated } = useAuth();
+  const { signin, errors: SigninErrors, isAuthenticated, user } = useAuth();
 
   if (isAuthenticated) {
-    return <Navigate to="/home" />;
+    if (user.role_id === 3) {
+      return <Navigate to="/admin/dashboard" />;
+    } else {
+      return <Navigate to="/home" />;
+    }
   }
 
   const onSubmit = handleSubmit((data) => {

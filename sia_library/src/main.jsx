@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import RoleMiddleware from "./pages/RoleMiddleware.jsx";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import { AuthProvider } from "./auth/AuthProvider";
+import AdminRoutes from "./pages/AdminRoutes.jsx";
 const LazyHome = React.lazy(() => import("./pages/home/Home.jsx"));
 const LazyCourses = React.lazy(() => import("./pages/courses/Courses.jsx"));
 const LazyLibrary = React.lazy(() => import("./pages/library/Library.jsx"));
@@ -19,7 +20,9 @@ const LazyModify = React.lazy(() => import("./pages/profile/Modify.jsx"));
 const LazyModifyGrades = React.lazy(() =>
   import("./pages/courses/ModifyGrades.jsx")
 );
-const LazyDashboard = React.lazy(() => import("./pages/admin/dashboard/Dashboard.jsx"));
+const LazyDashboard = React.lazy(() =>
+  import("./pages/admin/dashboard/Dashboard.jsx")
+);
 
 const router = createBrowserRouter([
   {
@@ -218,6 +221,12 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+    ],
+  },
+  {
+    path: "/",
+    element: <AdminRoutes />,
+    children: [
       {
         path: "/admin/dashboard",
         element: (
@@ -237,9 +246,10 @@ const router = createBrowserRouter([
               </>
             }
           >
-          <RoleMiddleware><LazyDashboard /></RoleMiddleware>  
-          </Suspense>)
-      }
+            <LazyDashboard />
+          </Suspense>
+        ),
+      },
     ],
   },
 ]);

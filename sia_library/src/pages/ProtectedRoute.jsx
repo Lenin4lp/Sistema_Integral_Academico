@@ -1,13 +1,14 @@
 import { Outlet, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../auth/AuthProvider";
-import Navbar from "../components/navbar";
+import NavBar from "../components/NavBar";
+
 export default function ProtectedRoute() {
   const { isAuthenticated, user } = useAuth();
 
   return isAuthenticated ? (
     <>
-      <Navbar />
+      <NavBar />
       <Outlet />
     </>
   ) : (
