@@ -23,11 +23,31 @@ const LazyDashboard = React.lazy(() =>
   import("./pages/admin/dashboard/Dashboard.jsx")
 );
 const LazyUsers = React.lazy(() => import("./pages/admin/users/Users.jsx"));
-const LazyDegrees = React.lazy(() => import("./pages/admin/degrees/Degrees.jsx"));
+const LazyDegrees = React.lazy(() =>
+  import("./pages/admin/degrees/Degrees.jsx")
+);
 const LazySubjects = React.lazy(() =>
   import("./pages/admin/subjects/Subjects.jsx")
 );
 const LazyBooks = React.lazy(() => import("./pages/admin/library/Books.jsx"));
+const LazyModifyUsers = React.lazy(() =>
+  import("./pages/admin/users/ModifyUser.jsx")
+);
+const LazyRegisterUser = React.lazy(() =>
+  import("./pages/admin/users/RegisterUser.jsx")
+);
+const LazyModifyDegree = React.lazy(() =>
+  import("./pages/admin/degrees/ModifyDegree.jsx")
+);
+const LazyRegisterDegree = React.lazy(() =>
+  import("./pages/admin/degrees/RegisterDegree.jsx")
+);
+const LazySubjectInfo = React.lazy(() =>
+  import("./pages/admin/subjects/SubjectInfo.jsx")
+);
+const LazyRegisterSubject = React.lazy(() =>
+  import("./pages/admin/subjects/RegisterSubject.jsx")
+);
 
 const router = createBrowserRouter([
   {
@@ -279,6 +299,52 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/admin/usuarios/:userId",
+        element: (
+          <Suspense
+            fallback={
+              <>
+                <>
+                  <div className="flex justify-center items-center w-screen h-screen bg-white">
+                    <div className="block">
+                      <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
+                      <h4 className=" text-center text-[#146898]  font-semibold mt-5">
+                        Cargando...
+                      </h4>
+                    </div>
+                  </div>
+                </>
+              </>
+            }
+          >
+            <LazyModifyUsers />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/admin/usuarios/registrar",
+        element: (
+          <Suspense
+            fallback={
+              <>
+                <>
+                  <div className="flex justify-center items-center w-screen h-screen bg-white">
+                    <div className="block">
+                      <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
+                      <h4 className=" text-center text-[#146898]  font-semibold mt-5">
+                        Cargando...
+                      </h4>
+                    </div>
+                  </div>
+                </>
+              </>
+            }
+          >
+            <LazyRegisterUser />
+          </Suspense>
+        ),
+      },
+      {
         path: "/admin/carreras",
         element: (
           <Suspense
@@ -302,6 +368,52 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/admin/carreras/:degreeId",
+        element: (
+          <Suspense
+            fallback={
+              <>
+                <>
+                  <div className="flex justify-center items-center w-screen h-screen bg-white">
+                    <div className="block">
+                      <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
+                      <h4 className=" text-center text-[#146898]  font-semibold mt-5">
+                        Cargando...
+                      </h4>
+                    </div>
+                  </div>
+                </>
+              </>
+            }
+          >
+            <LazyModifyDegree />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/admin/carreras/registrar",
+        element: (
+          <Suspense
+            fallback={
+              <>
+                <>
+                  <div className="flex justify-center items-center w-screen h-screen bg-white">
+                    <div className="block">
+                      <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
+                      <h4 className=" text-center text-[#146898]  font-semibold mt-5">
+                        Cargando...
+                      </h4>
+                    </div>
+                  </div>
+                </>
+              </>
+            }
+          >
+            <LazyRegisterDegree />
+          </Suspense>
+        ),
+      },
+      {
         path: "/admin/materias",
         element: (
           <Suspense
@@ -321,6 +433,52 @@ const router = createBrowserRouter([
             }
           >
             <LazySubjects />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/admin/materias/:subjectId2",
+        element: (
+          <Suspense
+            fallback={
+              <>
+                <>
+                  <div className="flex justify-center items-center w-screen h-screen bg-white">
+                    <div className="block">
+                      <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
+                      <h4 className=" text-center text-[#146898]  font-semibold mt-5">
+                        Cargando...
+                      </h4>
+                    </div>
+                  </div>
+                </>
+              </>
+            }
+          >
+            <LazySubjectInfo />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/admin/materias/registrar",
+        element: (
+          <Suspense
+            fallback={
+              <>
+                <>
+                  <div className="flex justify-center items-center w-screen h-screen bg-white">
+                    <div className="block">
+                      <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
+                      <h4 className=" text-center text-[#146898]  font-semibold mt-5">
+                        Cargando...
+                      </h4>
+                    </div>
+                  </div>
+                </>
+              </>
+            }
+          >
+            <LazyRegisterSubject />
           </Suspense>
         ),
       },
@@ -354,7 +512,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <div className="">
+        <RouterProvider router={router} />
+      </div>
     </AuthProvider>
   </React.StrictMode>
 );

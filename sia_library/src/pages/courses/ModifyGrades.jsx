@@ -68,13 +68,12 @@ function ModifyGrades() {
       data.exam_2 = parseFloat(data.exam_2).toFixed(2);
     }
 
-
     for (const key in data) {
       if (data[key] !== "") {
         modifiedData[key] = data[key];
       }
     }
-    
+
     updateAGrade(gradeId, modifiedData);
   });
 
