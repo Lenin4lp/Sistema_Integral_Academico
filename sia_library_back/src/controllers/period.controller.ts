@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Period } from "../models/period.model";
+import { Group } from "../models/group.model";
 
 // ? Obtener todos los periodos
 export const getPeriods = async (req: Request, res: Response) => {
@@ -9,7 +10,11 @@ export const getPeriods = async (req: Request, res: Response) => {
 
 // ? Obtener un solo periodo
 export const getPeriod = async (req: Request, res: Response) => {
-  const period = await Period.findByPk(req.params.id);
+  const period = await Period.findByPk(req.params.id,{
+    include:[
+      {model:Group}
+    ]
+  });
   if (!period) return res.status(404).json({ message: "Period not found" });
   res.json(period);
 };

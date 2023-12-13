@@ -25,7 +25,7 @@ export class Period extends Model {
   period_id!: string;
 
   @Column({
-    type: DataType.STRING(30),
+    type: DataType.STRING(16),
     allowNull: false,
     field: "nombre_periodo",
     unique: true,

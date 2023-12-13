@@ -43,3 +43,11 @@ export const removeStudentFromGroup = (id, student) =>
 export const getGrade = (id) => axios.get(`/grade/${id}`);
 export const getGrades = () => axios.get("/grades");
 export const updateGrade = (id, grade) => axios.put(`/grade/${id}`, grade);
+
+// ? Periodo
+
+export const getPeriod = (id) => axios.get(`/period/${id}`);
+export const getPeriods = () => axios.get("/periods");
+export const registerPeriod = (period) => axios.post("/period", period);
+export const updatePeriod = (id, period) => axios.put(`/period/${id}`, period);
+export const deletePeriod = (id) => axios.delete(`/period/${id}`);

@@ -18,6 +18,7 @@ import {
   degreeRegisterSchema,
   degreeUpdateSchema,
 } from "../schemas/degree.schema";
+import { registerSubjectSchema, updateSubjectSchema } from "../schemas/subject.schema";
 
 const router = Router();
 
@@ -33,8 +34,8 @@ router.delete("/degree/:id", deleteDegree);
 
 router.get("/subjects", getSubjects);
 router.get("/subject/:id", getSubject);
-router.post("/subject", createSubject);
-router.put("/subject/:id", updateSubject);
+router.post("/subject", validateSchema(registerSubjectSchema), createSubject);
+router.put("/subject/:id", validateSchema(updateSubjectSchema), updateSubject);
 router.delete("/subject/:id", deleteSubject);
 
 export default router;

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getSubjects } from "../../../api/academic";
+import { getSubjects, getPeriods } from "../../../api/academic";
+import SubjectCard from "../../../components/SubjectCard";
 
 function Subjects() {
   const [subjects, setSubjects] = useState([]);
+  const [periods, setPeriods] = useState([]);
   const [errors, setErrors] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [subjectsTable, setSubjectsTable] = useState([]);
@@ -22,8 +24,24 @@ function Subjects() {
     }
   };
 
+  const sortedPeriod = periods && periods.sort((a, b) => a.period_id.localeCompare(b.period_id)); 
+
+  const getPeriodList = async () => {
+    try {
+      const res = await getPeriods();
+      if (res.status === 200) {
+        setPeriods(res.data);
+        console.log(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+      setErrors(error.response.data);
+    }
+  };
+
   useEffect(() => {
     getSubjectList();
+    getPeriodList();
   }, []);
 
   const sortedSubjects =
@@ -311,6 +329,35 @@ function Subjects() {
             </li>
           </ul>
         </nav>
+      </div>
+      <div className=" ml-1 lg:ml-10">
+        <div className=" font-bold text-xl mt-14 ">
+          <h1 className=" text-white text-xl lg:text-3xl underline underline-offset-4 decoration-2 decoration-[#146898]">
+            Administrar Periodos
+          </h1>
+        </div>
+        <div className=" my-5 md:my-10">
+          <Link to={`/admin/periodos/registrar`}>
+            <button className=" p-2 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#146898] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500">
+              Crear Periodo
+            </button>
+          </Link>
+        </div>
+        <div className=" mt-5 md:mt-10 flex justify-center items-center">
+          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+            {sortedPeriod &&
+              sortedPeriod.map((period) => (
+                <div key={period.period_id}>
+                  <Link to={`/admin/periodos/${period.period_id}`}>
+                    <SubjectCard
+                      cardTitle={period.period_name}
+                      cardId={period.period_id}
+                    />
+                  </Link>
+                </div>
+              ))}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -48,6 +48,12 @@ const LazySubjectInfo = React.lazy(() =>
 const LazyRegisterSubject = React.lazy(() =>
   import("./pages/admin/subjects/RegisterSubject.jsx")
 );
+const LazyRegisterPeriod = React.lazy(() =>
+  import("./pages/admin/periods/RegisterPeriod.jsx")
+);
+const LazyModifyPeriod = React.lazy(() =>
+  import("./pages/admin/periods/ModifyPeriod.jsx")
+);
 
 const router = createBrowserRouter([
   {
@@ -410,6 +416,52 @@ const router = createBrowserRouter([
             }
           >
             <LazyRegisterDegree />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/admin/periodos/registrar",
+        element: (
+          <Suspense
+            fallback={
+              <>
+                <>
+                  <div className="flex justify-center items-center w-screen h-screen bg-white">
+                    <div className="block">
+                      <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
+                      <h4 className=" text-center text-[#146898]  font-semibold mt-5">
+                        Cargando...
+                      </h4>
+                    </div>
+                  </div>
+                </>
+              </>
+            }
+          >
+            <LazyRegisterPeriod />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/admin/periodos/:periodId",
+        element: (
+          <Suspense
+            fallback={
+              <>
+                <>
+                  <div className="flex justify-center items-center w-screen h-screen bg-white">
+                    <div className="block">
+                      <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
+                      <h4 className=" text-center text-[#146898]  font-semibold mt-5">
+                        Cargando...
+                      </h4>
+                    </div>
+                  </div>
+                </>
+              </>
+            }
+          >
+            <LazyModifyPeriod />
           </Suspense>
         ),
       },
