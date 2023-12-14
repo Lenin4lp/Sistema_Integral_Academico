@@ -289,83 +289,16 @@ function SubjectInfo() {
                       Materia
                     </p>
                     <input
-                      name="last_name"
+                      name="subject"
                       type="text"
                       defaultValue={subjectId2}
                       placeholder={subjectId2}
                       disabled={true}
                       className=" w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 mt-3 px-1"
-                      {...register("user_lastname", { required: false })}
+                      {...register("subject_id", { required: false })}
                     />
                   </div>
-                  <div className="mx-5 md:mx-10 my-5 h-fit ">
-                    <p className=" text-sm md:text-base text-white">
-                      Cédula o Pasaporte
-                    </p>
-                    <input
-                      name="ci"
-                      type="number"
-                      placeholder="1777777777"
-                      className=" w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 mt-3 px-1"
-                      {...register("user_ci", {
-                        maxLength: 10,
-                        required: false,
-                        minLength: 9,
-                        pattern: "[0-9]+",
-                      })}
-                    />
-                  </div>
-                  <div className="mx-5 md:mx-10 my-5 h-fit ">
-                    <p className=" text-sm md:text-base text-white">
-                      Correo Institucional
-                    </p>
-                    <input
-                      name="email"
-                      type="email"
-                      placeholder="usuario@istvc.edu.ec"
-                      className=" w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 mt-3 px-1"
-                      {...register("user_email", { required: false })}
-                    />
-                  </div>
-                  <div className="mx-5 md:mx-10 my-5 h-fit ">
-                    <p className=" text-sm md:text-base text-white">
-                      Nacionalidad
-                    </p>
-                    <input
-                      name="citizenship"
-                      type="text"
-                      placeholder="ecuatoriana"
-                      className=" w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 mt-3 px-1"
-                      {...register("user_Citizenship", { required: false })}
-                    />
-                  </div>
-                  <div className="mx-5 md:mx-10 my-5 h-fit ">
-                    <p className=" text-sm md:text-base text-white">Teléfono</p>
-                    <input
-                      name="ci"
-                      type="number"
-                      placeholder="0999999999"
-                      className=" w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 mt-3 px-1"
-                      {...register("user_phone", {
-                        maxLength: 10,
-                        required: false,
-                        minLength: 9,
-                        pattern: "[0-9]+",
-                      })}
-                    />
-                  </div>
-                  <div className="mx-5 md:mx-10 my-5 h-fit ">
-                    <p className=" text-sm md:text-base text-white">Género</p>
-                    <select
-                      className=" w-42 md:w-56 lg:w-full bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 px-1 mt-3"
-                      {...register("user_genre")}
-                    >
-                      <option>Selecciona el género</option>
-                      <option value="Masculino">Masculino</option>
-                      <option value="Femenino">Femenino</option>
-                      <option value="Otros">Otros</option>
-                    </select>
-                  </div>
+                  
                   <div className="mx-5 md:mx-10 my-5 h-fit ">
                     <p className=" text-sm md:text-base text-white">Rol</p>
                     <select
