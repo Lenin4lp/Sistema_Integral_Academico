@@ -40,6 +40,7 @@ export const createGroup = async (req: Request, res: Response) => {
       modality_id,
       period_id,
       teacher_id,
+      group_status: true,
     });
     res.json(newGroup);
   } catch (error) {
@@ -50,12 +51,13 @@ export const createGroup = async (req: Request, res: Response) => {
 
 // ? Actualizar un grupo
 export const updateGroup = async (req: Request, res: Response) => {
-  const { group_name, teacher_id } = req.body;
+  const { group_name, teacher_id, group_status } = req.body;
   const group = await Group.findByPk(req.params.id);
   if (group) {
     await group.update({
       group_name,
       teacher_id,
+      group_status
     });
   } else {
     return res.status(404).json({ message: "Grupo no encontrado" });

@@ -11,10 +11,10 @@ function SubjectInfo() {
   const [errors, setErrors] = useState([]);
   const [subject, setSubject] = useState();
   const navigate = useNavigate();
-  const [isOnEdit, setIsOnEdit] = useState(false);
   const { subjectId2 } = useParams();
   const [period, setPeriod] = useState();
   const [periods, setPeriods] = useState([]);
+  const [content, setContent] = useState(1);
 
   const handlePeriodChange = (event) => {
     setPeriod(event.target.value);
@@ -81,7 +81,7 @@ function SubjectInfo() {
   useEffect(() => {
     getASubject(subjectId2);
     getPeriodList();
-    setIsOnEdit(false);
+    setContent(1);
   }, []);
 
   console.log(periods, period);
@@ -99,7 +99,7 @@ function SubjectInfo() {
             {subject && subject.subject_id}
           </h1>
         </div>
-        {isOnEdit === false ? (
+        {content === 1 && (
           <div>
             {" "}
             <div className=" font-semibold text-base mt-5 flexs">
@@ -110,7 +110,7 @@ function SubjectInfo() {
               </a>
               <div className="mt-5 md:mt-10">
                 <button
-                  onClick={() => setIsOnEdit(!isOnEdit)}
+                  onClick={() => setContent(2)}
                   className="font-medium rounded bg-transparent px-3 py-1.5 text-[10px] sm:text-sm text-white border border-white w-28 hover:bg-[#146898] transition-all duration-300 "
                 >
                   Modificar
@@ -131,7 +131,10 @@ function SubjectInfo() {
               </h1>
             </div>
             <div>
-              <button className="font-medium mt-10 rounded bg-transparent px-3 py-1.5 text-[10px] sm:text-sm text-white border border-white w-28 hover:bg-[#146898] transition-all duration-300 ">
+              <button
+                onClick={() => setContent(3)}
+                className="font-medium mt-10 rounded bg-transparent px-3 py-1.5 text-[10px] sm:text-sm text-white border border-white w-28 hover:bg-[#146898] transition-all duration-300 "
+              >
                 Crear Grupo
               </button>
             </div>
@@ -184,8 +187,17 @@ function SubjectInfo() {
               </div>
             </div>
           </div>
-        ) : (
+        )}
+        {content === 2 && (
           <>
+            <div>
+              <button
+                onClick={() => setContent(1)}
+                className="font-medium mt-10 rounded bg-transparent px-3 py-1.5 text-[10px] sm:text-sm text-white border border-white w-28 hover:bg-[#146898] transition-all duration-300 "
+              >
+                Regresar
+              </button>
+            </div>
             <div className=" my-5 md:my-10 flex justify-center items-center ">
               <form action="">
                 <div className=" grid grid-cols-1 md:grid-cols-2 ">
@@ -237,6 +249,174 @@ function SubjectInfo() {
                   </div>
                 )}
               </div>
+            </div>
+          </>
+        )}
+        {content === 3 && (
+          <>
+            <div>
+              <button
+                onClick={() => setContent(1)}
+                className="font-medium mt-10 rounded bg-transparent px-3 py-1.5 text-[10px] sm:text-sm text-white border border-white w-28 hover:bg-[#146898] transition-all duration-300 "
+              >
+                Regresar
+              </button>
+            </div>
+            <div className=" font-bold text-xl mt-6 md:mt-10">
+              <h1 className=" text-white text-xl lg:text-3xl underline underline-offset-4 decoration-2 decoration-[#146898]">
+                Añadir Grupo
+              </h1>
+            </div>
+            
+            <div className=" my-5 md:my-10 flex justify-center items-center ">
+              <form action="">
+                <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                  <div className=" mx-5 md:mx-10 my-5 h-fit ">
+                    <p className=" text-sm md:text-base text-white">Nombre del Grupo</p>
+                    <input
+                      name="name"
+                      type="text"
+                      placeholder="Grupo X"
+                      className=" w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 mt-3 px-1"
+                      {...register("group_name", {
+                        maxLength: 30,
+                        required: false,
+                      })}
+                    />
+                  </div>
+                  <div className="mx-5 md:mx-10 my-5 h-fit ">
+                    <p className=" text-sm md:text-base text-white">
+                      Materia
+                    </p>
+                    <input
+                      name="last_name"
+                      type="text"
+                      defaultValue={subjectId2}
+                      placeholder={subjectId2}
+                      disabled={true}
+                      className=" w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 mt-3 px-1"
+                      {...register("user_lastname", { required: false })}
+                    />
+                  </div>
+                  <div className="mx-5 md:mx-10 my-5 h-fit ">
+                    <p className=" text-sm md:text-base text-white">
+                      Cédula o Pasaporte
+                    </p>
+                    <input
+                      name="ci"
+                      type="number"
+                      placeholder="1777777777"
+                      className=" w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 mt-3 px-1"
+                      {...register("user_ci", {
+                        maxLength: 10,
+                        required: false,
+                        minLength: 9,
+                        pattern: "[0-9]+",
+                      })}
+                    />
+                  </div>
+                  <div className="mx-5 md:mx-10 my-5 h-fit ">
+                    <p className=" text-sm md:text-base text-white">
+                      Correo Institucional
+                    </p>
+                    <input
+                      name="email"
+                      type="email"
+                      placeholder="usuario@istvc.edu.ec"
+                      className=" w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 mt-3 px-1"
+                      {...register("user_email", { required: false })}
+                    />
+                  </div>
+                  <div className="mx-5 md:mx-10 my-5 h-fit ">
+                    <p className=" text-sm md:text-base text-white">
+                      Nacionalidad
+                    </p>
+                    <input
+                      name="citizenship"
+                      type="text"
+                      placeholder="ecuatoriana"
+                      className=" w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 mt-3 px-1"
+                      {...register("user_Citizenship", { required: false })}
+                    />
+                  </div>
+                  <div className="mx-5 md:mx-10 my-5 h-fit ">
+                    <p className=" text-sm md:text-base text-white">Teléfono</p>
+                    <input
+                      name="ci"
+                      type="number"
+                      placeholder="0999999999"
+                      className=" w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 mt-3 px-1"
+                      {...register("user_phone", {
+                        maxLength: 10,
+                        required: false,
+                        minLength: 9,
+                        pattern: "[0-9]+",
+                      })}
+                    />
+                  </div>
+                  <div className="mx-5 md:mx-10 my-5 h-fit ">
+                    <p className=" text-sm md:text-base text-white">Género</p>
+                    <select
+                      className=" w-42 md:w-56 lg:w-full bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 px-1 mt-3"
+                      {...register("user_genre")}
+                    >
+                      <option>Selecciona el género</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Femenino">Femenino</option>
+                      <option value="Otros">Otros</option>
+                    </select>
+                  </div>
+                  <div className="mx-5 md:mx-10 my-5 h-fit ">
+                    <p className=" text-sm md:text-base text-white">Rol</p>
+                    <select
+                      className=" w-42 md:w-56 lg:w-full bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 px-1 mt-3"
+                      {...register("role_id", {
+                        onChange: (e) => setUserRole(e.target.value),
+                      })}
+                    >
+                      <option>Selecciona el rol</option>
+                      <option value={1}>Estudiante</option>
+                      <option value={2}>Docente</option>
+                      <option value={3}>Administrador</option>
+                    </select>
+                  </div>
+                  <div className="mx-5 md:mx-10 my-5 h-fit ">
+                    <p className=" text-sm md:text-base text-white">
+                      Contraseña
+                    </p>
+                    <input
+                      name="password"
+                      type="password"
+                      placeholder="**********************"
+                      className=" w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 mt-3 px-1"
+                      {...register("user_password", {
+                        maxLength: 20,
+                        required: false,
+                        minLength: 6,
+                      })}
+                    />
+                  </div>
+                </div>
+                <div className=" grid grid-cols-1">
+                  <div className="mx-5 md:mx-10 my-5 h-fit ">
+                    <p className=" text-sm md:text-base text-white">
+                      Dirección
+                    </p>
+                    <textarea
+                      className="w-full lg:w-full bg-white text-[1rem] h-40 font-normal placeholder-[#1c274cbb] text-[#1C274C] border border-gray-200 rounded py-2 px-1 mt-3"
+                      type="text"
+                      cols={2}
+                      placeholder="Dirección"
+                      {...register("user_direction", { maxLength: 80 })}
+                    />
+                  </div>
+                </div>
+                <div className=" flex justify-center items-center">
+                  <button className=" p-2 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#146898] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500">
+                    Registrar
+                  </button>
+                </div>
+              </form>
             </div>
           </>
         )}
