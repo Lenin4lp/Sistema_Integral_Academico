@@ -317,9 +317,7 @@ function SubjectInfo() {
                     <p className=" text-sm md:text-base text-white">Modalidad</p>
                     <select
                       className=" w-42 md:w-56 lg:w-full bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 px-1 mt-3"
-                      {...register("role_id", {
-                        onChange: (e) => setUserRole(e.target.value),
-                      })}
+                      {...register("role_id")}
                     >
                       <option>Selecciona el rol</option>
                       <option value={1}>Estudiante</option>
