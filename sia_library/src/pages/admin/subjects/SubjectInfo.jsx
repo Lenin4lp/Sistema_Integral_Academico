@@ -95,6 +95,7 @@ function SubjectInfo() {
     getASubject(subjectId2);
     getPeriodList();
     setContent(1);
+    getModalityList();
   }, []);
 
   console.log(periods, period);
