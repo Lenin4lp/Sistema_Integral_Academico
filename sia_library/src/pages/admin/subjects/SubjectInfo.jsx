@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { getSubject, updateSubject, getPeriods } from "../../../api/academic";
+import { getSubject, updateSubject, getPeriods, getModalities } from "../../../api/academic";
 import SubjectCard from "../../../components/SubjectCard";
 import { Link } from "react-router-dom";
 
@@ -300,7 +300,7 @@ function SubjectInfo() {
                   </div>
                   
                   <div className="mx-5 md:mx-10 my-5 h-fit ">
-                    <p className=" text-sm md:text-base text-white">Rol</p>
+                    <p className=" text-sm md:text-base text-white">Modalidad</p>
                     <select
                       className=" w-42 md:w-56 lg:w-full bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 px-1 mt-3"
                       {...register("role_id", {
