@@ -15,10 +15,23 @@ function SubjectInfo() {
   const [period, setPeriod] = useState();
   const [periods, setPeriods] = useState([]);
   const [content, setContent] = useState(1);
+  const [modalities, setModalities] = useState([]);
 
   const handlePeriodChange = (event) => {
     setPeriod(event.target.value);
   };
+
+  const getModalityList = async () => {
+    try {
+      const res = await getModalities();
+      if (res.status === 200) {
+        setModalities(res.data);
+        console.log(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const updateASubject = async (id, data) => {
     try {
