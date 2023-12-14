@@ -24,7 +24,8 @@ function Subjects() {
     }
   };
 
-  const sortedPeriod = periods && periods.sort((a, b) => a.period_id.localeCompare(b.period_id)); 
+  const sortedPeriod =
+    periods && periods.sort((a, b) => a.period_id.localeCompare(b.period_id));
 
   const getPeriodList = async () => {
     try {
@@ -100,7 +101,7 @@ function Subjects() {
           </h1>
         </div>
         <div className=" my-10">
-          <Link to={`/admin/usuarios/registrar`}>
+          <Link to={`/admin/materias/registrar`}>
             <button className=" p-2 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#146898] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500">
               Crear Materia
             </button>

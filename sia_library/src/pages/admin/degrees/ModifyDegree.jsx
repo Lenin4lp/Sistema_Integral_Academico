@@ -162,7 +162,7 @@ function ModifyDegree() {
                     onClick={onSubmit}
                     className=" p-2 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#981426] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500"
                   >
-                    Eliminar usuario
+                    Eliminar carrera
                   </button>
                 </div>
               </div>

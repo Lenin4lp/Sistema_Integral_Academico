@@ -11,9 +11,9 @@ function ModifyPeriod() {
   const navigate = useNavigate();
   const { periodId } = useParams();
 
-  const editPeriod = async (id,data) => {
+  const editPeriod = async (id, data) => {
     try {
-      const res = await updatePeriod(id,data);
+      const res = await updatePeriod(id, data);
       if (res.status === 200) {
         alert("Periodo modificado exitosamente");
         navigate("/admin/materias");
@@ -23,7 +23,7 @@ function ModifyPeriod() {
       console.log(error);
       setErrors(error.response.data);
     }
-  }
+  };
 
   const getAPeriod = async (id) => {
     try {
@@ -35,7 +35,7 @@ function ModifyPeriod() {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     if (errors.length > 0) {
@@ -54,13 +54,12 @@ function ModifyPeriod() {
         modifiedData[key] = data[key];
       }
     }
-editPeriod(periodId,modifiedData);
-    
+    editPeriod(periodId, modifiedData);
   });
 
   useEffect(() => {
     getAPeriod(periodId);
-  },[])
+  }, []);
 
   return (
     <div className="my-8 lg:my-14 mx-2 md:mx-10 w-full">
@@ -83,7 +82,6 @@ editPeriod(periodId,modifiedData);
         <div className=" my-5 md:my-10 flex justify-center items-center ">
           <form action="">
             <div className=" grid grid-cols-1">
-              
               <div className="mx-5 md:mx-10 my-5 h-fit ">
                 <p className=" text-sm md:text-base text-white">
                   Nombre del Periodo
@@ -106,7 +104,7 @@ editPeriod(periodId,modifiedData);
                 onClick={onSubmit}
                 className=" p-2 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#146898] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500"
               >
-                Registrar
+                Guardar cambios
               </button>
             </div>
           </form>
