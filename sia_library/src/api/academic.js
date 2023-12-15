@@ -34,9 +34,9 @@ export const registerGroup = (group) => axios.post("/group", group);
 export const updateGroup = (id, group) => axios.put(`/group/${id}`, group);
 export const deleteGroup = (id) => axios.delete(`/group/${id}`);
 export const assignStudentToGroup = (id, student) =>
-  axios.put(`/group/${id}/student`, student);
+  axios.post(`/groups/${id}/students`, student);
 export const removeStudentFromGroup = (id, student) =>
-  axios.delete(`/group/${id}/student`, student);
+  axios.delete(`/groups/${id}/students`, student);
 
 // ? Notas
 

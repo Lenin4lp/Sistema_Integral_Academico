@@ -9,13 +9,24 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { signin, errors: SigninErrors, isAuthenticated, user } = useAuth();
+  const {
+    signin,
+    errors: SigninErrors,
+    isAuthenticated,
+    user,
+    logout,
+  } = useAuth();
 
   if (isAuthenticated) {
-    if (user.role_id === 3) {
-      return <Navigate to="/admin/dashboard" />;
+    if (user.user_status == 0 || user.user_status === null) {
+      if (user.role_id === 3) {
+        return <Navigate to="/admin/dashboard" />;
+      } else {
+        return <Navigate to="/home" />;
+      }
     } else {
-      return <Navigate to="/home" />;
+      alert("Cuenta inactiva");
+      logout();
     }
   }
 

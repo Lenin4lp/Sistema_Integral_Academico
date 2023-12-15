@@ -4,6 +4,7 @@ import { getDegrees, getModalities } from "../../../api/academic";
 import { updateStudent, updateUser, getUser } from "../../../api/user";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function ModifyUser() {
   const { register, handleSubmit } = useForm();
@@ -54,14 +55,6 @@ function ModifyUser() {
       data.user_genre = "";
     }
 
-    if (data.user_status === "true") {
-      data.user_status = true;
-    } else if (data.user_status === "false") {
-      data.user_status = false;
-    } else {
-      data.user_status = false;
-    }
-
     if (data.role_id === "1") {
       data.role_id = 1;
     } else if (data.role_id === "2") {
@@ -78,7 +71,15 @@ function ModifyUser() {
       }
     }
 
-    ModifyUser(user && user.user.user_id, modifiedData);
+    modifiedData.user_status = isChecked;
+
+    if (modifiedData.user_status === true) {
+      modifiedData.user_status = false;
+    } else if (modifiedData.user_status === false) {
+      modifiedData.user_status = true;
+    }
+
+    ModifyUser(userId, modifiedData);
   });
 
   const editStudent = async (id, data) => {
@@ -159,6 +160,11 @@ function ModifyUser() {
             Modificar Usuario
           </h1>
         </div>
+        <Link to={"/admin/usuarios"}>
+          <button className=" mt-5 md:mt-10 p-2 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#146898] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500">
+            Regresar
+          </button>
+        </Link>
         <div className=" my-5 md:my-10 flex justify-center items-center ">
           <form action="">
             <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

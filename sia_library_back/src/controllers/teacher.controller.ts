@@ -6,7 +6,9 @@ import { Group } from "../models/group.model";
 
 //? Obtener todos los docentes
 export const getTeachers = async (req: Request, res: Response) => {
-  const teachers = await Teacher.findAll();
+  const teachers = await Teacher.findAll({
+    include: [{ model: Group, include: [{ model: Subject }] }, { model: User }],
+  });
   res.json(teachers);
 };
 

@@ -70,23 +70,33 @@ function Courses() {
         <div className=" grid sm:grid-cols-2 md:grid-cols-3 m-3">
           {role && role === 1
             ? student.group &&
-              student.group.map((group) => (
-                <Link key={group.group_id} to={`/cursos/${group.group_id}`}>
-                  <SubjectCard
-                    cardTitle={group.subject.subject_name}
-                    cardId={group.group_id}
-                  />
-                </Link>
-              ))
+              student.group
+                .filter(
+                  (group) =>
+                    group.group_status === 1 || group.group_status === null
+                )
+                .map((group) => (
+                  <Link key={group.group_id} to={`/cursos/${group.group_id}`}>
+                    <SubjectCard
+                      cardTitle={group.subject.subject_name}
+                      cardId={group.group_id}
+                    />
+                  </Link>
+                ))
             : teacher.group &&
-              teacher.group.map((group) => (
-                <Link key={group.group_id} to={`/cursos/${group.group_id}`}>
-                  <SubjectCard
-                    cardTitle={group.subject.subject_name}
-                    cardId={group.group_id}
-                  />
-                </Link>
-              ))}
+              teacher.group
+                .filter(
+                  (group) =>
+                    group.group_status === 1 || group.group_status === null
+                )
+                .map((group) => (
+                  <Link key={group.group_id} to={`/cursos/${group.group_id}`}>
+                    <SubjectCard
+                      cardTitle={group.subject.subject_name}
+                      cardId={group.group_id}
+                    />
+                  </Link>
+                ))}
         </div>
       </div>
     </div>

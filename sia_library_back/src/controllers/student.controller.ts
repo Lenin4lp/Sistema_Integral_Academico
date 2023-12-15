@@ -9,7 +9,9 @@ import { Grade } from "../models/grades.model";
 
 //? Obtener todos los estudiantes
 export const getStudents = async (req: Request, res: Response) => {
-  const students = await Student.findAll();
+  const students = await Student.findAll({
+    include: [{ model: User }],
+  });
   res.json(students);
 };
 

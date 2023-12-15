@@ -4,6 +4,7 @@ import { getDegrees, getModalities } from "../../../api/academic";
 import { registerRequest } from "../../../api/auth";
 import { updateStudent } from "../../../api/user";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function RegisterUser() {
   const { register, handleSubmit } = useForm();
@@ -73,6 +74,14 @@ function RegisterUser() {
       if (data[key] !== "") {
         modifiedData[key] = data[key];
       }
+    }
+
+    modifiedData.user_status = isChecked;
+
+    if (modifiedData.user_status === true) {
+      modifiedData.user_status = false;
+    } else if (modifiedData.user_status === false) {
+      modifiedData.user_status = true;
     }
 
     registerUser(modifiedData);
@@ -145,6 +154,11 @@ function RegisterUser() {
             Registrar Usuario
           </h1>
         </div>
+        <Link to={"/admin/usuarios"}>
+          <button className=" mt-5 md:mt-10 p-2 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#146898] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500">
+            Regresar
+          </button>
+        </Link>
         <div className=" my-5 md:my-10 flex justify-center items-center ">
           <form action="">
             <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

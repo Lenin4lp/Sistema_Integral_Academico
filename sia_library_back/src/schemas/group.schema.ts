@@ -16,20 +16,18 @@ export const registerGroupSchema = z.object({
     .refine((value) => grupoPattern.test(value), {
       message: "El nombre del grupo debe tener el formato 'Grupo X'",
     }),
-    subject_id: z.string({
-        required_error: "La materia es requerida",
-    }),
-    modality_id: z.number({
-        required_error: "La modalidad es requerida",
-    }),
-    period_id: z.string({
-        required_error: "El periodo es requerido",
-    }),
-    teacher_id: z.string({
-        required_error: "El docente es requerido",
-    })
-    
-    
+  subject_id: z.string({
+    required_error: "La materia es requerida",
+  }),
+  modality_id: z.number({
+    required_error: "La modalidad es requerida",
+  }),
+  period_id: z.string({
+    required_error: "El periodo es requerido",
+  }),
+  teacher_id: z.string({
+    required_error: "El docente es requerido",
+  }),
 });
 
 export const updateGroupSchema = z.object({
@@ -45,6 +43,10 @@ export const updateGroupSchema = z.object({
       message: "El nombre del grupo debe tener el formato 'Grupo X'",
     })
     .optional(),
-    group_status: z.boolean().optional(),
-    teacher_id: z.string().optional(),
+  group_status: z.boolean().optional(),
+  teacher_id: z.string().optional(),
+});
+
+export const assignStudentToSubjectSchema = z.object({
+  student_id: z.string({ required_error: "El estudiante es requerido" }),
 });

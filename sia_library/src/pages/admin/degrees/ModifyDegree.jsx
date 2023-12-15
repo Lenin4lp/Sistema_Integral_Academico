@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { updateDegree } from "../../../api/academic";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { getDegree } from "../../../api/academic";
+import { getDegree, deleteDegree } from "../../../api/academic";
+import { Link } from "react-router-dom";
 
 function ModifyDegree() {
   const { register, handleSubmit } = useForm();
@@ -11,6 +12,19 @@ function ModifyDegree() {
   const [degree, setDegree] = useState();
   const navigate = useNavigate();
   const { degreeId } = useParams();
+
+  const removeDegree = async (id) => {
+    try {
+      const res = await deleteDegree(id);
+      if (res.status === 204) {
+        alert("Carrera eliminada exitosamente");
+        window.history.go(-1);
+        console.log(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const updateADegree = async (id, data) => {
     try {
@@ -90,6 +104,7 @@ function ModifyDegree() {
             {degree && degree.degree.degree_id}
           </h1>
         </div>
+
         <div className=" font-bold text-base mt-5">
           <h1 className=" text-white text-base lg:text-xl ">
             No. De alumnos matriculados:{" "}
@@ -98,6 +113,11 @@ function ModifyDegree() {
             }`}</span>
           </h1>
         </div>
+        <Link to={"/admin/carreras"}>
+          <button className=" mt-5 md:mt-10 p-2 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#146898] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500">
+            Regresar
+          </button>
+        </Link>
         <div className=" my-5 md:my-10 flex justify-center items-center ">
           <form action="">
             <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -159,7 +179,7 @@ function ModifyDegree() {
                 </div>
                 <div className=" my-20">
                   <button
-                    onClick={onSubmit}
+                    onClick={() => removeDegree(degreeId)}
                     className=" p-2 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#981426] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500"
                   >
                     Eliminar carrera

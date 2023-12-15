@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { AdministrativeMenu } from "../utils/menuOptions";
+import { useAuth } from "../auth/AuthProvider";
 
 function SideBar({ MenuOption, children }) {
+  const { logout } = useAuth();
   const [open, setOpen] = useState(false);
   const handleSideBar = () => {
     setOpen(!open);
@@ -25,7 +27,6 @@ function SideBar({ MenuOption, children }) {
           height={28}
           width={28}
           alt=">"
-          
           onClick={handleSideBar}
         />
         <div className="flex gap-x-4 items-center">
@@ -66,14 +67,20 @@ function SideBar({ MenuOption, children }) {
             </Link>
           ))}
           <div className="text-[#1C274C] mt-6 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-gray-200 dark:hover:bg-[#838383] rounded-md">
-                <img src="/images/logout.svg" alt="" height={24} width={24}/>
-                <span
-                className={`${
-                  !open && "scale-0"
-                } origin-left transition duration-300 text-[11px] sm:text-md md:text-lg lg:text-xl`}
-              >
-                Cerrar Sesión
-              </span>
+            <img
+              onClick={() => logout()}
+              src="/images/logout.svg"
+              alt=""
+              height={24}
+              width={24}
+            />
+            <span
+              className={`${
+                !open && "scale-0"
+              } origin-left transition duration-300 text-[11px] sm:text-md md:text-lg lg:text-xl`}
+            >
+              Cerrar Sesión
+            </span>
           </div>
         </ul>
       </div>

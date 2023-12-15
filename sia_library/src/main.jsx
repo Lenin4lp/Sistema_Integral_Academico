@@ -60,6 +60,9 @@ const LazyGroupInfo = React.lazy(() =>
 const LazyRegisterGroup = React.lazy(() =>
   import("./pages/admin/groups/RegisterGroup.jsx")
 );
+const LazyUpdateGrades = React.lazy(() =>
+  import("./pages/admin/grades/UpdateGrades.jsx")
+);
 
 const router = createBrowserRouter([
   {
@@ -307,6 +310,29 @@ const router = createBrowserRouter([
             }
           >
             <LazyUsers />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/admin/grupos/calificaciones/:gradeId",
+        element: (
+          <Suspense
+            fallback={
+              <>
+                <>
+                  <div className="flex justify-center items-center w-screen h-screen bg-white">
+                    <div className="block">
+                      <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
+                      <h4 className=" text-center text-[#146898]  font-semibold mt-5">
+                        Cargando...
+                      </h4>
+                    </div>
+                  </div>
+                </>
+              </>
+            }
+          >
+            <LazyUpdateGrades />
           </Suspense>
         ),
       },

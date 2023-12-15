@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { updatePeriod, getPeriod } from "../../../api/academic";
+import { updatePeriod, getPeriod, deletePeriod } from "../../../api/academic";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
@@ -11,6 +11,18 @@ function ModifyPeriod() {
   const navigate = useNavigate();
   const { periodId } = useParams();
 
+  const removePeriod = async (id) => {
+    try {
+      const res = await deletePeriod(id);
+      if (res.status === 204) {
+        alert("Periodo eliminado exitosamente");
+        window.history.go(-1);
+        console.log(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const editPeriod = async (id, data) => {
     try {
       const res = await updatePeriod(id, data);
@@ -105,6 +117,14 @@ function ModifyPeriod() {
                 className=" p-2 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#146898] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500"
               >
                 Guardar cambios
+              </button>
+            </div>
+            <div className=" flex justify-center items-center mt-10">
+              <button
+                onClick={() => removePeriod(periodId)}
+                className=" p-2 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#981426] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500"
+              >
+                Eliminar Periodo
               </button>
             </div>
           </form>

@@ -22,7 +22,10 @@ export const getGroup = async (req: Request, res: Response) => {
       { model: Teacher, include: [{ model: User }] },
       { model: Subject },
       { model: Period },
-      { model: Grade, include: [{model: Student, include:[{model:User}]}] },
+      {
+        model: Grade,
+        include: [{ model: Student, include: [{ model: User }] }],
+      },
     ],
   });
   if (!group) return res.status(404).json({ message: "Group not found" });
@@ -51,13 +54,14 @@ export const createGroup = async (req: Request, res: Response) => {
 
 // ? Actualizar un grupo
 export const updateGroup = async (req: Request, res: Response) => {
-  const { group_name, teacher_id, group_status } = req.body;
+  const { group_name, teacher_id, group_status, modality_id } = req.body;
   const group = await Group.findByPk(req.params.id);
   if (group) {
     await group.update({
       group_name,
       teacher_id,
-      group_status
+      group_status,
+      modality_id,
     });
   } else {
     return res.status(404).json({ message: "Grupo no encontrado" });
