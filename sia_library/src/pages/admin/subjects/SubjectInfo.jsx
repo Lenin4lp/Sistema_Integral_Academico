@@ -260,7 +260,7 @@ function SubjectInfo() {
                       }
                     })
                     .map((group) => (
-                      <Link to={`/admin/grupos/${group.group_id}`}>
+                      <a href={`/admin/grupos/${group.group_id}`}>
                         <SubjectCard
                           key={group.group_id}
                           cardTitle={group.group_name}
@@ -268,7 +268,7 @@ function SubjectInfo() {
                             group.modality_id === 1 ? "Presencial" : "En línea"
                           }
                         />
-                      </Link>
+                      </a>
                     ))}
               </div>
             </div>
