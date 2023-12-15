@@ -262,7 +262,7 @@ function GroupInfo() {
       const res = await assignStudentToGroup(id, data);
       if (res.status === 200) {
         alert("Estudiante agregado exitosamente");
-        setPage(1);
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);

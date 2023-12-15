@@ -28,7 +28,7 @@ function UpdateGrades() {
       const res = await updateGrade(id, data);
       if (res.status === 200) {
         alert("Calificaciones modificadas");
-        navigate("/admin/materias");
+        navigate(`/admin/grupos/${grade.group.group_id}`);
       }
     } catch (error) {
       setErrors(error.response.data);

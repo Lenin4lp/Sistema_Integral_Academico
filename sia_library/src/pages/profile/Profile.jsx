@@ -140,7 +140,10 @@ function Profile() {
                 <div className=" mb-5">
                   {user && user.role_id === 1
                     ? student.group &&
-                      student.group.map((group) => (
+                      student.group.filter(
+                        (group) =>
+                          group.group_status === 1 || group.group_status === null
+                      ).map((group) => (
                         <div
                           key={group.group_id}
                           className=" my-2 hover:text-[#146898]"
@@ -261,7 +264,7 @@ function Profile() {
                     </thead>
                     <tbody>
                       {student.grades &&
-                        student.grades.map((grade) => (
+                        student.grades.filter((grade) => grade.group.group_status === 1 || grade.group.group_status === null).map((grade) => (
                           <tr key={grade.grade_id}>
                             <th className="border p-3 text-left border-slate-300 font-semibold text-[#1C274C]">
                               {grade.group.subject &&
