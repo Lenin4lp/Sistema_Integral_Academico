@@ -10,7 +10,15 @@ import { Grade } from "../models/grades.model";
 //? Obtener todos los estudiantes
 export const getStudents = async (req: Request, res: Response) => {
   const students = await Student.findAll({
-    include: [{ model: User }],
+    include: [
+      { model: Degree },
+      { model: Group, include: [{ model: Subject }] },
+      { model: User },
+      {
+        model: Grade,
+        include: [{ model: Group, include: [{ model: Subject }] }],
+      },
+    ],
   });
   res.json(students);
 };

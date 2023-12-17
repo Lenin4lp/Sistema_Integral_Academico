@@ -7,6 +7,8 @@ import { Subject } from "../models/subject.model";
 import { Degree } from "../models/degree.model";
 import { Student } from "../models/student.model";
 import { Group } from "../models/group.model";
+import { Grade } from "../models/grades.model";
+import { Period } from "../models/period.model";
 
 //? Visualizar usuarios
 export const getUsers = async (req: Request, res: Response) => {
@@ -15,7 +17,28 @@ export const getUsers = async (req: Request, res: Response) => {
 };
 //? Obtener un solo usuario
 export const getUser = async (req: Request, res: Response) => {
-  const user = await User.findByPk(req.params.id);
+  const user = await User.findByPk(req.params.id, {
+    include: [
+      {
+        model: Student,
+        include: [
+          { model: Degree },
+          {
+            model: Grade,
+            include: [
+              {
+                model: Group,
+                include: [{ model: Subject }, { model: Period }],
+              },
+            ],
+          },
+          { model: Group, include: [{ model: Subject }, { model: Period }] },
+        ],
+      },
+      { model: Teacher, include: [{ model: Group, include: [Subject] }] },
+      { model: Admin },
+    ],
+  });
   if (!user) return res.status(404).json({ message: "User not found" });
 
   let roleTable;

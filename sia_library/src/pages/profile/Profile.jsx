@@ -33,6 +33,16 @@ function Profile() {
     }
   };
 
+  const sortedGrades =
+    student.grades &&
+    student.grades.sort((a, b) => {
+      const groupA = a.group?.subject.subject_name;
+      const groupB = b.group?.subject.subject_name;
+      return groupA.localeCompare(groupB);
+    });
+
+  console.log(sortedGrades);
+
   useEffect(() => {
     if (user.role_id === 1) {
       getAStudent(user.user_id);
@@ -140,24 +150,27 @@ function Profile() {
                 <div className=" mb-5">
                   {user && user.role_id === 1
                     ? student.group &&
-                      student.group.filter(
-                        (group) =>
-                          group.group_status === 1 || group.group_status === null
-                      ).map((group) => (
-                        <div
-                          key={group.group_id}
-                          className=" my-2 hover:text-[#146898]"
-                        >
-                          <div className=" block">
-                            <a href={`/cursos/${group.group_id}`}>
-                              <p>{group.subject.subject_name}</p>
-                            </a>
-                            <p className=" text-xs md:text-sm opacity-50">
-                              {group.group_id}
-                            </p>
+                      student.group
+                        .filter(
+                          (group) =>
+                            group.group_status === 1 ||
+                            group.group_status === null
+                        )
+                        .map((group) => (
+                          <div
+                            key={group.group_id}
+                            className=" my-2 hover:text-[#146898]"
+                          >
+                            <div className=" block">
+                              <a href={`/cursos/${group.group_id}`}>
+                                <p>{group.subject.subject_name}</p>
+                              </a>
+                              <p className=" text-xs md:text-sm opacity-50">
+                                {group.group_id}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      ))
+                        ))
                     : teacher.group &&
                       teacher.group.map((group) => (
                         <div
@@ -263,51 +276,57 @@ function Profile() {
                       </tr>
                     </thead>
                     <tbody>
-                      {student.grades &&
-                        student.grades.filter((grade) => grade.group.group_status === 1 || grade.group.group_status === null).map((grade) => (
-                          <tr key={grade.grade_id}>
-                            <th className="border p-3 text-left border-slate-300 font-semibold text-[#1C274C]">
-                              {grade.group.subject &&
-                                grade.group.subject.subject_name}
-                            </th>
-                            <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              {grade && grade.grade_1}
-                            </th>
-                            <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              {grade && grade.grade_2}
-                            </th>
-                            <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              {grade && grade.test_1}
-                            </th>
-                            <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              {grade && grade.exam_1}
-                            </th>
-                            <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              {grade && grade.prom_1}
-                            </th>
-                            <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              {grade && grade.grade_3}
-                            </th>
-                            <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              {grade && grade.grade_4}
-                            </th>
-                            <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              {grade && grade.test_2}
-                            </th>
-                            <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              {grade && grade.exam_2}
-                            </th>
-                            <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              {grade && grade.prom_2}
-                            </th>
-                            <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              {grade && grade.resit}
-                            </th>
-                            <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
-                              {grade && grade.final_grade}
-                            </th>
-                          </tr>
-                        ))}
+                      {sortedGrades &&
+                        sortedGrades
+                          .filter(
+                            (grade) =>
+                              grade.group.group_status === 1 ||
+                              grade.group.group_status === null
+                          )
+                          .map((grade) => (
+                            <tr key={grade.grade_id}>
+                              <th className="border p-3 text-left border-slate-300 font-semibold text-[#1C274C]">
+                                {grade.group.subject &&
+                                  grade.group.subject.subject_name}
+                              </th>
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.grade_1}
+                              </th>
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.grade_2}
+                              </th>
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.test_1}
+                              </th>
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.exam_1}
+                              </th>
+                              <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.prom_1}
+                              </th>
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.grade_3}
+                              </th>
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.grade_4}
+                              </th>
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.test_2}
+                              </th>
+                              <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.exam_2}
+                              </th>
+                              <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.prom_2}
+                              </th>
+                              <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.resit}
+                              </th>
+                              <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
+                                {grade && grade.final_grade}
+                              </th>
+                            </tr>
+                          ))}
                     </tbody>
                   </table>
                   <div className=" flex justify-center items-center mt-5"></div>

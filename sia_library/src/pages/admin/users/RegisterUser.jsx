@@ -359,7 +359,7 @@ function RegisterUser() {
                       </p>
                       <select
                         className=" w-44 md:w-56 lg:w-full bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 px-1 mt-3"
-                        {...register("modality_id")}
+                        {...register("degree_id")}
                       >
                         {degrees &&
                           degrees.map((degree) => (

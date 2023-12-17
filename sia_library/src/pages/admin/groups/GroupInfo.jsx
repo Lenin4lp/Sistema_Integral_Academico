@@ -666,34 +666,34 @@ function GroupInfo() {
                           <th className=" border bg-white py-2 px-10 sm:px-20 border-slate-300 font-semibold text-[#1C274C]">
                             Estudiante
                           </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
+                          <th className=" bg-[#1C274C] border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
                             Nota 1
                           </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
+                          <th className="bg-[#1C274C] border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
                             Nota 2
                           </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
+                          <th className="bg-[#1C274C] border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
                             Prueba
                           </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
+                          <th className="bg-[#1C274C] border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
                             Examen
                           </th>
-                          <th className=" border p-2 hidden bg-white	sm:table-cell border-slate-300 font-semibold lg:bg-[#151c31] text-[#1C274C] lg:text-white">
+                          <th className=" border p-2 hidden bg-white	sm:table-cell border-slate-300 font-semibold lg:bg-[#1C274C] text-[#1C274C] lg:text-white">
                             Prom 1
                           </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
+                          <th className="bg-[#1C274C] border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
                             Nota 1
                           </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
+                          <th className="bg-[#1C274C] border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
                             Nota 2
                           </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
+                          <th className="bg-[#1C274C] border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
                             Prueba
                           </th>
-                          <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
+                          <th className="bg-[#1C274C] border p-2 hidden lg:table-cell border-slate-300 font-semibold text-white">
                             Examen
                           </th>
-                          <th className=" border p-2 hidden bg-white	sm:table-cell border-slate-300 font-semibold lg:bg-[#151c31] text-[#1C274C] lg:text-white">
+                          <th className=" border p-2 hidden bg-white	sm:table-cell border-slate-300 font-semibold lg:bg-[#1C274C] text-[#1C274C] lg:text-white">
                             Prom 2
                           </th>
                           <th className=" border p-2 hidden sm:table-cell bg-white border-slate-300 font-semibold text-[#1C274C]">
@@ -911,7 +911,7 @@ function GroupInfo() {
                     onClick={onSubmit2}
                     className=" p-2 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#146898] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500"
                   >
-                    Registrar
+                    Guardar Cambios
                   </button>
                 </div>
                 <div className=" mt-10 flex justify-center items-center">

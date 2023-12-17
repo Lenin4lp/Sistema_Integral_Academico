@@ -168,9 +168,9 @@ function Users() {
                           : "Activo"}
                       </th>
                       <th className="border p-3 text-center border-slate-300 font-semibold text-white flex justify-center items-center">
-                        <Link
+                        <a
                           className=" "
-                          to={`/admin/usuarios/${user && user.user_id}`}
+                          href={`/admin/usuarios/${user && user.user_id}`}
                         >
                           <svg
                             width="20px"
@@ -197,7 +197,7 @@ function Users() {
                               className=" group-hover:stroke-slate-800"
                             />
                           </svg>
-                        </Link>
+                        </a>
                         <svg
                           className=" mx-1"
                           width="20px"
