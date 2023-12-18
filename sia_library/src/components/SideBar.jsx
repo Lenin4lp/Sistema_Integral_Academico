@@ -14,6 +14,7 @@ function SideBar({ MenuOption, children }) {
 
   return (
     <div className="flex">
+      
       <div
         className={`${
           open ? "w-[50vw] sm:w-56 md:w-72" : " w-[18vw] sm:w-20"
@@ -48,7 +49,7 @@ function SideBar({ MenuOption, children }) {
           </h1>
         </div>
         <ul className=" mt-8 pt-6">
-          {AdministrativeMenu.map((menu, index) => (
+          {Menus.map((menu, index) => (
             <Link
               to={`${menu.linkRef}`}
               key={index}
@@ -60,7 +61,7 @@ function SideBar({ MenuOption, children }) {
               <span
                 className={`${
                   !open && "scale-0"
-                } origin-left transition duration-300 text-[11px] sm:text-md md:text-lg lg:text-xl`}
+                } origin-left transition duration-300 text-[15px]`}
               >
                 {menu.title}
               </span>
@@ -77,7 +78,7 @@ function SideBar({ MenuOption, children }) {
             <span
               className={`${
                 !open && "scale-0"
-              } origin-left transition duration-300 text-[11px] sm:text-md md:text-lg lg:text-xl`}
+              } origin-left transition duration-300 text-[15px]`}
             >
               Cerrar Sesión
             </span>

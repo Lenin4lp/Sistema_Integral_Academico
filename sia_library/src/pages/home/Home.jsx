@@ -1,44 +1,43 @@
-import React from "react";
-
-import Cards from "../../components/Cards";
+import React, { useEffect, useState } from "react";
 
 function Home() {
   return (
-    <div>
-      <div className=" mt-24 md:mt-32 mb-5 md:mb-10 mx-3 flex items-center justify-center text-2xl md:text-3xl font-bold text-[#1C274C] text-center">
-        Bienvenid@ a la plataforma SIA
+    <div className=" overflow-x-hidden relative">
+      <div className=" fixed top-0 w-full h-fit bg-white">
+        <div>
+          <h1 className=" text-left p-2 text-[#1C274C]">
+            Bienvenid@ al <span className=" pl-1 font-bold">S</span>istema{" "}
+            <span className=" pl-1 font-bold">I</span>ntegral{" "}
+            <span className=" pl-1 font-bold">A</span>cademico
+          </h1>
+        </div>
       </div>
-      <div className=" grid grid-cols-1">
-        <div className=" flex items-center justify-center">
-          <a href="/cursos">
-            <Cards
-              cardColor="bg-gradient-to-br from-[#3bafc4] to-[#146898]"
-              cardTitle="Accede a tus cursos"
-              cardDescription=""
-              cardFontColor={"text-white"}
-            />
-          </a>
-        </div>
-
-        <div className=" flex items-center justify-center">
-          <a href="/biblioteca">
-            <Cards
-              cardColor="bg-gradient-to-br from-[#328d49] to-[#5cc09a]"
-              cardTitle="Accede a la biblioteca académica"
-              cardDescription=""
-              cardFontColor={"text-white"}
-            />
-          </a>
-        </div>
-        <div className=" flex items-center justify-center">
-          <a href="/soporte">
-            <Cards
-              cardColor="bg-gradient-to-br from-[#ff6739] to-[#d69f39]"
-              cardTitle="Soporte SIA"
-              cardDescription=""
-              cardFontColor={"text-white"}
-            />
-          </a>
+      <div className=" m-5 h-fit w-full mt-14 flex justify-center">
+        <div className=" block w-[80%]">
+          <div className=" grid grid-cols-1 ">
+            <div className=" flex justify-center m-10">
+              {" "}
+              <img src="/images/white-logo.png" className=" h-[70px]" alt="" />
+            </div>
+            <div className=" flex justify-center items-center">
+              <div className=" m-5">
+                <h1 className=" text-center mx-10 text-white">
+                  Somos más que una plataforma académica; somos tu socio en el
+                  viaje del aprendizaje. En el Instituto Superior Tecnológico de
+                  la Vera Cruz, creemos en el poder de la educación para
+                  transformar vidas. Nuestra misión es proporcionar a los
+                  estudiantes de todas partes acceso a cursos de calidad,
+                  recursos innovadores y una comunidad de aprendices
+                  apasionados.
+                </h1>
+              </div>
+            </div>
+          </div>
+          <div className=" mt-5 grid grid-cols-3 gap-x-5">
+            <div><button>Manual de uso</button></div>
+            <div><button>Soporte técnico</button></div>
+            <div><button></button></div>
+          </div>
         </div>
       </div>
     </div>

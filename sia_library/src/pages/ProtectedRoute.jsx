@@ -1,15 +1,19 @@
 import { Outlet, Navigate } from "react-router-dom";
-import { useState } from "react";
 import { useAuth } from "../auth/AuthProvider";
-import NavBar from "../components/NavBar";
+import SideBar from "../components/SideBar";
+import { AcademicMenu } from "../utils/menuOptions";
 
 export default function ProtectedRoute() {
   const { isAuthenticated, user } = useAuth();
 
   return isAuthenticated ? (
     <>
-      <NavBar />
-      <Outlet />
+    <div className="  bg-gradient-to-br from-[#1C274C] to-[#146898]">
+      <SideBar MenuOption={AcademicMenu}>
+        
+            <Outlet />
+          </SideBar>
+          </div>
     </>
   ) : (
     <Navigate to="/" />

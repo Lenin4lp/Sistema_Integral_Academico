@@ -31,3 +31,38 @@ export const AdministrativeMenu = [
     id: 6,
   },
 ];
+
+
+export const AcademicMenu = [
+  {
+    title: "Home",
+    src: "/images/home.svg",
+    linkRef: "/home",
+    id: 1,
+  },
+  {
+    title: "Académico",
+    src: "/images/degrees.svg",
+    linkRef: "/academico",
+    id: 2,
+  },
+  {
+    title: "Calificaciones",
+    src: "/images/subjects.svg",
+    linkRef: "/calificaciones",
+    id: 3,
+    gap: true,
+  },
+  {
+    title: "Perfil",
+    src: "/images/profile2.svg",
+    linkRef: "/perfil",
+    id: 4,
+  },
+  {
+    title: "Biblioteca",
+    src: "/images/library.svg",
+    linkRef: "/biblioteca",
+    id: 6,
+  },
+];

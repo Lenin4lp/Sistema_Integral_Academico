@@ -1,7 +1,5 @@
 import { Outlet, Navigate } from "react-router-dom";
-import { useState } from "react";
 import { useAuth } from "../auth/AuthProvider";
-import NavBar from "../components/NavBar";
 import SideBar from "../components/SideBar";
 import { AdministrativeMenu } from "../utils/menuOptions";
 
@@ -11,7 +9,7 @@ export default function AdminRoutes() {
     if (user.role_id === 3) {
       return (
         <div className=" bg-[#151c31]">
-          <SideBar>
+          <SideBar MenuOption={AdministrativeMenu}>
             <Outlet />
           </SideBar>
         </div>
