@@ -24,6 +24,7 @@ const modality_model_1 = require("./modality.model");
 const period_model_1 = require("./period.model");
 const grades_model_1 = require("./grades.model");
 const teacher_model_1 = require("./teacher.model");
+const uuid_1 = require("uuid");
 let Group = class Group extends sequelize_typescript_1.Model {
     static createGroupUUID(group) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -33,7 +34,8 @@ let Group = class Group extends sequelize_typescript_1.Model {
                 .substring(0, 7)
                 .toUpperCase()
                 .replace(" ", "");
-            group.group_id = `${subjectAbreviation}-${groupName}`;
+            const generatedUuid = (0, uuid_1.v4)().substring(0, 3);
+            group.group_id = `${subjectAbreviation}-${groupName}${generatedUuid}`;
         });
     }
 };

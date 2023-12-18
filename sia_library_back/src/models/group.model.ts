@@ -16,6 +16,7 @@ import { Modality } from "./modality.model";
 import { Period } from "./period.model";
 import { Grade } from "./grades.model";
 import { Teacher } from "./teacher.model";
+import { v4 as uuidv4 } from "uuid";
 
 @Table({
   tableName: "grupo",
@@ -108,7 +109,8 @@ export class Group extends Model {
       .substring(0, 7)
       .toUpperCase()
       .replace(" ", "");
+    const generatedUuid = uuidv4().substring(0, 3);
 
-    group.group_id = `${subjectAbreviation}-${groupName}`;
+    group.group_id = `${subjectAbreviation}-${groupName}${generatedUuid}`;
   }
 }

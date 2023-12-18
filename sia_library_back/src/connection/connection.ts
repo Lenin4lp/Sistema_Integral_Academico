@@ -16,9 +16,9 @@ import { Grade } from "../models/grades.model";
 export const connection = new Sequelize({
   dialect: "mysql",
   host: "localhost",
-  username: "root",
+  username: "istvcedu_siav1",
   password: process.env.DB_PASSWORD,
-  database: "sia_library",
+  database: "istvcedu_siav1",
   port: 3306,
   models: [
     Role,
