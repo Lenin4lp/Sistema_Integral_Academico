@@ -2,10 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const period_controller_1 = require("../controllers/period.controller");
+const validator_middleware_1 = require("../middlewares/validator.middleware");
+const period_schema_1 = require("../schemas/period.schema");
 const router = (0, express_1.Router)();
 router.get("/periods", period_controller_1.getPeriods);
 router.get("/period/:id", period_controller_1.getPeriod);
-router.post("/period", period_controller_1.createPeriod);
-router.put("/period/:id", period_controller_1.updatePeriod);
+router.post("/period", (0, validator_middleware_1.validateSchema)(period_schema_1.registerPeriodSchema), period_controller_1.createPeriod);
+router.put("/period/:id", (0, validator_middleware_1.validateSchema)(period_schema_1.updatePeriodSchema), period_controller_1.updatePeriod);
 router.delete("/period/:id", period_controller_1.deletePeriod);
 exports.default = router;

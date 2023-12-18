@@ -119,6 +119,13 @@ __decorate([
 ], User.prototype, "user_phone", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.BOOLEAN,
+        allowNull: true,
+        field: "estado",
+    })
+], User.prototype, "user_status", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING(15),
         allowNull: false,
         field: "sexo",

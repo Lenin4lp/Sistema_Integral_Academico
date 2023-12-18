@@ -23,7 +23,18 @@ const grades_model_1 = require("../models/grades.model");
 const teacher_model_1 = require("../models/teacher.model");
 // ? Obtener todos los grupos
 const getGroups = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const groups = yield group_model_1.Group.findAll();
+    const groups = yield group_model_1.Group.findAll({
+        include: [
+            { model: student_model_1.Student, include: [{ model: user_model_1.default }] },
+            { model: teacher_model_1.Teacher, include: [{ model: user_model_1.default }] },
+            { model: subject_model_1.Subject },
+            { model: period_model_1.Period },
+            {
+                model: grades_model_1.Grade,
+                include: [{ model: student_model_1.Student, include: [{ model: user_model_1.default }] }],
+            },
+        ],
+    });
     res.json(groups);
 });
 exports.getGroups = getGroups;
@@ -35,7 +46,10 @@ const getGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             { model: teacher_model_1.Teacher, include: [{ model: user_model_1.default }] },
             { model: subject_model_1.Subject },
             { model: period_model_1.Period },
-            { model: grades_model_1.Grade, include: [{ model: student_model_1.Student, include: [{ model: user_model_1.default }] }] },
+            {
+                model: grades_model_1.Grade,
+                include: [{ model: student_model_1.Student, include: [{ model: user_model_1.default }] }],
+            },
         ],
     });
     if (!group)
@@ -53,6 +67,7 @@ const createGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             modality_id,
             period_id,
             teacher_id,
+            group_status: true,
         });
         res.json(newGroup);
     }
@@ -64,12 +79,14 @@ const createGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.createGroup = createGroup;
 // ? Actualizar un grupo
 const updateGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { group_name, teacher_id } = req.body;
+    const { group_name, teacher_id, group_status, modality_id } = req.body;
     const group = yield group_model_1.Group.findByPk(req.params.id);
     if (group) {
         yield group.update({
             group_name,
             teacher_id,
+            group_status,
+            modality_id,
         });
     }
     else {

@@ -1,0 +1,44 @@
+import { z } from "zod";
+export declare const updateGradeSchema: z.ZodObject<{
+    grade_1: z.ZodOptional<z.ZodNumber>;
+    grade_2: z.ZodOptional<z.ZodNumber>;
+    test_1: z.ZodOptional<z.ZodNumber>;
+    exam_1: z.ZodOptional<z.ZodNumber>;
+    grade_3: z.ZodOptional<z.ZodNumber>;
+    grade_4: z.ZodOptional<z.ZodNumber>;
+    test_2: z.ZodOptional<z.ZodNumber>;
+    exam_2: z.ZodOptional<z.ZodNumber>;
+    prom_1: z.ZodOptional<z.ZodNumber>;
+    prom_2: z.ZodOptional<z.ZodNumber>;
+    status: z.ZodOptional<z.ZodString>;
+    resit: z.ZodOptional<z.ZodNumber>;
+    final_grade: z.ZodOptional<z.ZodNumber>;
+}, "strip", z.ZodTypeAny, {
+    grade_1?: number | undefined;
+    grade_2?: number | undefined;
+    test_1?: number | undefined;
+    exam_1?: number | undefined;
+    grade_3?: number | undefined;
+    grade_4?: number | undefined;
+    test_2?: number | undefined;
+    exam_2?: number | undefined;
+    prom_1?: number | undefined;
+    prom_2?: number | undefined;
+    status?: string | undefined;
+    resit?: number | undefined;
+    final_grade?: number | undefined;
+}, {
+    grade_1?: number | undefined;
+    grade_2?: number | undefined;
+    test_1?: number | undefined;
+    exam_1?: number | undefined;
+    grade_3?: number | undefined;
+    grade_4?: number | undefined;
+    test_2?: number | undefined;
+    exam_2?: number | undefined;
+    prom_1?: number | undefined;
+    prom_2?: number | undefined;
+    status?: string | undefined;
+    resit?: number | undefined;
+    final_grade?: number | undefined;
+}>;

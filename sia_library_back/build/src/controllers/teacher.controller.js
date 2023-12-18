@@ -16,7 +16,9 @@ const user_model_1 = require("../models/user.model");
 const group_model_1 = require("../models/group.model");
 //? Obtener todos los docentes
 const getTeachers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const teachers = yield teacher_model_1.Teacher.findAll();
+    const teachers = yield teacher_model_1.Teacher.findAll({
+        include: [{ model: group_model_1.Group, include: [{ model: subject_model_1.Subject }] }, { model: user_model_1.User }],
+    });
     res.json(teachers);
 });
 exports.getTeachers = getTeachers;

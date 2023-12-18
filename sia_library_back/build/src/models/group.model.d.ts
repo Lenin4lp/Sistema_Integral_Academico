@@ -8,6 +8,7 @@ import { Teacher } from "./teacher.model";
 export declare class Group extends Model {
     group_id: string;
     group_name: string;
+    group_status: boolean;
     subject_id: string;
     modality_id: number;
     period_id: string;

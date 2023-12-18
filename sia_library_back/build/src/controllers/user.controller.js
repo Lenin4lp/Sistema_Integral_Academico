@@ -17,9 +17,12 @@ const user_model_1 = require("../models/user.model");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const admin_model_1 = require("../models/admin.model");
 const teacher_model_1 = require("../models/teacher.model");
+const subject_model_1 = require("../models/subject.model");
 const degree_model_1 = require("../models/degree.model");
 const student_model_1 = require("../models/student.model");
 const group_model_1 = require("../models/group.model");
+const grades_model_1 = require("../models/grades.model");
+const period_model_1 = require("../models/period.model");
 //? Visualizar usuarios
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield user_model_1.User.findAll();
@@ -28,7 +31,28 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getUsers = getUsers;
 //? Obtener un solo usuario
 const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.User.findByPk(req.params.id);
+    const user = yield user_model_1.User.findByPk(req.params.id, {
+        include: [
+            {
+                model: student_model_1.Student,
+                include: [
+                    { model: degree_model_1.Degree },
+                    {
+                        model: grades_model_1.Grade,
+                        include: [
+                            {
+                                model: group_model_1.Group,
+                                include: [{ model: subject_model_1.Subject }, { model: period_model_1.Period }],
+                            },
+                        ],
+                    },
+                    { model: group_model_1.Group, include: [{ model: subject_model_1.Subject }, { model: period_model_1.Period }] },
+                ],
+            },
+            { model: teacher_model_1.Teacher, include: [{ model: group_model_1.Group, include: [subject_model_1.Subject] }] },
+            { model: admin_model_1.Admin },
+        ],
+    });
     if (!user)
         return res.status(404).json({ message: "User not found" });
     let roleTable;
@@ -60,7 +84,7 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getUser = getUser;
 //? Modificar usuario
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { user_name, user_lastname, user_email, user_password: user_password, user_ci, user_direction, user_Citizenship, user_phone, user_genre: genre, birth_date, } = req.body;
+    const { user_name, user_lastname, user_email, user_password: user_password, user_ci, user_direction, user_Citizenship, user_phone, user_status, user_genre: genre, birth_date, } = req.body;
     const user = yield user_model_1.User.findByPk(req.params.id);
     if (user) {
         if (user_password) {
@@ -78,7 +102,7 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 user_genre: genre,
                 birth_date,
                 updated_at: new Date(),
-                user_status: false,
+                user_status,
             });
         }
         else {
@@ -93,6 +117,7 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 user_phone,
                 user_genre: genre,
                 birth_date,
+                user_status,
                 updated_at: new Date(),
             });
         }

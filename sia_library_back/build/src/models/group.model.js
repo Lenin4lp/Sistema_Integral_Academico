@@ -55,6 +55,13 @@ __decorate([
     })
 ], Group.prototype, "group_name", void 0);
 __decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.BOOLEAN,
+        allowNull: true,
+        field: "estado",
+    })
+], Group.prototype, "group_status", void 0);
+__decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => subject_model_1.Subject),
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING(12),

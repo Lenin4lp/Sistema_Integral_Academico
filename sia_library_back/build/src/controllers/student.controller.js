@@ -19,7 +19,17 @@ const group_model_1 = require("../models/group.model");
 const grades_model_1 = require("../models/grades.model");
 //? Obtener todos los estudiantes
 const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const students = yield student_model_1.Student.findAll();
+    const students = yield student_model_1.Student.findAll({
+        include: [
+            { model: degree_model_1.Degree },
+            { model: group_model_1.Group, include: [{ model: subject_model_1.Subject }] },
+            { model: user_model_1.User },
+            {
+                model: grades_model_1.Grade,
+                include: [{ model: group_model_1.Group, include: [{ model: subject_model_1.Subject }] }],
+            },
+        ],
+    });
     res.json(students);
 });
 exports.getStudents = getStudents;
@@ -43,11 +53,12 @@ const getStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.getStudent = getStudent;
 //? Actualizar un estudiante
 const updateStudent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { degree_id } = req.body;
+    const { degree_id, modality_id } = req.body;
     const student = yield student_model_1.Student.findByPk(req.params.id);
     if (student) {
         yield student.update({
             degree_id,
+            modality_id,
         });
     }
     else {

@@ -31,12 +31,12 @@ const getDegree = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getDegree = getDegree;
 //? Crear una Carrera
 const createDegree = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { degree_name, degree_duration, degree_acronym, } = req.body;
+    const { degree_name, degree_duration, degree_acronym } = req.body;
     try {
         const degreeFound = yield degree_model_1.Degree.findOne({
             where: {
                 degree_name: degree_name,
-            }
+            },
         });
         if (degreeFound) {
             return res.status(409).json(["La carrera ya existe"]);
@@ -56,7 +56,7 @@ const createDegree = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.createDegree = createDegree;
 //? Actualizar una Carrera
 const updateDegree = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { degree_name, degree_duration, degree_status, } = req.body;
+    const { degree_name, degree_duration, degree_status } = req.body;
     const degree = yield degree_model_1.Degree.findByPk(req.params.id);
     if (degree) {
         yield degree.update({

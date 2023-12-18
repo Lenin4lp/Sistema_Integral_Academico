@@ -25,7 +25,7 @@ const degree_model_1 = require("../models/degree.model");
 const group_model_1 = require("../models/group.model");
 // ? Registro de usuario
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { user_id, user_name, user_lastname, user_email, user_password, user_ci, user_direction, user_Citizenship, user_phone, user_genre: genre, birth_date, role_id, } = req.body;
+    const { user_id, user_name, user_lastname, user_email, user_password, user_ci, user_direction, user_Citizenship, user_phone, user_status, user_genre: genre, birth_date, role_id, } = req.body;
     try {
         const userFound = yield user_model_1.User.findOne({
             where: {
@@ -41,6 +41,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             user_email,
             user_password: passwordHash,
             user_ci,
+            user_status: true,
             user_direction: user_direction !== null && user_direction !== void 0 ? user_direction : "Pendiente",
             user_Citizenship,
             user_phone: user_phone !== null && user_phone !== void 0 ? user_phone : "Pendiente",
@@ -131,6 +132,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             user_email: userFound.user_email,
             role_id: userFound.role_id,
             user_lastname: userFound.user_lastname,
+            user_status: userFound.user_status,
             token,
         });
     }

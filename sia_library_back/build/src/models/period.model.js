@@ -23,7 +23,7 @@ __decorate([
 ], Period.prototype, "period_id", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING(30),
+        type: sequelize_typescript_1.DataType.STRING(16),
         allowNull: false,
         field: "nombre_periodo",
         unique: true,

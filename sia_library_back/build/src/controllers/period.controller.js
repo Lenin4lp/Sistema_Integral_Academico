@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deletePeriod = exports.updatePeriod = exports.createPeriod = exports.getPeriod = exports.getPeriods = void 0;
 const period_model_1 = require("../models/period.model");
+const group_model_1 = require("../models/group.model");
 // ? Obtener todos los periodos
 const getPeriods = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const periods = yield period_model_1.Period.findAll();
@@ -19,7 +20,11 @@ const getPeriods = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.getPeriods = getPeriods;
 // ? Obtener un solo periodo
 const getPeriod = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const period = yield period_model_1.Period.findByPk(req.params.id);
+    const period = yield period_model_1.Period.findByPk(req.params.id, {
+        include: [
+            { model: group_model_1.Group }
+        ]
+    });
     if (!period)
         return res.status(404).json({ message: "Period not found" });
     res.json(period);

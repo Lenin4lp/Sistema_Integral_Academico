@@ -2,12 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const group_controller_1 = require("../controllers/group.controller");
+const validator_middleware_1 = require("../middlewares/validator.middleware");
+const group_schema_1 = require("../schemas/group.schema");
 const router = (0, express_1.Router)();
 router.get("/groups", group_controller_1.getGroups);
 router.get("/group/:id", group_controller_1.getGroup);
-router.post("/group", group_controller_1.createGroup);
-router.put("/group/:id", group_controller_1.updateGroup);
+router.post("/group", (0, validator_middleware_1.validateSchema)(group_schema_1.registerGroupSchema), group_controller_1.createGroup);
+router.put("/group/:id", (0, validator_middleware_1.validateSchema)(group_schema_1.updateGroupSchema), group_controller_1.updateGroup);
 router.delete("/group/:id", group_controller_1.deleteGroup);
-router.post("/groups/:id/students", group_controller_1.addStudentToGroup);
+router.post("/groups/:id/students", (0, validator_middleware_1.validateSchema)(group_schema_1.assignStudentToSubjectSchema), group_controller_1.addStudentToGroup);
 router.delete("/groups/:id/students", group_controller_1.deleteStudentFromGroup);
 exports.default = router;

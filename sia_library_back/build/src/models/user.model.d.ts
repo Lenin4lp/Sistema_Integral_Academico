@@ -13,6 +13,7 @@ export declare class User extends Model {
     user_direction: string;
     user_Citizenship: string;
     user_phone: string;
+    user_status: boolean;
     user_genre: string;
     birth_date: string;
     role_id: number;
