@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../auth/AuthProvider";
 import { getUser } from "../../api/user";
+import { getPeriods } from "../../api/academic";
 
 function Academic() {
   const { user } = useAuth();
   const [errors, setErrors] = useState([]);
   const [userProfile, setUserProfile] = useState([]);
+  const [periods, setPeriods] = useState([]);
+  const [periodIndex, setPeriodIndex] = useState(0);
 
   const getAUser = async (userId) => {
     try {
@@ -19,9 +22,27 @@ function Academic() {
     }
   };
 
+  const getPeriodsList = async () => {
+    try {
+      const res = await getPeriods();
+      if (res.status === 200) {
+        setPeriods(res.data);
+        console.log(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+      setErrors(error.response.data);
+    }
+  }
+
   useEffect(() => {
     getAUser(user.user_id);
-  }, []);
+    
+  }, [user]);
+
+  useEffect(() => {
+    getPeriodsList(); 
+  },[])
 
   console.log(user);
   console.log(userProfile);
@@ -75,9 +96,9 @@ function Academic() {
               </h1>
             </div>
           </div>
-          <div className=" flex justify-center items-center mt-5 md:mt-10 mx-10">
+          <div className=" flex justify-center items-center mt-5 md:mt-10 mx-10 my-10">
             <div className=" grid grid-cols-4">
-              <div className=" col-span-1 ">
+              <div className=" col-span-1  ">
                 <div className=" w-[280px] h-fit bg-white rounded-lg flex justify-center">
                   <div className=" block">
                     <div className=" flex justify-center">
@@ -152,15 +173,27 @@ function Academic() {
                                 ).length}
                             </span>
                           </p>
-                          <p className=" mt-5 font-semibold my-3 text-sm text-[#1C274C]">Cursos: </p>
-                          {userProfile.user && userProfile.user.student.group.filter((group) => group.group_status === 1 ||
-                              group.group_status === null).map((group) => (
+                          <p className=" mt-5 font-semibold my-3 text-sm text-[#1C274C]">
+                            Cursos:{" "}
+                          </p>
+                          {userProfile.user &&
+                            userProfile.user.student.group
+                              .filter(
+                                (group) =>
+                                  group.group_status === 1 ||
+                                  group.group_status === null
+                              )
+                              .map((group) => (
                                 <a href={`/academico/curso/${group.group_id}`}>
-                                <div className="font-medium my-2 text-[14px] text-[#1C274C] hover:text-[#146898] duration-300">
-                                  <p key={group.group_id}>{group.subject.subject_name}</p>
-                                  <p className=" text-[12px] opacity-50">{group.group_id}</p>
+                                  <div className="font-medium my-2 text-[14px] text-[#1C274C] hover:text-[#146898] duration-300">
+                                    <p key={group.group_id}>
+                                      {group.subject.subject_name}
+                                    </p>
+                                    <p className=" text-[12px] opacity-50">
+                                      {group.group_id}
+                                    </p>
                                   </div>
-                                  </a>
+                                </a>
                               ))}
                         </div>
                       )}
@@ -177,15 +210,42 @@ function Academic() {
                           </span>
                         </p>
                       </a>
-                      <p className=" mt-5 font-semibold my-3 text-sm text-[#1C274C]">Fecha de creación:</p>
-                      <p className="  font-semibold my-1 text-sm text-[#1C274C]">{user && user.createdAt}</p>
-                      <p className=" mt-5 font-semibold my-3 text-sm text-[#1C274C]">Fecha de actualización:</p>
-                      <p className="  font-semibold my-1 text-sm text-[#1C274C]">{user && user.updatedAt}</p>
+                      <p className=" mt-5 font-semibold my-3 text-sm text-[#1C274C]">
+                        Fecha de creación:
+                      </p>
+                      <p className="  font-medium my-1 text-sm text-[#1C274C]">
+                        {user && user.createdAt}
+                      </p>
+                      <p className=" mt-5 font-semibold my-3 text-sm text-[#1C274C]">
+                        Fecha de actualización:
+                      </p>
+                      <p className="  font-medium my-1 text-sm text-[#1C274C]">
+                        {user && user.updatedAt}
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className=" col-span-3 flex justify-center items-center"></div>
+              <div className=" col-span-3 flex justify-center items-start">
+                {user && user.role_id === 1 && (
+                  <div className=" block w-[750px] h-screen rounded-lg">
+                    <div className="   flex justify-start">
+                      <div className=" m-5 flex justify-start">
+                        <p className=" text-left font-semibold text-2xl text-white underline underline-offset-8 decoration-[#146898]">
+                          Cursos
+                        </p>
+                      </div>
+                    </div>
+                    <div className=" mx-5">
+                      <select className=" rounded h-[30px]" name="periodos" id="">
+                        <option className=" px-2" value="">Seleccione un periodo</option>
+                        {periods && periods.map((period) => <option>{period.period_name}</option>)}
+                      </select>
+                    </div>
+                    <div className=" flex justify-center items-center"></div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
