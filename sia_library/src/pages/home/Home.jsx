@@ -33,10 +33,24 @@ function Home() {
               </div>
             </div>
           </div>
-          <div className=" mt-5 grid grid-cols-3 gap-x-5">
-            <div><button>Manual de uso</button></div>
-            <div><button>Soporte técnico</button></div>
-            <div><button></button></div>
+          <div className=" flex justify-center items-center">
+            <div className=" mt-5 grid grid-cols-3 gap-x-20">
+              <div>
+                <button className=" p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#146898] text-white hover:text-white text-sm lg:text-base duration-500">
+                  Manual de uso
+                </button>
+              </div>
+              <div>
+                <button className=" p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#146898] text-white hover:text-white text-sm lg:text-base duration-500">
+                  Soporte técnico
+                </button>
+              </div>
+              <div>
+                <button className=" p-2 px-4 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#146898] text-white hover:text-white text-sm lg:text-base duration-500">
+                  Academico
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
