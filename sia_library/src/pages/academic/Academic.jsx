@@ -1,26 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../auth/AuthProvider";
-import { getUser } from "../../api/user";
 import { getPeriods } from "../../api/academic";
+import SubjectCard from "../../components/SubjectCard";
 
 function Academic() {
   const { user } = useAuth();
   const [errors, setErrors] = useState([]);
-  const [userProfile, setUserProfile] = useState([]);
-  const [periods, setPeriods] = useState([]);
-  const [periodIndex, setPeriodIndex] = useState(0);
 
-  const getAUser = async (userId) => {
-    try {
-      const res = await getUser(userId);
-      if (res.status === 200) {
-        setUserProfile(res.data);
-      }
-    } catch (error) {
-      console.log(error);
-      setErrors(error.response.data);
-    }
-  };
+  const [periods, setPeriods] = useState([]);
+  const [selectedPeriod, setSelectedPeriod] = useState("");
 
   const getPeriodsList = async () => {
     try {
@@ -33,19 +21,13 @@ function Academic() {
       console.log(error);
       setErrors(error.response.data);
     }
-  }
+  };
 
   useEffect(() => {
-    getAUser(user.user_id);
-    
-  }, [user]);
-
-  useEffect(() => {
-    getPeriodsList(); 
-  },[])
+    getPeriodsList();
+  }, []);
 
   console.log(user);
-  console.log(userProfile);
 
   return (
     <>
@@ -148,16 +130,15 @@ function Academic() {
                           <p className="font-semibold my-3 text-sm text-[#1C274C]">
                             Carrera:{" "}
                             <span className="font-medium">
-                              {userProfile.user &&
-                                userProfile.user.student.degree.degree_name}
+                              {user.roleTable &&
+                                user.roleTable.degree.degree_name}
                             </span>
                           </p>
                           <p className="font-semibold my-3 text-sm text-[#1C274C]">
                             Modalidad:{" "}
                             <span className="font-medium">
-                              {userProfile.user &&
-                              userProfile.user.student.group[0].modality_id ===
-                                1
+                              {user.roleTable &&
+                              user.roleTable.group[0].modality_id === 1
                                 ? "Presencial"
                                 : "En línea"}
                             </span>
@@ -165,8 +146,8 @@ function Academic() {
                           <p className="font-semibold my-3 text-sm text-[#1C274C]">
                             Nº de Materias:{" "}
                             <span className="font-medium">
-                              {userProfile.user &&
-                                userProfile.user.student.group.filter(
+                              {user.roleTable &&
+                                user.roleTable.group.filter(
                                   (group) =>
                                     group.group_status === 1 ||
                                     group.group_status === null
@@ -176,8 +157,8 @@ function Academic() {
                           <p className=" mt-5 font-semibold my-3 text-sm text-[#1C274C]">
                             Cursos:{" "}
                           </p>
-                          {userProfile.user &&
-                            userProfile.user.student.group
+                          {user.userTable &&
+                            user.userTable.group
                               .filter(
                                 (group) =>
                                   group.group_status === 1 ||
@@ -237,12 +218,44 @@ function Academic() {
                       </div>
                     </div>
                     <div className=" mx-5">
-                      <select className=" rounded h-[30px]" name="periodos" id="">
-                        <option className=" px-2" value="">Seleccione un periodo</option>
-                        {periods && periods.map((period) => <option>{period.period_name}</option>)}
+                      <select
+                        className=" rounded h-[30px]"
+                        name="periodos"
+                        id=""
+                      >
+                        <option className=" px-2" value="">
+                          Seleccione un periodo
+                        </option>
+                        {periods &&
+                          periods.map((period) => (
+                            <option value={period.period_id}>
+                              {period.period_name}
+                            </option>
+                          ))}
                       </select>
                     </div>
-                    <div className=" flex justify-center items-center"></div>
+                    <div className=" flex justify-center items-center">
+                      <div className=" grid grid-cols-3">
+                        {selectedPeriod === "" ? (
+                          user.roleTable &&
+                          user.roleTable.group
+                            .filter(
+                              (group) =>
+                                group.group_status === 1 ||
+                                group.group_status === null
+                            )
+                            .map((group) => (
+                              <div className=" mx-5" key={group.group_id}>
+                                <SubjectCard
+                                  cardTitle={group.subject.subject_name}
+                                />
+                              </div>
+                            ))
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>

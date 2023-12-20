@@ -47,7 +47,10 @@ export const getUser = async (req: Request, res: Response) => {
       where: {
         student_id: user.user_id,
       },
-      include: [Degree, Group],
+      include: [
+        { model: Degree },
+        { model: Group, include: [{ model: Subject }, { model: Period }] },
+      ],
     });
   } else if (user.role_id === 2) {
     roleTable = await Teacher.findOne({

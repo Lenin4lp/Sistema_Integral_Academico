@@ -10,6 +10,8 @@ import { TOKEN_SECRET } from "../config/config";
 import jwt from "jsonwebtoken";
 import { Degree } from "../models/degree.model";
 import { Group } from "../models/group.model";
+import { Subject } from "../models/subject.model";
+import { Period } from "../models/period.model";
 
 // ? Registro de usuario
 export const register = async (req: Request, res: Response) => {
@@ -115,14 +117,19 @@ export const login = async (req: Request, res: Response) => {
         where: {
           user_id: userFound.user_id,
         },
-        include: [Degree, Group],
+        include: [
+          { model: Degree },
+          { model: Group, include: [{ model: Subject }, { model: Period }] },
+        ],
       });
     } else if (userFound.role_id === 2) {
       roleTable = await Teacher.findOne({
         where: {
           user_id: userFound.user_id,
         },
-        include: [Group],
+        include: [
+          { model: Group, include: [{ model: Subject }, { model: Period }] },
+        ],
       });
     } else if (userFound.role_id === 3) {
       roleTable = await Admin.findOne({
@@ -140,6 +147,7 @@ export const login = async (req: Request, res: Response) => {
       user_lastname: userFound.user_lastname,
       user_status: userFound.user_status,
       token,
+      roleTable,
     });
   } catch (error) {
     console.log(error);
@@ -169,6 +177,34 @@ export const verifyToken = async (req: Request, res: Response) => {
     const userFound = await User.findByPk(user.id);
     if (!userFound) return res.status(401).json({ message: "Unauthorized" });
 
+    let roleTable;
+    if (userFound.role_id === 1) {
+      roleTable = await Student.findOne({
+        where: {
+          user_id: userFound.user_id,
+        },
+        include: [
+          { model: Degree },
+          { model: Group, include: [{ model: Subject }, { model: Period }] },
+        ],
+      });
+    } else if (userFound.role_id === 2) {
+      roleTable = await Teacher.findOne({
+        where: {
+          user_id: userFound.user_id,
+        },
+        include: [
+          { model: Group, include: [{ model: Subject }, { model: Period }] },
+        ],
+      });
+    } else if (userFound.role_id === 3) {
+      roleTable = await Admin.findOne({
+        where: {
+          user_id: userFound.user_id,
+        },
+      });
+    }
+
     return res.json({
       user_id: userFound.user_id,
       user_name: userFound.user_name,
@@ -177,6 +213,7 @@ export const verifyToken = async (req: Request, res: Response) => {
       user_email: userFound.user_email,
       createdAt: userFound.createdAt,
       updatedAt: userFound.updatedAt,
+      roleTable,
     });
   });
 };
