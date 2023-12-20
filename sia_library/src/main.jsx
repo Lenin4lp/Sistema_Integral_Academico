@@ -64,6 +64,7 @@ const LazyUpdateGrades = React.lazy(() =>
   import("./pages/admin/grades/UpdateGrades.jsx")
 );
 const LazyAcademic = React.lazy(() => import("./pages/academic/Academic.jsx"));
+const LazyGrades = React.lazy(() => import("./pages/admin/grades/Grades.jsx"));
 
 const router = createBrowserRouter([
   {
@@ -257,6 +258,32 @@ const router = createBrowserRouter([
             }
           >
             <LazyProfile />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/calificaciones",
+        element: (
+          <Suspense
+            fallback={
+              <>
+                fallback=
+                {
+                  <>
+                    <div className="flex justify-center items-center w-screen h-screen bg-white">
+                      <div className="block">
+                        <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
+                        <h4 className=" text-center text-[#146898]  font-semibold mt-5">
+                          Cargando...
+                        </h4>
+                      </div>
+                    </div>
+                  </>
+                }
+              </>
+            }
+          >
+            <LazyGrades />
           </Suspense>
         ),
       },

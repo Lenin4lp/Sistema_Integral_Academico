@@ -1,14 +1,209 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../auth/AuthProvider";
-import { getPeriods } from "../../api/academic";
-import SubjectCard from "../../components/SubjectCard";
+import { getPeriods, getDegrees } from "../../api/academic";
+import Cards from "../../components/Cards";
+import roundedButton from "../../components/roundedButton";
 
 function Academic() {
   const { user } = useAuth();
   const [errors, setErrors] = useState([]);
-
   const [periods, setPeriods] = useState([]);
+  const [degrees, setDegrees] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState("");
+
+  const handlePeriodChange = (e) => {
+    setSelectedPeriod(e.target.value);
+  };
+
+  const academicButtons = [
+    {
+      buttonName: "Carreras",
+      buttonLink: "/carreras",
+      buttonSVG: (
+        <svg
+          className=" h-[50px] sm:h-[60px] lg:h-[90px] w-[50px] sm:w-[60px] lg:w-[90px]"
+          viewBox="0 0 48 48"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            {" "}
+            <rect width="48" height="48" fill="" fillOpacity="0.01"></rect>{" "}
+            <path
+              d="M2 17.4L23.0222 9L44.0444 17.4L23.0222 25.8L2 17.4Z"
+              fill=""
+              stroke="#1C274C"
+              strokeWidth="4"
+              strokeLinejoin="round"
+            ></path>{" "}
+            <path
+              d="M44.0444 17.5101V26.7333"
+              stroke="#1C274C"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></path>{" "}
+            <path
+              d="M11.5555 21.8253V34.2667C11.5555 34.2667 16.3656 39 23.0222 39C29.6788 39 34.4889 34.2667 34.4889 34.2667V21.8253"
+              stroke="#1C274C"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></path>{" "}
+          </g>
+        </svg>
+      ),
+    },
+    {
+      buttonName: "Horarios",
+      buttonLink: "/horarios",
+      buttonSVG: (
+        <svg
+          className=" h-[40px] md:h-[50px] lg:h-[70px] w-[40px] md:w-[50px] lg:w-[70px]"
+          version="1.1"
+          id="_x32_"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlnsXlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 512 512"
+          xmlSpace="preserve"
+          fill="#1C274C"
+        >
+          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            {" "}
+            <style type="text/css"> </style>{" "}
+            <g>
+              {" "}
+              <rect
+                x="119.256"
+                y="222.607"
+                className="st0"
+                width="50.881"
+                height="50.885"
+              ></rect>{" "}
+              <rect
+                x="341.863"
+                y="222.607"
+                className="st0"
+                width="50.881"
+                height="50.885"
+              ></rect>{" "}
+              <rect
+                x="267.662"
+                y="222.607"
+                className="st0"
+                width="50.881"
+                height="50.885"
+              ></rect>{" "}
+              <rect
+                x="119.256"
+                y="302.11"
+                className="st0"
+                width="50.881"
+                height="50.885"
+              ></rect>{" "}
+              <rect
+                x="267.662"
+                y="302.11"
+                className="st0"
+                width="50.881"
+                height="50.885"
+              ></rect>{" "}
+              <rect
+                x="193.46"
+                y="302.11"
+                className="st0"
+                width="50.881"
+                height="50.885"
+              ></rect>{" "}
+              <rect
+                x="341.863"
+                y="381.612"
+                className="st0"
+                width="50.881"
+                height="50.885"
+              ></rect>{" "}
+              <rect
+                x="267.662"
+                y="381.612"
+                className="st0"
+                width="50.881"
+                height="50.885"
+              ></rect>{" "}
+              <rect
+                x="193.46"
+                y="381.612"
+                className="st0"
+                width="50.881"
+                height="50.885"
+              ></rect>{" "}
+              <path
+                className="st0"
+                d="M439.277,55.046h-41.376v39.67c0,14.802-12.195,26.84-27.183,26.84h-54.025 c-14.988,0-27.182-12.038-27.182-26.84v-39.67h-67.094v39.297c0,15.008-12.329,27.213-27.484,27.213h-53.424 c-15.155,0-27.484-12.205-27.484-27.213V55.046H72.649c-26.906,0-48.796,21.692-48.796,48.354v360.246 c0,26.661,21.89,48.354,48.796,48.354h366.628c26.947,0,48.87-21.692,48.87-48.354V103.4 C488.147,76.739,466.224,55.046,439.277,55.046z M453.167,462.707c0,8.56-5.751,14.309-14.311,14.309H73.144 c-8.56,0-14.311-5.749-14.311-14.309V178.089h394.334V462.707z"
+              ></path>{" "}
+              <path
+                className="st0"
+                d="M141.525,102.507h53.392c4.521,0,8.199-3.653,8.199-8.144v-73.87c0-11.3-9.27-20.493-20.666-20.493h-28.459 c-11.395,0-20.668,9.192-20.668,20.493v73.87C133.324,98.854,137.002,102.507,141.525,102.507z"
+              ></path>{" "}
+              <path
+                className="st0"
+                d="M316.693,102.507h54.025c4.348,0,7.884-3.513,7.884-7.826V20.178C378.602,9.053,369.474,0,358.251,0H329.16 c-11.221,0-20.349,9.053-20.349,20.178v74.503C308.81,98.994,312.347,102.507,316.693,102.507z"
+              ></path>{" "}
+            </g>{" "}
+          </g>
+        </svg>
+      ),
+    },
+    {
+      buttonName: "Calificaciones",
+      buttonLink: "/grades",
+      buttonSVG: (
+        <svg
+          className=" h-[60px] md:h-[70px] lg:h-[100px] w-[60px] md:w-[70px] lg:w-[100px]"
+          viewBox="0 0 76 76"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlnsXlink="http://www.w3.org/1999/xlink"
+          version="1.1"
+          baseProfile="full"
+          enableBackground="new 0 0 76.00 76.00"
+          xmlSpace="preserve"
+          fill="#1C274C"
+        >
+          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            {" "}
+            <path
+              fill="#1C274C"
+              fillOpacity="1"
+              strokeWidth="0.2"
+              strokeLinejoin="round"
+              d="M 47.4578,53.8333L 39.4751,53.8333L 37.3851,47.3311L 25.4184,47.3311L 23.3502,53.8333L 15.4111,53.8333L 27.2327,21.3222L 35.9047,21.3222L 47.4578,53.8333 Z M 35.433,40.8289L 32.0223,30.0523C 31.7562,29.2347 31.5723,28.2599 31.4707,27.1278L 31.2893,27.1278C 31.2312,28.0809 31.0401,29.0243 30.716,29.958L 27.2399,40.8289L 35.433,40.8289 Z M 46.3125,34.8333L 52.25,34.8333L 52.25,28.8958L 58.5833,28.8958L 58.5833,34.8333L 64.5208,34.8333L 64.5208,41.1667L 58.5833,41.1667L 58.5833,47.1042L 52.25,47.1042L 52.25,41.1667L 46.3125,41.1667L 46.3125,34.8333 Z "
+            ></path>{" "}
+          </g>
+        </svg>
+      ),
+    },
+  ];
+
+  const filteredGroups =
+    user.roleTable &&
+    user.roleTable.group.filter((group) => group.period_id === selectedPeriod);
 
   const getPeriodsList = async () => {
     try {
@@ -23,8 +218,22 @@ function Academic() {
     }
   };
 
+  const getDegreeList = async () => {
+    try {
+      const res = await getDegrees();
+      if (res.status === 200) {
+        setDegrees(res.data);
+        console.log(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+      setErrors(error.response.data);
+    }
+  };
+
   useEffect(() => {
     getPeriodsList();
+    getDegreeList();
   }, []);
 
   console.log(user);
@@ -32,7 +241,7 @@ function Academic() {
   return (
     <>
       <div className=" overflow-x-hidden relative ">
-        <div className=" fixed top-0 w-full h-fit bg-white">
+        <div className=" fixed top-0 w-full h-fit bg-white z-30">
           <div>
             <h1 className=" text-left text-[12px] md:text-base p-2 text-[#1C274C]">
               Bienvenid@ al <span className=" pl-1 font-bold">S</span>istema{" "}
@@ -42,23 +251,24 @@ function Academic() {
           </div>
         </div>
       </div>
-      <div className="  h-fit w-full flex justify-center items-center">
+      <div className="  h-fit mt-5 w-full flex justify-center items-center">
         <div className=" block">
           <div className=" flex justify-start items-start">
-            <div className="  mt-8 md:mt-14 mx-10 inline-flex items-center justify-center gap-3">
+            <div className="  mt-8 md:mt-14 mx-2 md:mx-10 inline-flex items-center justify-center gap-3">
               <svg
+                className=" h-[20px] w-[20px] sm:h-[30px] sm:w-[30px]"
                 width="30px"
                 height="30px"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
                 <g
                   id="SVGRepo_tracerCarrier"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
 
                 <g id="SVGRepo_iconCarrier">
@@ -73,15 +283,15 @@ function Academic() {
                   />{" "}
                 </g>
               </svg>
-              <h1 className=" text-white underline underline-offset-8 decoration-2 decoration-[#146898] duration-300 text-3xl font-semibold font-mono">
+              <h1 className=" text-white underline underline-offset-8 decoration-2 decoration-[#146898] duration-300 text-xl md:text-2xl lg:text-3xl font-semibold font-mono">
                 ACADÉMICO
               </h1>
             </div>
           </div>
-          <div className=" flex justify-center items-center mt-5 md:mt-10 mx-10 my-10">
-            <div className=" grid grid-cols-4">
-              <div className=" col-span-1  ">
-                <div className=" w-[280px] h-fit bg-white rounded-lg flex justify-center">
+          <div className=" flex justify-center items-start mt-5 md:mt-10 mx-10 my-10">
+            <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+              <div className=" col-span-1 hidden md:flex justify-center items-start ">
+                <div className=" w-[280px] h-fit bg-white rounded-lg flex justify-center items-start">
                   <div className=" block">
                     <div className=" flex justify-center">
                       <svg
@@ -157,8 +367,8 @@ function Academic() {
                           <p className=" mt-5 font-semibold my-3 text-sm text-[#1C274C]">
                             Cursos:{" "}
                           </p>
-                          {user.userTable &&
-                            user.userTable.group
+                          {user.roleTable &&
+                            user.roleTable.group
                               .filter(
                                 (group) =>
                                   group.group_status === 1 ||
@@ -179,8 +389,49 @@ function Academic() {
                         </div>
                       )}
                       {user && user.role_id === 2 && (
-                        <div>
-                          <p></p>
+                        <div className=" block">
+                          <p className=" font-semibold my-3 text-sm text-[#1C274C]">
+                            Título:{" "}
+                            <span className="font-medium">
+                              {user.roleTable &&
+                              user.roleTable.speciality === null
+                                ? "--------"
+                                : user.roleTable.speciality}
+                            </span>
+                          </p>
+                          <p className="font-semibold my-3 text-sm text-[#1C274C]">
+                            Nº de Materias:{" "}
+                            <span className="font-medium">
+                              {user.roleTable &&
+                                user.roleTable.group.filter(
+                                  (group) =>
+                                    group.group_status === 1 ||
+                                    group.group_status === null
+                                ).length}
+                            </span>
+                          </p>
+                          <p className=" mt-5 font-semibold my-3 text-sm text-[#1C274C]">
+                            Cursos:{" "}
+                          </p>
+                          {user.roleTable &&
+                            user.roleTable.group
+                              .filter(
+                                (group) =>
+                                  group.group_status === 1 ||
+                                  group.group_status === null
+                              )
+                              .map((group) => (
+                                <a key={group.group_id} href={`/academico/curso/${group.group_id}`}>
+                                  <div className="font-medium my-2 text-[14px] text-[#1C274C] hover:text-[#146898] duration-300">
+                                    <p >
+                                      {group.subject.subject_name}
+                                    </p>
+                                    <p className=" text-[12px] opacity-50">
+                                      {group.group_id}
+                                    </p>
+                                  </div>
+                                </a>
+                              ))}
                         </div>
                       )}
                       <a href={`mailto:${user && user.user_email}`}>
@@ -195,69 +446,114 @@ function Academic() {
                         Fecha de creación:
                       </p>
                       <p className="  font-medium my-1 text-sm text-[#1C274C]">
-                        {user && user.createdAt}
+                        {user.roleTable && user.roleTable.createdAt}
                       </p>
                       <p className=" mt-5 font-semibold my-3 text-sm text-[#1C274C]">
                         Fecha de actualización:
                       </p>
                       <p className="  font-medium my-1 text-sm text-[#1C274C]">
-                        {user && user.updatedAt}
+                        {user.roleTable && user.roleTable.updatedAt}
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className=" col-span-3 flex justify-center items-start">
-                {user && user.role_id === 1 && (
-                  <div className=" block w-[750px] h-screen rounded-lg">
-                    <div className="   flex justify-start">
-                      <div className=" m-5 flex justify-start">
-                        <p className=" text-left font-semibold text-2xl text-white underline underline-offset-8 decoration-[#146898]">
-                          Cursos
+              <div className=" col-span-1 lg:col-span-3 flex justify-center items-start">
+                
+                  <div className=" block w-[750px] h-fit rounded-lg">
+                    <div className="   flex justify-start items-start">
+                      <div className=" m-2 md:m-5 flex justify-start items-start">
+                        <p className=" text-left font-semibold text-xl lg:text-2xl text-white underline underline-offset-8 decoration-[#146898]">
+                          Mis Cursos
                         </p>
                       </div>
                     </div>
-                    <div className=" mx-5">
+                    <div className=" mt-3  md:mt-0 mx-5">
                       <select
-                        className=" rounded h-[30px]"
+                        className=" rounded h-[20px] md:h-[30px]"
                         name="periodos"
                         id=""
+                        onChange={handlePeriodChange}
                       >
                         <option className=" px-2" value="">
                           Seleccione un periodo
                         </option>
                         {periods &&
                           periods.map((period) => (
-                            <option value={period.period_id}>
+                            <option key={period.period_id} value={period.period_id}>
                               {period.period_name}
                             </option>
                           ))}
                       </select>
                     </div>
-                    <div className=" flex justify-center items-center">
-                      <div className=" grid grid-cols-3">
-                        {selectedPeriod === "" ? (
-                          user.roleTable &&
-                          user.roleTable.group
-                            .filter(
-                              (group) =>
-                                group.group_status === 1 ||
-                                group.group_status === null
-                            )
-                            .map((group) => (
-                              <div className=" mx-5" key={group.group_id}>
-                                <SubjectCard
+                    <div className=" mt-5 md:mt-10 flex justify-center items-center">
+                      <div className=" grid grid-cols-2 lg:grid-cols-3">
+                        {selectedPeriod === ""
+                          ? user.roleTable &&
+                            user.roleTable.group
+                              .filter(
+                                (group) =>
+                                  group.group_status === 1 ||
+                                  group.group_status === null
+                              )
+                              .map((group) => (
+                                <div
+                                  className=" mx-2 md:mx-5 "
+                                  key={group.group_id}
+                                >
+                                  <Cards
+                                    cardColor={
+                                      "bg-gradient-to-br from-white to-[#e7e7e7]"
+                                    }
+                                    cardTitle={group.subject.subject_name}
+                                    cardDescription={group.group_id}
+                                    cardFontColor={"text-[#1C274C]"}
+                                  />
+                                </div>
+                              ))
+                          : user.roleTable &&
+                            filteredGroups.map((group) => (
+                              <div className=" mx-5 " key={group.group_id}>
+                                <Cards
+                                  cardColor={
+                                    "bg-gradient-to-br from-white to-[#e7e7e7]"
+                                  }
                                   cardTitle={group.subject.subject_name}
+                                  cardDescription={group.group_id}
+                                  cardFontColor={"text-[#1C274C]"}
                                 />
                               </div>
-                            ))
-                        ) : (
-                          <></>
-                        )}
+                            ))}
+                      </div>
+                    </div>
+                    <div className="mt-4 flex justify-start">
+                      <div className=" m-5 flex justify-start">
+                        <p className="text-left font-semibold text-xl lg:text-2xl text-white underline underline-offset-8 decoration-[#146898]">
+                          Información Académica
+                        </p>
+                      </div>
+                    </div>
+                    <div className=" mt-3 sm:mt-8 flex justify-center items-center">
+                      <div className=" grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-10">
+                        {academicButtons &&
+                          academicButtons.map((button, index) => (
+                            <div key={index} className=" group ">
+                              <div className=" flex justify-center items-center">
+                                <div className=" h-[70px] md:h-[90px] lg:h-[120px] group-hover:scale-110 duration-300 group-hover:cursor-pointer bg-white w-[70px] md:w-[90px] lg:w-[120px] flex justify-center items-center rounded-full">
+                                  {button.buttonSVG}
+                                </div>
+                              </div>
+                              <div className=" flex justify-center text-white items-center mt-3">
+                                <p className=" text-[12px] text-center md:text-base">
+                                  {button.buttonName}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
                       </div>
                     </div>
                   </div>
-                )}
+                
               </div>
             </div>
           </div>
