@@ -64,7 +64,7 @@ const LazyUpdateGrades = React.lazy(() =>
   import("./pages/admin/grades/UpdateGrades.jsx")
 );
 const LazyAcademic = React.lazy(() => import("./pages/academic/Academic.jsx"));
-const LazyGrades = React.lazy(() => import("./pages/admin/grades/Grades.jsx"));
+const LazyGrades = React.lazy(() => import("./pages/grade/Grades.jsx"));
 
 const router = createBrowserRouter([
   {

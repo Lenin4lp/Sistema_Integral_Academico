@@ -167,7 +167,7 @@ function Academic() {
     },
     {
       buttonName: "Calificaciones",
-      buttonLink: "/grades",
+      buttonLink: "/calificaciones",
       buttonSVG: (
         <svg
           className=" h-[60px] md:h-[70px] lg:h-[100px] w-[60px] md:w-[70px] lg:w-[100px]"
@@ -421,11 +421,12 @@ function Academic() {
                                   group.group_status === null
                               )
                               .map((group) => (
-                                <a key={group.group_id} href={`/academico/curso/${group.group_id}`}>
+                                <a
+                                  key={group.group_id}
+                                  href={`/academico/curso/${group.group_id}`}
+                                >
                                   <div className="font-medium my-2 text-[14px] text-[#1C274C] hover:text-[#146898] duration-300">
-                                    <p >
-                                      {group.subject.subject_name}
-                                    </p>
+                                    <p>{group.subject.subject_name}</p>
                                     <p className=" text-[12px] opacity-50">
                                       {group.group_id}
                                     </p>
@@ -459,61 +460,50 @@ function Academic() {
                 </div>
               </div>
               <div className=" col-span-1 lg:col-span-3 flex justify-center items-start">
-                
-                  <div className=" block w-[750px] h-fit rounded-lg">
-                    <div className="   flex justify-start items-start">
-                      <div className=" m-2 md:m-5 flex justify-start items-start">
-                        <p className=" text-left font-semibold text-xl lg:text-2xl text-white underline underline-offset-8 decoration-[#146898]">
-                          Mis Cursos
-                        </p>
-                      </div>
+                <div className=" block w-[750px] h-fit rounded-lg">
+                  <div className="   flex justify-start items-start">
+                    <div className=" m-2 md:m-5 flex justify-start items-start">
+                      <p className=" text-left font-semibold text-xl lg:text-2xl text-white underline underline-offset-8 decoration-[#146898]">
+                        Mis Cursos
+                      </p>
                     </div>
-                    <div className=" mt-3  md:mt-0 mx-5">
-                      <select
-                        className=" rounded h-[20px] md:h-[30px]"
-                        name="periodos"
-                        id=""
-                        onChange={handlePeriodChange}
-                      >
-                        <option className=" px-2" value="">
-                          Seleccione un periodo
-                        </option>
-                        {periods &&
-                          periods.map((period) => (
-                            <option key={period.period_id} value={period.period_id}>
-                              {period.period_name}
-                            </option>
-                          ))}
-                      </select>
-                    </div>
-                    <div className=" mt-5 md:mt-10 flex justify-center items-center">
-                      <div className=" grid grid-cols-2 lg:grid-cols-3">
-                        {selectedPeriod === ""
-                          ? user.roleTable &&
-                            user.roleTable.group
-                              .filter(
-                                (group) =>
-                                  group.group_status === 1 ||
-                                  group.group_status === null
-                              )
-                              .map((group) => (
-                                <div
-                                  className=" mx-2 md:mx-5 "
-                                  key={group.group_id}
-                                >
-                                  <Cards
-                                    cardColor={
-                                      "bg-gradient-to-br from-white to-[#e7e7e7]"
-                                    }
-                                    cardTitle={group.subject.subject_name}
-                                    cardDescription={group.group_id}
-                                    cardFontColor={"text-[#1C274C]"}
-                                  />
-                                </div>
-                              ))
-                          : user.roleTable &&
-                            filteredGroups.map((group) => (
-                              <div className=" mx-5 " key={group.group_id}>
+                  </div>
+                  <div className=" mt-3  md:mt-0 mx-5">
+                    <select
+                      className=" rounded h-[20px] md:h-[30px]"
+                      name="periodos"
+                      id=""
+                      onChange={handlePeriodChange}
+                    >
+                      <option className=" px-2" value="">
+                        Seleccione un periodo
+                      </option>
+                      {periods &&
+                        periods.map((period) => (
+                          <option
+                            key={period.period_id}
+                            value={period.period_id}
+                          >
+                            {period.period_name}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                  <div className=" mt-5 md:mt-10 flex justify-center items-center">
+                    <div className=" grid grid-cols-2 lg:grid-cols-3">
+                      {selectedPeriod === ""
+                        ? user.roleTable &&
+                          user.roleTable.group
+                            .filter(
+                              (group) =>
+                                group.group_status === 1 ||
+                                group.group_status === null
+                            )
+                            .map((group) => (
+                              <div
+                                className=" mx-2 md:mx-5 "
+                                key={group.group_id}
+                              >
                                 <Cards
                                   cardColor={
                                     "bg-gradient-to-br from-white to-[#e7e7e7]"
@@ -523,20 +513,34 @@ function Academic() {
                                   cardFontColor={"text-[#1C274C]"}
                                 />
                               </div>
-                            ))}
-                      </div>
+                            ))
+                        : user.roleTable &&
+                          filteredGroups.map((group) => (
+                            <div className=" mx-5 " key={group.group_id}>
+                              <Cards
+                                cardColor={
+                                  "bg-gradient-to-br from-white to-[#e7e7e7]"
+                                }
+                                cardTitle={group.subject.subject_name}
+                                cardDescription={group.group_id}
+                                cardFontColor={"text-[#1C274C]"}
+                              />
+                            </div>
+                          ))}
                     </div>
-                    <div className="mt-4 flex justify-start">
-                      <div className=" m-5 flex justify-start">
-                        <p className="text-left font-semibold text-xl lg:text-2xl text-white underline underline-offset-8 decoration-[#146898]">
-                          Información Académica
-                        </p>
-                      </div>
+                  </div>
+                  <div className="mt-4 flex justify-start">
+                    <div className=" m-5 flex justify-start">
+                      <p className="text-left font-semibold text-xl lg:text-2xl text-white underline underline-offset-8 decoration-[#146898]">
+                        Información Académica
+                      </p>
                     </div>
-                    <div className=" mt-3 sm:mt-8 flex justify-center items-center">
-                      <div className=" grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-10">
-                        {academicButtons &&
-                          academicButtons.map((button, index) => (
+                  </div>
+                  <div className=" mt-3 sm:mt-8 flex justify-center items-center">
+                    <div className=" grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-10">
+                      {academicButtons &&
+                        academicButtons.map((button, index) => (
+                          <a href={button.buttonLink}>
                             <div key={index} className=" group ">
                               <div className=" flex justify-center items-center">
                                 <div className=" h-[70px] md:h-[90px] lg:h-[120px] group-hover:scale-110 duration-300 group-hover:cursor-pointer bg-white w-[70px] md:w-[90px] lg:w-[120px] flex justify-center items-center rounded-full">
@@ -549,11 +553,11 @@ function Academic() {
                                 </p>
                               </div>
                             </div>
-                          ))}
-                      </div>
+                          </a>
+                        ))}
                     </div>
                   </div>
-                
+                </div>
               </div>
             </div>
           </div>
