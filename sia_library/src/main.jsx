@@ -266,9 +266,7 @@ const router = createBrowserRouter([
         element: (
           <Suspense
             fallback={
-              <>
-                fallback=
-                {
+              
                   <>
                     <div className="flex justify-center items-center w-screen h-screen bg-white">
                       <div className="block">
@@ -279,8 +277,7 @@ const router = createBrowserRouter([
                       </div>
                     </div>
                   </>
-                }
-              </>
+                
             }
           >
             <LazyGrades />

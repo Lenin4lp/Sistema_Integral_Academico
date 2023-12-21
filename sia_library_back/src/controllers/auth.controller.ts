@@ -12,6 +12,7 @@ import { Degree } from "../models/degree.model";
 import { Group } from "../models/group.model";
 import { Subject } from "../models/subject.model";
 import { Period } from "../models/period.model";
+import { Grade } from "../models/grades.model";
 
 // ? Registro de usuario
 export const register = async (req: Request, res: Response) => {
@@ -119,7 +120,8 @@ export const login = async (req: Request, res: Response) => {
         },
         include: [
           { model: Degree },
-          { model: Group, include: [{ model: Subject }, { model: Period }] },
+          {model: Grade},
+          { model: Group, include: [{ model: Subject }, { model: Period }, {model: Grade}] },
         ],
       });
     } else if (userFound.role_id === 2) {
@@ -128,7 +130,7 @@ export const login = async (req: Request, res: Response) => {
           user_id: userFound.user_id,
         },
         include: [
-          { model: Group, include: [{ model: Subject }, { model: Period }] },
+          { model: Group, include: [{ model: Subject }, { model: Period }, {model: Grade}] },
         ],
       });
     } else if (userFound.role_id === 3) {
@@ -184,8 +186,9 @@ export const verifyToken = async (req: Request, res: Response) => {
           user_id: userFound.user_id,
         },
         include: [
+          { model: Grade, include: [{model: Group, include: [{ model: Subject }, { model: Period }]}]},
           { model: Degree },
-          { model: Group, include: [{ model: Subject }, { model: Period }] },
+          { model: Group, include: [{ model: Subject }, { model: Period }, {model: Grade}] },
         ],
       });
     } else if (userFound.role_id === 2) {
@@ -194,7 +197,7 @@ export const verifyToken = async (req: Request, res: Response) => {
           user_id: userFound.user_id,
         },
         include: [
-          { model: Group, include: [{ model: Subject }, { model: Period }] },
+          { model: Group, include: [{ model: Subject }, { model: Period }, {model: Grade}] },
         ],
       });
     } else if (userFound.role_id === 3) {

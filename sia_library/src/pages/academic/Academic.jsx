@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../auth/AuthProvider";
 import { getPeriods, getDegrees } from "../../api/academic";
 import Cards from "../../components/Cards";
-import roundedButton from "../../components/roundedButton";
 
 function Academic() {
   const { user } = useAuth();

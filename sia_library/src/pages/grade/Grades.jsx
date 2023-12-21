@@ -12,6 +12,29 @@ function Grades() {
     setSelectedPeriod(e.target.value);
   };
 
+  const sortedGrades =
+    user.roleTable &&
+    user.roleTable.grades.sort((a, b) => {
+      const groupA = a.group.subject.subject_name;
+      const groupB = b.group.subject.subject_name;
+      return groupA.localeCompare(groupB);
+    });
+
+  const filteredGrades =
+    sortedGrades &&
+    sortedGrades.filter((group) => group.group.period_id === selectedPeriod);
+  const activeGrades =
+    user.roleTable &&
+    user.roleTable.grades
+      .filter(
+        (grade) => grade.group.group_status === 1 || grade.group.group_status === null
+      ).sort((a, b) => {
+        const groupA = a.group.subject.subject_name;
+        const groupB = b.group.subject.subject_name;
+        return groupA.localeCompare(groupB);
+      })
+      
+
   const getPeriodsList = async () => {
     try {
       const res = await getPeriods();
@@ -29,7 +52,9 @@ function Grades() {
     getPeriodsList();
   }, []);
 
-  console.log(user);
+  console.log(activeGrades);
+
+  console.log(user.roleTable.grades);
   return (
     <div>
       <div className=" overflow-x-hidden relative ">
@@ -54,19 +79,19 @@ function Grades() {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
                 <g
                   id="SVGRepo_tracerCarrier"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
 
                 <g id="SVGRepo_iconCarrier">
                   {" "}
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M2.54497 8.73005C2 9.79961 2 11.1997 2 14C2 16.8003 2 18.2004 2.54497 19.27C3.02433 20.2108 3.78924 20.9757 4.73005 21.455C5.79961 22 7.19974 22 10 22H14C16.8003 22 18.2004 22 19.27 21.455C20.2108 20.9757 20.9757 20.2108 21.455 19.27C22 18.2004 22 16.8003 22 14C22 11.1997 22 9.79961 21.455 8.73005C20.9757 7.78924 20.2108 7.02433 19.27 6.54497C18.2004 6 16.8003 6 14 6H10C7.19974 6 5.79961 6 4.73005 6.54497C3.78924 7.02433 3.02433 7.78924 2.54497 8.73005ZM15.0595 12.4995C15.3353 12.1905 15.3085 11.7164 14.9995 11.4406C14.6905 11.1647 14.2164 11.1915 13.9406 11.5005L10.9286 14.8739L10.0595 13.9005C9.78359 13.5915 9.30947 13.5647 9.0005 13.8406C8.69152 14.1164 8.66468 14.5905 8.94055 14.8995L10.3691 16.4995C10.5114 16.6589 10.7149 16.75 10.9286 16.75C11.1422 16.75 11.3457 16.6589 11.488 16.4995L15.0595 12.4995Z"
                     fill="#ffffff"
                   />{" "}
@@ -89,18 +114,199 @@ function Grades() {
                     <h1 className=" font-semibold text-[#1C274C]">Periodos:</h1>
                     <div className=" mt-5">
                       {periods.map((period) => (
-                        <button className="  bg-[#F6F6F6] my-2 p-2 hover:bg-[#146898] text-[#1C274C] hover:text-white duration-300  rounded-lg">
+                        <button
+                          key={period.period_id}
+                          onClick={() => setSelectedPeriod(period.period_id)}
+                          className={` ${
+                            selectedPeriod === period.period_id
+                              ? "bg-[#146898] text-white"
+                              : "bg-[#F6F6F6]"
+                          } my-2 p-2 hover:bg-[#146898] text-[#1C274C] hover:text-white duration-300  rounded-lg`}
+                        >
                           <h1 className=" text-left text-sm">
                             {period.period_name}
                           </h1>
                         </button>
                       ))}
                     </div>
+                    <div className=" my-14 flex justify-center"><button className=" text-center text-[14px] p-2 rounded border border-[#146898] hover:bg-[#1C274C] hover:text-white duration-300">Obtener Reporte</button></div>
                   </div>
                 </div>
+                
               </div>
-              <div className=" col-span-4 flex justify-center items-center">
-                <div className=" m-5 h-screen bg-white w-full rounded-lg"></div>
+              <div className=" col-span-4 flex justify-center items-start">
+                <div className=" m-5 h-fit w-fit rounded-lg">
+                  {user && user.role_id === 1 && (
+                    <div className=" flex justify-center items-start mb-10 mt-0 mx-5">
+                      <div className=" block">
+                        <h1 className=" text-center text-white mb-10 font-semibold text-2xl underline underline-offset-8 decoration-[#146898]">
+                          Registro de calificaciones
+                        </h1>
+                        <div className=" flex justify-center items-center mt-5">
+                          <table className=" border-collapse   text-[10px] sm:text-sm">
+                            <thead className=" rounded text-[12px]">
+                              <tr>
+                                <th className="  font-semibold text-[#1C274C]"></th>
+                                <th
+                                  className="border hidden lg:table-cell bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold "
+                                  colSpan="5"
+                                >
+                                  1er hemisemestre
+                                </th>
+                                <th
+                                  className="border hidden lg:table-cell bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold"
+                                  colSpan="5"
+                                >
+                                  2do hemisemestre
+                                </th>
+                                <th className="  font-semibold text-[#1C274C]"></th>
+                              </tr>
+                              <tr>
+                                <th className=" border bg-[#1C274C] py-2 px-10 sm:px-20 border-[#4784a0] font-semibold text-white">
+                                  Materia
+                                </th>
+                                <th className=" border p-2 hidden lg:table-cell border-[#4784a0] font-semibold text-white">
+                                  Nota 1
+                                </th>
+                                <th className=" border p-2 hidden lg:table-cell border-[#4784a0] font-semibold text-white">
+                                  Nota 2
+                                </th>
+                                <th className=" border p-2 hidden lg:table-cell border-[#4784a0] font-semibold text-white">
+                                  Prueba
+                                </th>
+                                <th className=" border p-2 hidden lg:table-cell border-[#4784a0] font-semibold text-white">
+                                  Examen
+                                </th>
+                                <th className=" border p-2 hidden bg-[#1C274C]	sm:table-cell border-slate-300 font-semibold  text-white ">
+                                  Prom 1
+                                </th>
+                                <th className=" border p-2 hidden lg:table-cell border-[#4784a0] font-semibold text-white">
+                                  Nota 1
+                                </th>
+                                <th className=" border p-2 hidden lg:table-cell border-[#4784a0] font-semibold text-white">
+                                  Nota 2
+                                </th>
+                                <th className=" border p-2 hidden lg:table-cell border-[#4784a0] font-semibold text-white">
+                                  Prueba
+                                </th>
+                                <th className=" border p-2 hidden lg:table-cell border-[#4784a0] font-semibold text-white">
+                                  Examen
+                                </th>
+                                <th className=" border p-2 hidden bg-[#1C274C]	sm:table-cell border-slate-300 font-semibold  text-white ">
+                                  Prom 2
+                                </th>
+                                <th className=" border p-2 hidden sm:table-cell bg-[#1C274C] border-slate-300 font-semibold text-white">
+                                  Recup.
+                                </th>
+                                <th className=" border p-2 bg-[#1C274C] border-slate-300 font-semibold text-white">
+                                  Nota final
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {selectedPeriod === "" ? (
+                                user.roleTable &&
+                                activeGrades.map((group) => (
+                                  <tr key={group.group.group_id} className=" text-[12px]">
+                                    
+                                    <th className="border p-3 text-left bg-white border-slate-300 font-semibold text-[#1C274C]"><a href={`/materias/${group.group.group_id}`}>
+                                      {group.group.subject &&
+                                        group.group.subject.subject_name}</a>
+                                    </th>
+                                    
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.grade_1}
+                                    </th>
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.grade_2}
+                                    </th>
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.test_1}
+                                    </th>
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.exam_1}
+                                    </th>
+                                    <th className="border p-3 hidden sm:table-cell border-slate-300 bg-white font-semibold text-[#1C274C]">
+                                      {group && group.prom_1}
+                                    </th>
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.grade_3}
+                                    </th>
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.grade_4}
+                                    </th>
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.test_2}
+                                    </th>
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.exam_2}
+                                    </th>
+                                    <th className="border p-3 hidden sm:table-cell bg-white border-slate-300 font-semibold text-[#1C274C]">
+                                      {group && group.prom_2}
+                                    </th>
+                                    <th className="border p-3 hidden sm:table-cell  border-slate-300 font-semibold text-white">
+                                      {group && group.resit}
+                                    </th>
+                                    <th className="border p-3 border-slate-300 bg-white font-semibold text-[#1C274C]">
+                                      {group && group.final_grade}
+                                    </th>
+                                  </tr>
+                                ))
+                              ) : (
+                                user.roleTable &&
+                                filteredGrades.map((group) => (
+                                  <tr key={group.group.group_id} className=" text-[12px]">
+                                    <th className="border p-3 text-left bg-white border-slate-300 font-semibold text-[#1C274C]">
+                                      {group.group.subject &&
+                                        group.group.subject.subject_name}
+                                    </th>
+                                   
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.grade_1}
+                                    </th>
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.grade_2}
+                                    </th>
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.test_1}
+                                    </th>
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.exam_1}
+                                    </th>
+                                    <th className="border p-3 hidden sm:table-cell border-slate-300 bg-white font-semibold text-[#1C274C]">
+                                      {group && group.prom_1}
+                                    </th>
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.grade_3}
+                                    </th>
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.grade_4}
+                                    </th>
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.test_2}
+                                    </th>
+                                    <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                      {group && group.exam_2}
+                                    </th>
+                                    <th className="border p-3 hidden sm:table-cell bg-white border-slate-300 font-semibold text-[#1C274C]">
+                                      {group && group.prom_2}
+                                    </th>
+                                    <th className="border p-3 hidden sm:table-cell  border-slate-300 font-semibold text-white">
+                                      {group && group.resit}
+                                    </th>
+                                    <th className="border p-3 border-slate-300 bg-white font-semibold text-[#1C274C]">
+                                      {group && group.final_grade}
+                                    </th>
+                                  </tr>
+                                ))
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
