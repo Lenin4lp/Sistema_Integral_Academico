@@ -130,7 +130,7 @@ export const login = async (req: Request, res: Response) => {
           user_id: userFound.user_id,
         },
         include: [
-          { model: Group, include: [{ model: Subject }, { model: Period }, {model: Grade}] },
+          { model: Group, include: [{ model: Subject }, { model: Period }, {model: Grade , include:[{model:Student, include:[{model:User}]}]}, {model: Student, include:[{model:User}]}] },
         ],
       });
     } else if (userFound.role_id === 3) {
@@ -197,7 +197,7 @@ export const verifyToken = async (req: Request, res: Response) => {
           user_id: userFound.user_id,
         },
         include: [
-          { model: Group, include: [{ model: Subject }, { model: Period }, {model: Grade}] },
+          { model: Group, include: [{ model: Subject }, { model: Period }, {model: Grade, include:[{model:Student, include:[{model:User}]}]}, {model: Student}] },
         ],
       });
     } else if (userFound.role_id === 3) {
