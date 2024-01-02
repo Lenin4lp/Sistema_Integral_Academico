@@ -4,13 +4,13 @@ function Home() {
   return (
     <>
       <div className=" overflow-x-hidden relative">
-        <div className=" fixed top-0 w-full h-fit bg-white">
+        <div className=" fixed top-0 w-full h-fit bg-white z-30">
           <div>
             <h1 className=" text-left text-[12px] md:text-base p-2 text-[#1C274C]">
               Bienvenid@ al <span className=" pl-1 font-bold">S</span>istema{" "}
               <span className=" pl-1 font-bold">I</span>ntegral{" "}
               <span className=" pl-1 font-bold">A</span>cadémico
-            </h1> 
+            </h1>
           </div>
         </div>
       </div>

@@ -32,7 +32,6 @@ export const AdministrativeMenu = [
   },
 ];
 
-
 export const AcademicMenu = [
   {
     title: "Home",

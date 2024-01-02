@@ -18,7 +18,6 @@ function SideBar({ MenuOption, children }) {
         className={`w-[18vw] sm:w-20
          p-2 pt-5 sm:p-5 sm:pt-8 duration-300 h-screen bg-white sticky top-0 z-10`}
       >
-       
         <div className="flex gap-x-4 items-center">
           <img
             className={` duration-500 hover:rotate-[360deg]`}
@@ -38,17 +37,39 @@ function SideBar({ MenuOption, children }) {
           </h1>
         </div>
         <ul className=" mt-8 pt-6">
-          {Menus.map((menu, index) => (
-            <Link
-              to={`${menu.linkRef}`}
-              key={index}
-              className={`text-[#1C274C] text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-gray-200 dark:hover:bg-[#838383] rounded-md ${
-                menu.gap ? "mt-7 lg:mt-9" : "mt-2"
-              }`}
-            >
-              <img src={`${menu.src}`} alt="" height={24} width={24} />
-            </Link>
-          ))}
+          {Menus.map((menu, index) =>
+            menu && menu.title !== "Calificaciones" ? (
+              <div key={index} className=" group relative">
+                <span className="absolute top-0 left-14 hidden lg:flex scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                  {menu.title}
+                </span>
+
+                <Link
+                  to={`${menu.linkRef}`}
+                  className={`text-[#1C274C] text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-gray-200 dark:hover:bg-[#838383] rounded-md ${
+                    menu.gap ? "mt-7 lg:mt-9" : "mt-2"
+                  }`}
+                >
+                  <img src={`${menu.src}`} alt="" height={24} width={24} />
+                </Link>
+              </div>
+            ) : (
+              <div key={index} className=" group relative">
+                <span className="absolute top-0 left-14 hidden lg:flex scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
+                  {menu.title}
+                </span>
+
+                <a
+                  href={`${menu.linkRef}`}
+                  className={`text-[#1C274C] text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-gray-200 dark:hover:bg-[#838383] rounded-md ${
+                    menu.gap ? "mt-7 lg:mt-9" : "mt-2"
+                  }`}
+                >
+                  <img src={`${menu.src}`} alt="" height={24} width={24} />
+                </a>
+              </div>
+            )
+          )}
           <div className="text-[#1C274C] mt-6 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-gray-200 dark:hover:bg-[#838383] rounded-md">
             <img
               onClick={() => logout()}
@@ -57,13 +78,6 @@ function SideBar({ MenuOption, children }) {
               height={24}
               width={24}
             />
-            <span
-              className={`
-                scale-0
-               origin-left transition duration-300 text-[15px]`}
-            >
-              Cerrar Sesión
-            </span>
           </div>
         </ul>
       </div>
