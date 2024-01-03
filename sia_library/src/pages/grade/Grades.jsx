@@ -12,8 +12,8 @@ function Grades() {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedDegree, setSelectedDegree] = useState("");
 
-  const handlePeriodChange = (e) => {
-    setSelectedPeriod(e.target.value);
+  const handleDegreeChange = (e) => {
+    setSelectedDegree(e.target.value);
   };
 
   const sortedGrades =
@@ -67,7 +67,7 @@ function Grades() {
     user.roleTable &&
     user.roleTable.group.find((group) => group.group_id === selectedSubject);
 
-  const FirstGroup = user && user.role_id === 2 && user.roleTable && user.roleTable.group[0];
+  const FirstGroup = user && user.role_id === 2 && filteredGrades[0];
 
   const getPeriodsList = async () => {
     try {
@@ -98,10 +98,28 @@ function Grades() {
   useEffect(() => {
     getPeriodsList();
     getModalityList();
+    selectedSubject === "" && setSelectedSubject(FirstGroup?.group_id);
   }, []);
 
-  console.log(user.roleTable);
-  
+  useEffect(() => {
+    if (user && user.role_id === 2) {
+      setSelectedDegree("");
+    }
+  }, [selectedSubject]);
+
+  const groupCareers =
+    user &&
+    user.role_id === 2 &&
+    user.roleTable &&
+    filteredGroup?.student.reduce((acc, student) => {
+      if (!acc.includes(student.degree.degree_name)) {
+        acc.push(student.degree.degree_name);
+      }
+      return acc;
+    }, []);
+
+  console.log(filteredGroup);
+  console.log(selectedDegree);
 
   return (
     <div>
@@ -156,30 +174,74 @@ function Grades() {
           </div>
           <div className=" flex justify-center items-start mt-5  mx-10 my-10">
             <div className=" grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5">
-              <div className=" col-span-1 flex justify-center items-start">
-                <div className=" m-2 md:m-5 h-fit bg-white w-fit md:w-full rounded-lg">
-                  <div className=" m-5 block">
-                    <h1 className=" font-semibold text-[#1C274C]">Periodos:</h1>
-                    <div className=" mt-5 flex justify-center md:block">
-                      {periods.map((period) => (
-                        <button
-                          key={period.period_id}
-                          onClick={() => setSelectedPeriod(period.period_id)}
-                          className={` ${
-                            selectedPeriod === period.period_id
-                              ? "bg-[#146898] text-white"
-                              : "bg-[#F6F6F6]"
-                          } my-2 p-2 hover:bg-[#146898] text-[#1C274C] hover:text-white duration-300  rounded-lg`}
-                        >
-                          <h1 className=" text-left text-sm">
-                            {period.period_name}
-                          </h1>
-                        </button>
-                      ))}
+              <div className=" col-span-1 block">
+                <div className=" flex justify-center items-start">
+                  <div className=" m-2 md:m-5 h-fit bg-white w-fit md:w-full rounded-lg">
+                    <div className=" m-5 block">
+                      <h1 className=" font-semibold text-[#1C274C]">
+                        Periodos:
+                      </h1>
+                      <div className=" mt-5 flex justify-center md:block">
+                        {periods
+                          .sort((a, b) => {
+                            const periodA = a.period_id;
+                            const periodB = b.period_id;
+                            return periodA.localeCompare(periodB);
+                          })
+                          .map((period) => (
+                            <button
+                              key={period.period_id}
+                              onClick={() =>
+                                setSelectedPeriod(period.period_id)
+                              }
+                              className={` ${
+                                selectedPeriod === period.period_id
+                                  ? "bg-[#146898] text-white"
+                                  : "bg-[#F6F6F6]"
+                              } my-2 p-2 hover:bg-[#146898] text-[#1C274C] hover:text-white duration-300  rounded-lg`}
+                            >
+                              <h1 className=" text-left text-sm">
+                                {period.period_name}
+                              </h1>
+                            </button>
+                          ))}
+                      </div>
                     </div>
-                    
                   </div>
                 </div>
+                {user && user.role_id === 2 && (
+                  <div className=" flex justify-center items-start">
+                    <div className=" m-2 mt-8 h-fit bg-[#4784a0] w-fit md:w-full rounded-lg">
+                      <div className=" m-5 block">
+                        <h1 className=" font-semibold text-white">Materia:</h1>
+                        <div className=" mt-3 flex-wrap justify-center md:block">
+                          <p className=" text-sm font-medium text-white">
+                            {filteredGroup?.subject.subject_name}
+                          </p>
+                        </div>
+                        <h1 className=" mt-5 font-semibold text-white">
+                          Grupo:
+                        </h1>
+                        <div className=" mt-3 flex-wrap justify-center md:block">
+                          <p className=" text-sm font-medium text-white">{`${filteredGroup?.group_name} (${filteredGroup?.group_id})`}</p>
+                        </div>
+                        <h1 className=" mt-5 font-semibold text-white">
+                          Nº de estudiantes:
+                        </h1>
+                        <div className=" mt-3 flex-wrap justify-center md:block">
+                          <p className=" text-sm font-medium text-white">
+                            {filteredGroup?.student.length}
+                          </p>
+                        </div>
+                        <div className=" py-8 flex justify-center items-center">
+                          <button className=" p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#146898] text-white hover:text-white text-[13px] duration-500">
+                            Obtener reporte
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className=" col-span-1 md:col-span-3 lg:col-span-4 flex justify-center items-start">
                 <div className=" m-5 h-fit w-fit rounded-lg">
@@ -188,7 +250,9 @@ function Grades() {
                       <h1 className=" text-center text-white mb-10 font-semibold text-xl md:text-2xl underline underline-offset-8 decoration-[#146898]">
                         Registro de calificaciones
                       </h1>
-                      {user && user.role_id === 1 && (
+                      {user &&
+                      user.role_id === 1 &&
+                      filteredGrades.length > 0 ? (
                         <div className=" flex justify-center items-center mt-5">
                           <table className=" border-collapse   text-[10px] sm:text-sm">
                             <thead className=" rounded text-[12px]">
@@ -361,6 +425,15 @@ function Grades() {
                             </tbody>
                           </table>
                         </div>
+                      ) : (
+                        user &&
+                        user.role_id === 1 && (
+                          <div className=" h-full py-24 w-full flex justify-center items-center">
+                            <h1 className=" text-lg text-center text-white ">
+                              Lo siento, no se encontraron resultados
+                            </h1>
+                          </div>
+                        )
                       )}
                       {user &&
                       user.role_id === 2 &&
@@ -397,9 +470,19 @@ function Grades() {
                                 ))}
                             </div>
                             <div className=" w-full h-fit flex justify-end py-10 items-center">
-                              <select className=" w-[230px]" name="" id="">
-                                <option value="">Todos</option>
-                                {}
+                              <select
+                                onChange={handleDegreeChange}
+                                className=" w-[230px]"
+                                name=""
+                                id=""
+                              >
+                                <option value="">Todas las carreras</option>
+                                {user.roleTable &&
+                                  groupCareers?.map((group, index) => (
+                                    <option key={index} value={group}>
+                                      {group}
+                                    </option>
+                                  ))}
                               </select>
                             </div>
                             <table className=" border-collapse   text-[10px] sm:text-sm">
@@ -463,94 +546,191 @@ function Grades() {
                                 </tr>
                               </thead>
                               <tbody>
-                                {
-                                  user.roleTable &&
-                                  filteredGroup?.grades.sort((a, b) => {
-                                    const gradeA = a.student.user.user_lastname;
-                                    const gradeB = b.student.user.user_lastname;
-                                    return gradeA.localeCompare(gradeB);
-                                  }).map((grade) => (
-                                    <tr
-                                      key={grade && grade.grade_id}
-                                      className=" text-[12px]"
-                                    >
-                                      <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">{`${grade.student.user.user_lastname} ${grade.student.user.user_name}`}</th>
-                                      <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
-                                        {grade && grade.grade_1}
-                                      </th>
-                                      <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
-                                        {grade && grade.grade_2}
-                                      </th>
-                                      <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
-                                        {grade && grade.test_1}
-                                      </th>
-                                      <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
-                                        {grade && grade.exam_1}
-                                      </th>
-                                      <th className="border p-3 hidden sm:table-cell bg-white border-slate-300 font-semibold text-[#1C274C]">
-                                        {grade && grade.prom_1}
-                                      </th>
-                                      <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
-                                        {grade && grade.grade_3}
-                                      </th>
-                                      <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
-                                        {grade && grade.grade_4}
-                                      </th>
-                                      <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
-                                        {grade && grade.test_2}
-                                      </th>
-                                      <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
-                                        {grade && grade.exam_2}
-                                      </th>
-                                      <th className="border p-3 hidden sm:table-cell bg-white border-slate-300 font-semibold text-[#1C274C]">
-                                        {grade && grade.prom_2}
-                                      </th>
-                                      <th className="border p-3 hidden sm:table-cell  border-slate-300 font-semibold text-white">
-                                        {grade && grade.resit}
-                                      </th>
-                                      <th className="border p-3 border-slate-300 bg-white font-semibold text-[#1C274C]">
-                                        {grade && grade.final_grade}
-                                      </th>
-                                      <th className="border p-3 border-white font-semibold group  text-[#1C274C]">
-                                  <a href={`/calificaciones/${grade.grade_id}`}>
-                                    <svg
-                                      width="20px"
-                                      height="20px"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      className="cursor-pointer"
-                                    >
-                                      <path
-                                        d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z"
-                                        stroke="#a19b3c"
-                                        strokeWidth="1.5"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className=" group-hover:stroke-slate-800"
-                                      />
-                                      <path
-                                        d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13"
-                                        stroke="#a19b3c"
-                                        strokeWidth="1.5"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className=" group-hover:stroke-slate-800"
-                                      />
-                                    </svg>
-                                  </a>
-                                </th>
-                                    </tr>
-                                  ))
-                                }
+                                {selectedDegree === ""
+                                  ? user.roleTable &&
+                                    filteredGroup?.grades
+                                      .sort((a, b) => {
+                                        const gradeA =
+                                          a.student.user.user_lastname;
+                                        const gradeB =
+                                          b.student.user.user_lastname;
+                                        return gradeA.localeCompare(gradeB);
+                                      })
+                                      .map((grade) => (
+                                        <tr
+                                          key={grade && grade.grade_id}
+                                          className=" text-[12px]"
+                                        >
+                                          <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">{`${grade.student.user.user_lastname} ${grade.student.user.user_name}`}</th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.grade_1}
+                                          </th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.grade_2}
+                                          </th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.test_1}
+                                          </th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.exam_1}
+                                          </th>
+                                          <th className="border p-3 hidden sm:table-cell bg-white border-slate-300 font-semibold text-[#1C274C]">
+                                            {grade && grade.prom_1}
+                                          </th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.grade_3}
+                                          </th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.grade_4}
+                                          </th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.test_2}
+                                          </th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.exam_2}
+                                          </th>
+                                          <th className="border p-3 hidden sm:table-cell bg-white border-slate-300 font-semibold text-[#1C274C]">
+                                            {grade && grade.prom_2}
+                                          </th>
+                                          <th className="border p-3 hidden sm:table-cell  border-slate-300 font-semibold text-white">
+                                            {grade && grade.resit}
+                                          </th>
+                                          <th className="border p-3 border-slate-300 bg-white font-semibold text-[#1C274C]">
+                                            {grade && grade.final_grade}
+                                          </th>
+                                          <th className="border p-3 border-white font-semibold group  text-[#1C274C]">
+                                            <a
+                                              href={`/calificaciones/${grade.grade_id}`}
+                                            >
+                                              <svg
+                                                width="20px"
+                                                height="20px"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="cursor-pointer"
+                                              >
+                                                <path
+                                                  d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z"
+                                                  stroke="#a19b3c"
+                                                  strokeWidth="1.5"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                  className=" group-hover:stroke-slate-800"
+                                                />
+                                                <path
+                                                  d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13"
+                                                  stroke="#a19b3c"
+                                                  strokeWidth="1.5"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                  className=" group-hover:stroke-slate-800"
+                                                />
+                                              </svg>
+                                            </a>
+                                          </th>
+                                        </tr>
+                                      ))
+                                  : user.roleTable &&
+                                    filteredGroup?.grades
+                                      .sort((a, b) => {
+                                        const gradeA =
+                                          a.student.user.user_lastname;
+                                        const gradeB =
+                                          b.student.user.user_lastname;
+                                        return gradeA.localeCompare(gradeB);
+                                      })
+                                      .filter(
+                                        (grade) =>
+                                          grade.student?.degree?.degree_name ==
+                                          selectedDegree
+                                      )
+                                      .map((grade) => (
+                                        <tr
+                                          key={grade && grade.grade_id}
+                                          className=" text-[12px]"
+                                        >
+                                          <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">{`${grade.student.user.user_lastname} ${grade.student.user.user_name}`}</th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.grade_1}
+                                          </th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.grade_2}
+                                          </th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.test_1}
+                                          </th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.exam_1}
+                                          </th>
+                                          <th className="border p-3 hidden sm:table-cell bg-white border-slate-300 font-semibold text-[#1C274C]">
+                                            {grade && grade.prom_1}
+                                          </th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.grade_3}
+                                          </th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.grade_4}
+                                          </th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.test_2}
+                                          </th>
+                                          <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
+                                            {grade && grade.exam_2}
+                                          </th>
+                                          <th className="border p-3 hidden sm:table-cell bg-white border-slate-300 font-semibold text-[#1C274C]">
+                                            {grade && grade.prom_2}
+                                          </th>
+                                          <th className="border p-3 hidden sm:table-cell  border-slate-300 font-semibold text-white">
+                                            {grade && grade.resit}
+                                          </th>
+                                          <th className="border p-3 border-slate-300 bg-white font-semibold text-[#1C274C]">
+                                            {grade && grade.final_grade}
+                                          </th>
+                                          <th className="border p-3 border-white font-semibold group  text-[#1C274C]">
+                                            <a
+                                              href={`/calificaciones/${grade.grade_id}`}
+                                            >
+                                              <svg
+                                                width="20px"
+                                                height="20px"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="cursor-pointer"
+                                              >
+                                                <path
+                                                  d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z"
+                                                  stroke="#a19b3c"
+                                                  strokeWidth="1.5"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                  className=" group-hover:stroke-slate-800"
+                                                />
+                                                <path
+                                                  d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13"
+                                                  stroke="#a19b3c"
+                                                  strokeWidth="1.5"
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                  className=" group-hover:stroke-slate-800"
+                                                />
+                                              </svg>
+                                            </a>
+                                          </th>
+                                        </tr>
+                                      ))}
                               </tbody>
                             </table>
                           </div>
                         </div>
                       ) : (
-                        <div>
-                          <h1>No se encontraron resultados</h1>
-                        </div>
+                        user &&
+                        user.role_id === 2 && (
+                          <div>
+                            <h1>No se encontraron resultados</h1>
+                          </div>
+                        )
                       )}
                     </div>
                   </div>
