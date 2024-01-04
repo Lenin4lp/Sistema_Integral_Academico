@@ -20,12 +20,13 @@ function CourseInfo() {
   let { id } = useParams();
   const navigate = useNavigate();
 
-  const modifySubject = async () => {
+  const modifySubject = async (id, content) => {
+          
     try {
       const res = await updateSubject(id, content);
       if (res.status === 200) {
         alert("Archivo cargado exitosamente");
-        navigate("/subjects");
+        
         window.location.reload();
       }
     } catch (error) {
@@ -33,6 +34,7 @@ function CourseInfo() {
       setErrors(error.response.data);
     }
   }
+ 
 
   const upload = () => {
     const formData = new FormData();
@@ -40,11 +42,14 @@ function CourseInfo() {
     axios
       .post("http://localhost:8081/api/upload", formData)
       .then((res) => { if (res.status === 200) {
+        const subjectId = group && group.subject_id;
         const fileLocation = res.data.location;
+        const data = {
+          syllabus : fileLocation
+        }      
+        console.log(fileLocation);
+        modifySubject(subjectId, data);
 
-        
-        
-        modifySubject(id, {syllabus: `${fileLocation}`});
       }})
       .catch((er) => console.log(er));
   };
@@ -117,11 +122,12 @@ function CourseInfo() {
     setStudentsTable(results);
   };
 
+
   useEffect(() => {
     getAGroup(id);
   }, []);
 
-  console.log(group);
+  
 
   return (
     <div className=" overflow-x-hidden">

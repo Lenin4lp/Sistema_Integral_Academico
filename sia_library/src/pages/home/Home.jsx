@@ -49,14 +49,18 @@ function Home() {
                     </button>
                   </div>
                   <div className=" flex justify-center items-center my-2">
+                    <a href="mailto:tics.plataforma@istvc.edu.ec">
                     <button className=" p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#146898] text-white hover:text-white text-[12px] md:text-sm lg:text-base duration-500">
                       Soporte técnico
                     </button>
+                    </a>
                   </div>
                   <div className=" flex justify-center items-center my-2">
+                    <a href="/academico">
                     <button className=" p-2 px-4 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#146898] text-white hover:text-white text-[12px] md:text-sm lg:text-base duration-500">
                       Académico
                     </button>
+                    </a>
                   </div>
                 </div>
               </div>

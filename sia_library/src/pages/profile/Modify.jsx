@@ -62,7 +62,7 @@ function Modify() {
   return (
     <div className=" overflow-x-hidden">
       <div className=" block">
-        <div className=" mt-24 md:mt-28 mb-14 md:mb-10 mx-7 flex items-center text-xl md:text-2xl lg:text-3xl font-bold text-[#1C274C] text-left">
+        <div className=" pt-12 mb-14 md:mb-10 mx-7 flex items-center text-xl md:text-2xl lg:text-3xl font-bold text-white text-left">
           {user && user.role_id === 1
             ? "Cambiar Contraseña"
             : "Actualizar información"}
@@ -71,7 +71,7 @@ function Modify() {
           <div className=" block">
             {user && user.role_id === 1 ? (
               <div>
-                <p className=" my-5 text-[#1C274C] text-base  font-semibold">
+                <p className=" my-5 text-white text-base  font-semibold">
                   Escribe tu nueva contraseña
                 </p>
                 <form>
@@ -79,7 +79,7 @@ function Modify() {
                     name="password"
                     type="password"
                     placeholder="**********************"
-                    className=" w-56 lg:w-full bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 px-1 mb-3"
+                    className=" w-56 lg:w-full bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
                     {...register("user_password", {
                       maxLength: 20,
                       required: true,
@@ -93,12 +93,12 @@ function Modify() {
                 <form className=" ">
                   <div className=" grid grid-cols-4">
                     <div className="m-10 ">
-                      <p>No. Cédula</p>
+                      <p className=" text-white">No. Cédula</p>
                       <input
                         name="ci"
                         type="text"
                         placeholder="1777777777"
-                        className=" w-56  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 px-1 mb-3"
+                        className=" w-56  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
                         {...register("user_ci", {
                           maxLength: 10,
                           required: false,
@@ -108,22 +108,22 @@ function Modify() {
                       />
                     </div>
                     <div className="m-10 ">
-                      <p>Profesión</p>
+                      <p className=" text-white">Profesión</p>
                       <input
                         name="speciality"
                         type="text"
                         placeholder="Profesión"
-                        className=" w-56  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 px-1 mb-3"
+                        className=" w-56  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
                         {...register("speciality", { required: false })}
                       />
                     </div>
                     <div className="m-10 ">
-                      <p>Teléfono</p>
+                      <p className=" text-white">Teléfono</p>
                       <input
                         name="phone"
                         type="text"
                         placeholder="0999999999"
-                        className=" w-56  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 px-1 mb-3"
+                        className=" w-56  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
                         {...register("user_phone", {
                           maxLength: 10,
                           required: false,
@@ -133,12 +133,12 @@ function Modify() {
                       />
                     </div>
                     <div className="m-10 ">
-                      <p>Cambiar contraseña</p>
+                      <p className=" text-white">Cambiar contraseña</p>
                       <input
                         name="password"
                         type="password"
                         placeholder="**********************"
-                        className=" w-56  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 px-1 mb-3"
+                        className=" w-56  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
                         {...register("user_password", {
                           maxLength: 20,
                           required: false,

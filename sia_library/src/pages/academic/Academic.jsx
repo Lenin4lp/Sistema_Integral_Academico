@@ -61,7 +61,7 @@ function Academic() {
     },
     {
       buttonName: "Horarios",
-      buttonLink: "/horarios",
+      buttonLink: "",
       buttonSVG: (
         <svg
           className=" h-[40px] md:h-[50px] lg:h-[70px] w-[40px] md:w-[50px] lg:w-[70px]"
