@@ -51,3 +51,7 @@ export const getPeriods = () => axios.get("/periods");
 export const registerPeriod = (period) => axios.post("/period", period);
 export const updatePeriod = (id, period) => axios.put(`/period/${id}`, period);
 export const deletePeriod = (id) => axios.delete(`/period/${id}`);
+
+// ? Subir archivos
+
+export const upload = (file) => axios.post("/upload", file);

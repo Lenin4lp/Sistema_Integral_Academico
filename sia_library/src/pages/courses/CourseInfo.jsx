@@ -4,6 +4,9 @@ import { getGroup } from "../../api/academic";
 import { useAuth } from "../../auth/AuthProvider";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { updateSubject } from "../../api/academic";
 
 function CourseInfo() {
   const { user } = useAuth();
@@ -13,7 +16,38 @@ function CourseInfo() {
   const [studentsTable, setStudentsTable] = useState([]);
   const [search, setSearch] = useState("");
   const [content, setContent] = useState(0);
+  const [file, setFile] = useState();
   let { id } = useParams();
+  const navigate = useNavigate();
+
+  const modifySubject = async () => {
+    try {
+      const res = await updateSubject(id, content);
+      if (res.status === 200) {
+        alert("Archivo cargado exitosamente");
+        navigate("/subjects");
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+      setErrors(error.response.data);
+    }
+  }
+
+  const upload = () => {
+    const formData = new FormData();
+    formData.append("myFile", file);
+    axios
+      .post("http://localhost:8081/api/upload", formData)
+      .then((res) => { if (res.status === 200) {
+        const fileLocation = res.data.location;
+
+        
+        
+        modifySubject(id, {syllabus: `${fileLocation}`});
+      }})
+      .catch((er) => console.log(er));
+  };
 
   const getAGroup = async (groupId) => {
     try {
@@ -499,6 +533,23 @@ function CourseInfo() {
                   >
                     Regresar
                   </button>
+                  <div className=" mt-5">
+                    <div>
+                      <h1 className=" text-white text-sm">
+                        Selecciona el archivo correspondiente al Syllabus
+                      </h1>
+                    </div>
+                  </div>
+                  <div className=" mt-5 text-white">
+                    <input
+                      type="file"
+                      onChange={(e) => setFile(e.target.files[0])}
+                    />
+                    
+                  </div>
+                  <button className=" text-white mt-10 p-2 hover:border-r-white bg-[#146898] hover:border-t-white duration-300 border-white border-b mb-3 rounded border-l border-r border-r-transparent border-t border-t-transparent hover:cursor-pointer" type="button" onClick={upload}>
+                      Guardar Cambios
+                    </button>
                 </div>
               </div>
             )}

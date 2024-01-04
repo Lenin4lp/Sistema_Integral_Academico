@@ -14,6 +14,7 @@ import groupRoutes from "./routes/group.routes";
 import gradesRoutes from "./routes/grades.routes";
 import modalityRoutes from "./routes/modality.routes";
 import periodRoutes from "./routes/period.routes";
+import uploadRoutes from "./routes/upload.routes";
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use("/api", groupRoutes);
 app.use("/api", gradesRoutes);
 app.use("/api", modalityRoutes);
 app.use("/api", periodRoutes);
+app.use("/api", uploadRoutes);
 app.get("/", (_req, res) => {
   res.send("Hola mundo");
 });
