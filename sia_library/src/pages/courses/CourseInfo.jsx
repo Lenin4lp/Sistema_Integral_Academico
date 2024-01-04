@@ -9,6 +9,10 @@ function CourseInfo() {
   const { user } = useAuth();
   const [group, setGroup] = useState([]);
   const [errors, setErrors] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [studentsTable, setStudentsTable] = useState([]);
+  const [search, setSearch] = useState("");
+  const [content, setContent] = useState(0);
   let { id } = useParams();
 
   const getAGroup = async (groupId) => {
@@ -24,487 +28,482 @@ function CourseInfo() {
     }
   };
 
-  const sortedGrades =
-    group.grades &&
-    group.grades.sort((a, b) => {
-      const lastNameA = a.student?.user?.user_lastname || "";
-      const lastNameB = b.student?.user?.user_lastname || "";
-      return lastNameA.localeCompare(lastNameB);
+  const Students =
+    group &&
+    group.student?.sort((a, b) => {
+      const studentA = a.user.user_lastname;
+      const studentB = b.user.user_lastname;
+      return studentA.localeCompare(studentB);
     });
 
-  const generatePDF = async () => {
-    const doc = new jsPDF();
+  const studentsPerPage = 10;
+  const indexofLastStudent = currentPage * studentsPerPage;
+  const indexofFirstStudent = indexofLastStudent - studentsPerPage;
+  const currentStudents =
+    search === ""
+      ? Students && Students.slice(indexofFirstStudent, indexofLastStudent)
+      : studentsTable.slice(indexofFirstStudent, indexofLastStudent);
 
-    doc.text("Instituto Superior Tecnologico de la Vera Cruz", 50, 10);
-    doc.setFontSize(16);
-    doc.text("Hoja de Calificaciones", 10, 30);
-    doc.setFontSize(10);
-    doc.text(`Materia: ${group?.subject.subject_name}`, 10, 50);
-    doc.text(`Grupo: ${group?.group_name}`, 90, 50);
-    doc.text(`Periodo: ${group?.period.period_name}`, 150, 50);
-    doc.text(
-      `Docente: ${group?.teacher.user.user_name} ${group?.teacher.user.user_lastname}`,
-      10,
-      60
-    );
+  const totalPages = Math.ceil(Students && Students.length / studentsPerPage);
 
-    // crear una tabla
-    doc.autoTable({
-      head: [
-        [
-          {
-            content: "",
-            colSpan: 3,
-            styles: { halign: "center", lineWidth: 0 },
-          },
-          {
-            content: "1er\nHEMISEMESTRE",
-            colSpan: 2,
-            styles: { halign: "center", valign: "middle" },
-          },
-          {
-            content: "2do\nHEMISEMESTRE",
-            colSpan: 2,
-            styles: { halign: "center", valign: "middle" },
-          },
-          {
-            content: "RECUP.",
-            colSpan: 1,
-            styles: { halign: "center", valign: "middle" },
-          },
-          {
-            content: "PROMEDIO",
-            colSpan: 2,
-            styles: { halign: "center", valign: "middle" },
-          },
-          {
-            content: "ESTADO",
-            colSpan: 1,
-            rowSpan: 2,
-            styles: { halign: "center", valign: "middle" },
-          },
-        ],
-        [
-          {
-            content: "ID",
-            colSpan: 1,
-            styles: { halign: "center", valign: "middle" },
-          },
-          {
-            content: "CEDULA",
-            colSpan: 1,
-            styles: { halign: "center", valign: "middle" },
-          },
-          {
-            content: "NOMBRES",
-            colSpan: 1,
-            styles: { halign: "center", valign: "middle" },
-          },
-          {
-            content: "NOTA",
-            colSpan: 1,
-            styles: { halign: "center", valign: "middle" },
-          },
-          {
-            content: "ASIST",
-            colSpan: 1,
-            styles: { halign: "center", valign: "middle" },
-          },
-          {
-            content: "NOTA",
-            colSpan: 1,
-            styles: { halign: "center", valign: "middle" },
-          },
-          {
-            content: "ASIST",
-            colSpan: 1,
-            styles: { halign: "center", valign: "middle" },
-          },
-          {
-            content: "NOTA",
-            colSpan: 1,
-            styles: { halign: "center", valign: "middle" },
-          },
-          {
-            content: "NOTA",
-            colSpan: 1,
-            styles: { halign: "center", valign: "middle" },
-          },
-          {
-            content: "ASIST",
-            colSpan: 1,
-            styles: { halign: "center", valign: "middle" },
-          },
-        ],
-      ],
-      body:
-        sortedGrades &&
-        sortedGrades.map((grade) => {
-          return [
-            `${grade.student && grade.student.student_id}`,
-            `1724063860`,
+  const goToNextPage = () => {
+    if (currentPage === totalPages) {
+      return;
+    }
+    setCurrentPage(currentPage + 1);
+  };
 
-            {
-              content: `${grade.student && grade.student.user.user_lastname} ${
-                grade.student && grade.student.user.user_name
-              }`,
-              colSpan: 1,
-              styles: { halign: "left", valign: "middle" },
-            },
-            `${grade && grade.prom_1 === null ? `0.00` : grade.prom_1}`,
-            `100%`,
-            `${grade && grade.prom_2 === null ? `0.00` : grade.prom_2}`,
-            `100%`,
-            `${grade && grade.resit === null ? `0.00` : grade.resit}`,
-            `${
-              grade && grade.final_grade === null ? `0.00` : grade.final_grade
-            }`,
-            `100%`,
-            `${grade && grade.final_grade < 7 ? "REPROBADO" : "APROBADO"}`,
-          ];
-        }),
-      theme: "plain",
-      startY: 65,
-      headStyles: {
-        lineWidth: 0.2,
-        lineColor: [0, 0, 0],
-        fontSize: 7,
-      },
-      bodyStyles: {
-        halign: "center",
-        fontSize: 7,
-        lineWidth: 0.05,
-        lineColor: [0, 0, 0],
-      },
-    });
+  const goToPreviousPage = () => {
+    if (currentPage >= 1) {
+      if (currentPage === 1) {
+        return;
+      }
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
-    const tableY = doc.lastAutoTable.finalY;
+  const handleChange = (e) => {
+    setSearch(e.target.value);
+    searchedStudents(e.target.value);
+  };
 
-    doc.setFontSize(8);
-    doc.text("______________", 90, tableY + 30);
-    doc.text("Docente", 96, tableY + 37);
-
-    doc.save(
-      `Reporte de Calificaciones ${
-        group.subject && group.subject.subject_name
-      } ${group && group.group_name} ${group && group.period.period_id}.pdf`
-    );
+  const searchedStudents = (search) => {
+    let results =
+      Students &&
+      Students.filter((student) => {
+        if (
+          student.user.user_lastname
+            .toLowerCase()
+            .includes(search.toLowerCase()) ||
+          student.user.user_name.toLowerCase().includes(search.toLowerCase())
+        ) {
+          return student;
+        }
+      });
+    setStudentsTable(results);
   };
 
   useEffect(() => {
     getAGroup(id);
   }, []);
 
+  console.log(group);
+
   return (
-    <div className=" overflow-x-hidden bg-gradient-to-br from-[#1C274C] to-[#146898]">
-      <div className=" block ">
-        <div className=" mt-20 sm:mt-24 md:mt-28 mb-3 mx-3 md:mx-10 flex items-center text-xl sm:text-2xl md:text-3xl font-bold text-white text-left">
-          {group.subject && group.subject.subject_name}
+    <div className=" overflow-x-hidden">
+      <div className=" overflow-x-hidden relative ">
+        <div className=" fixed top-0 w-full h-fit bg-white z-30">
+          <div>
+            <h1 className=" text-left text-[12px] md:text-base p-2 text-[#1C274C]">
+              Bienvenid@ al <span className=" pl-1 font-bold">S</span>istema{" "}
+              <span className=" pl-1 font-bold">I</span>ntegral{" "}
+              <span className=" pl-1 font-bold">A</span>cadémico
+            </h1>
+          </div>
         </div>
-        <div className=" mx-3 md:mx-10 text-md md:text-lg font-bold text-slate-400">
-          {id}
-        </div>
-        {user && user.role_id === 1 ? (
-          <div className=" ">
-            <div className="  bg-white z-10 h-fit pt-7 mt-3 flex justify-center items-center">
-              <div className=" ">
-                <svg
-                  className=" w-[100px] h-[100px] md:w-[200px] md:h-[200px]"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  stroke="#1C274C"
-                  strokeWidth="0.00024000000000000003"
-                >
-                  <g id="SVGRepo_bgCarrier" strokeWidth="0" />
-
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-
-                  <g id="SVGRepo_iconCarrier">
-                    {" "}
-                    <path
-                      d="M22 12C22 6.49 17.51 2 12 2C6.49 2 2 6.49 2 12C2 14.9 3.25 17.51 5.23 19.34C5.23 19.35 5.23 19.35 5.22 19.36C5.32 19.46 5.44 19.54 5.54 19.63C5.6 19.68 5.65 19.73 5.71 19.77C5.89 19.92 6.09 20.06 6.28 20.2C6.35 20.25 6.41 20.29 6.48 20.34C6.67 20.47 6.87 20.59 7.08 20.7C7.15 20.74 7.23 20.79 7.3 20.83C7.5 20.94 7.71 21.04 7.93 21.13C8.01 21.17 8.09 21.21 8.17 21.24C8.39 21.33 8.61 21.41 8.83 21.48C8.91 21.51 8.99 21.54 9.07 21.56C9.31 21.63 9.55 21.69 9.79 21.75C9.86 21.77 9.93 21.79 10.01 21.8C10.29 21.86 10.57 21.9 10.86 21.93C10.9 21.93 10.94 21.94 10.98 21.95C11.32 21.98 11.66 22 12 22C12.34 22 12.68 21.98 13.01 21.95C13.05 21.95 13.09 21.94 13.13 21.93C13.42 21.9 13.7 21.86 13.98 21.8C14.05 21.79 14.12 21.76 14.2 21.75C14.44 21.69 14.69 21.64 14.92 21.56C15 21.53 15.08 21.5 15.16 21.48C15.38 21.4 15.61 21.33 15.82 21.24C15.9 21.21 15.98 21.17 16.06 21.13C16.27 21.04 16.48 20.94 16.69 20.83C16.77 20.79 16.84 20.74 16.91 20.7C17.11 20.58 17.31 20.47 17.51 20.34C17.58 20.3 17.64 20.25 17.71 20.2C17.91 20.06 18.1 19.92 18.28 19.77C18.34 19.72 18.39 19.67 18.45 19.63C18.56 19.54 18.67 19.45 18.77 19.36C18.77 19.35 18.77 19.35 18.76 19.34C20.75 17.51 22 14.9 22 12ZM16.94 16.97C14.23 15.15 9.79 15.15 7.06 16.97C6.62 17.26 6.26 17.6 5.96 17.97C4.44 16.43 3.5 14.32 3.5 12C3.5 7.31 7.31 3.5 12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 14.32 19.56 16.43 18.04 17.97C17.75 17.6 17.38 17.26 16.94 16.97Z"
-                      fill="#1C274C"
-                    />{" "}
-                    <path
-                      d="M12 6.92969C9.93 6.92969 8.25 8.60969 8.25 10.6797C8.25 12.7097 9.84 14.3597 11.95 14.4197C11.98 14.4197 12.02 14.4197 12.04 14.4197C12.06 14.4197 12.09 14.4197 12.11 14.4197C12.12 14.4197 12.13 14.4197 12.13 14.4197C14.15 14.3497 15.74 12.7097 15.75 10.6797C15.75 8.60969 14.07 6.92969 12 6.92969Z"
-                      fill="#1C274C"
-                    />{" "}
-                  </g>
-                </svg>
-              </div>
-            </div>
-
-            <div className=" bg-white z-10 font-bold text-[#1C274C] text-sm md:text-md pb-3 flex justify-center items-center">
-              Docente
-            </div>
-            <div className=" bg-white z-10 font-semibold text-[#1C274C]  text-md md:text-lg flex justify-center items-center">
-              {group.teacher
-                ? group.teacher.user.user_name
-                : "Docente no registrado"}
-            </div>
-            <div className=" bg-white z-10 font-semibold text-[#1C274C]  text-md md:text-lg flex justify-center items-center">
-              {group.teacher ? group.teacher.user.user_lastname : ""}
-            </div>
-            <div className=" bg-white z-10  flex justify-center items-center pt-3">
-              <a
-                href={`mailto:${
-                  group.teacher && group.teacher.user.user_email
-                }`}
-              >
-                <button className=" m-3 p-2 bg-gradient-to-br from-[#ad2845] to-[#9e1264] hover:from-[#1C274C] hover:to-[#146898] transition hover:scale-105 duration-300 text-white rounded-lg">
-                  Contactar
-                </button>
-              </a>
-            </div>
-            <div className=" bg-white z-10  pt-10 md:pt-20 pb-12 flex justify-center items-center">
-              <div className=" block">
-                <div className=" font-extrabold text-[#1C274C] text-xl md:text-2xl text-center">
-                  Syllabus de {group.subject && group.subject.subject_name}
-                </div>
-                <div className=" mt-7 md:mt-10 flex justify-center items-center">
-                  <svg
-                    className=" w-[80px] h-[80px] md:w-[120px] md:h-[120px]"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                    <g
-                      id="SVGRepo_tracerCarrier"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></g>
-                    <g id="SVGRepo_iconCarrier">
-                      {" "}
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M6.27103 2.11151C5.46135 2.21816 5.03258 2.41324 4.72718 2.71244C4.42179 3.01165 4.22268 3.43172 4.11382 4.225C4.00176 5.04159 4 6.12387 4 7.67568V16.2442C4.38867 15.9781 4.82674 15.7756 5.29899 15.6517C5.82716 15.513 6.44305 15.5132 7.34563 15.5135L20 15.5135V7.67568C20 6.12387 19.9982 5.04159 19.8862 4.22499C19.7773 3.43172 19.5782 3.01165 19.2728 2.71244C18.9674 2.41324 18.5387 2.21816 17.729 2.11151C16.8955 2.00172 15.7908 2 14.2069 2H9.7931C8.2092 2 7.10452 2.00172 6.27103 2.11151ZM6.75862 6.59459C6.75862 6.1468 7.12914 5.78378 7.58621 5.78378H16.4138C16.8709 5.78378 17.2414 6.1468 17.2414 6.59459C17.2414 7.04239 16.8709 7.40541 16.4138 7.40541H7.58621C7.12914 7.40541 6.75862 7.04239 6.75862 6.59459ZM7.58621 9.56757C7.12914 9.56757 6.75862 9.93058 6.75862 10.3784C6.75862 10.8262 7.12914 11.1892 7.58621 11.1892H13.1034C13.5605 11.1892 13.931 10.8262 13.931 10.3784C13.931 9.93058 13.5605 9.56757 13.1034 9.56757H7.58621Z"
-                        fill="#1C274D"
-                      ></path>{" "}
-                      <path
-                        d="M8.68965 17.1351H7.47341C6.39395 17.1351 6.01657 17.1421 5.72738 17.218C4.93365 17.4264 4.30088 18.0044 4.02952 18.7558C4.0463 19.1382 4.07259 19.4746 4.11382 19.775C4.22268 20.5683 4.42179 20.9884 4.72718 21.2876C5.03258 21.5868 5.46135 21.7818 6.27103 21.8885C7.10452 21.9983 8.2092 22 9.7931 22H14.2069C15.7908 22 16.8955 21.9983 17.729 21.8885C18.5387 21.7818 18.9674 21.5868 19.2728 21.2876C19.5782 20.9884 19.7773 20.5683 19.8862 19.775C19.9776 19.1088 19.9956 18.2657 19.9991 17.1351H13.1034V20.1417C13.1034 20.4397 13.1034 20.5886 12.9988 20.6488C12.8941 20.709 12.751 20.6424 12.4647 20.5092L11.0939 19.8713C10.9971 19.8262 10.9486 19.8037 10.8966 19.8037C10.8445 19.8037 10.796 19.8262 10.6992 19.8713L9.32842 20.5092C9.04213 20.6424 8.89899 20.709 8.79432 20.6488C8.68965 20.5886 8.68965 20.4397 8.68965 20.1417V17.1351Z"
-                        fill="#1C274D"
-                      ></path>{" "}
-                    </g>
-                  </svg>
-                </div>
-                <div className=" mt-2 md:mt-5 p-5 lg:mx-48 text-center text-[#1C274C] font-medium">
-                  El syllabus del curso está disponible para descargar o
-                  visualizar en PDF. Este documento contiene información
-                  importante sobre el curso, como el programa, las fechas de
-                  evaluación, los requisitos de asistencia, y otros detalles
-                  relevantes.
-                </div>
-                <div className=" flex justify-center items-center">
-                  <button className=" w-fit my-8 mx-3 p-2 bg-gradient-to-br from-[#156436] to-[#55966e] hover:from-[#1C274C] hover:to-[#146898] transition hover:scale-105 duration-300 text-white rounded-lg">
-                    <a
-                      href={group.subject && group.subject.syllabus}
-                      target="_blank"
-                    >
-                      Visualizar PDF
-                    </a>
-                  </button>
-                </div>
-              </div>
+      </div>
+      <div className=" bg-[#1C274C] h-fit mt-10 md:mt-5 w-full flex justify-center items-center">
+        <div className=" block">
+          <div className=" flex justify-center items-center">
+            <div className="  mt-8 md:my-14 mx-2 md:mx-10 inline-flex items-center justify-center gap-3">
+              <h1 className=" text-2xl text-white font-bold">
+                {group && group.subject?.subject_name}
+              </h1>
             </div>
           </div>
-        ) : (
-          <div>
-            <div className="">
-              <div className=" bg-white z-10 w-screen h-fit mt-7 items-center  text-[#1C274C] font-semibold text-base lg:text-lg lg:col-span-1">
-                <div className=" pt-5 flex justify-center ">
-                  <div className=" grid grid-cols-1 sm:grid-cols-3">
-                    <p className=" my-2 sm:my-5 mx-5 md:mx-10">
-                      N° de estudiantes:
-                      <span className=" font-normal">{` ${
-                        group.student && group.student.length
-                      }`}</span>
+        </div>
+      </div>
+      <div className=" flex justify-start w-full items-start mt-5  mx-10 my-10">
+        <div className=" grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5">
+          <div className=" col-span-1 block">
+            <div className=" flex justify-center items-start">
+              <div className=" m-2 md:m-5 h-fit bg-white w-fit md:w-full rounded-lg">
+                <div className=" m-5 block">
+                  <h1 className=" font-semibold text-[#1C274C]">Grupo:</h1>
+                  <div className=" mt-3 flex-wrap justify-center md:block">
+                    <p className=" text-sm font-medium text-[#1C274C]">{`${
+                      group && group.group_name
+                    } (${group && group.group_id})`}</p>
+                  </div>
+                  <h1 className=" mt-5 font-semibold text-[#1C274C]">
+                    Modalidad:
+                  </h1>
+                  <div className=" mt-3 flex-wrap justify-center md:block">
+                    <p className=" text-sm font-medium text-[#1C274C]">
+                      {group && group.modality_id === 1
+                        ? "Presencial"
+                        : "En línea"}
                     </p>
-
-                    <p className=" my-2 sm:my-5 mx-5 md:mx-10">
-                      Periodo:
-                      <span className=" font-normal">{` ${
-                        group.period_id && group.period_id
-                      }`}</span>
+                  </div>
+                  <h1 className=" mt-5 font-semibold text-[#1C274C]">
+                    N° de estudiantes:
+                  </h1>
+                  <div className=" mt-3 flex-wrap justify-center md:block">
+                    <p className=" text-sm font-medium text-[#1C274C]">
+                      {group && group.student?.length}
                     </p>
-                    <p className=" my-2 sm:my-5 mx-5 md:mx-10">
-                      Modalidad:
-                      <span className=" font-normal">{` ${
-                        group.modality_id && group.modality_id === 1
-                          ? "Presencial"
-                          : "En línea"
-                      }`}</span>
+                  </div>
+                  <h1 className=" mt-5 font-semibold text-[#1C274C]">
+                    Docente:
+                  </h1>
+                  <div className=" mt-3 flex-wrap justify-center md:block">
+                    <p className=" text-sm font-medium text-[#1C274C]">
+                      {group && group.teacher?.user.user_name}
+                    </p>
+                  </div>
+                  <div className=" mt-1 flex-wrap justify-center md:block">
+                    <p className=" text-sm font-medium text-[#1C274C]">
+                      {group && group.teacher?.user.user_lastname}
                     </p>
                   </div>
                 </div>
               </div>
-              <div className=" bg-white z-10 ">
-                <div className=" py-10">
-                  <div className="  flex justify-center items-center ">
-                    <div className=" block">
-                      <table
-                        id="myTable"
-                        className=" border-collapse border border-slate-400 text-[10px] sm:text-sm"
+            </div>
+            <div className=" m-10">
+              <div>
+                <a href="/calificaciones">
+                  <button className=" p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#1C274C] text-white hover:text-white text-[13px] duration-500">
+                    Ir a calificaciones
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className=" px-12 col-span-1 md:col-span-3 lg:col-span-4 flex justify-start items-start">
+            {content === 0 && (
+              <div className=" block">
+                {user && user.role_id === 1 && (
+                  <div className=" mx-3 md:mx-10 mt-10 font-semibold text-sm lg:text-lg">
+                    <div className=" grid grid-cols-1 md:grid-cols-4 hover:scale-[1.03] duration-500">
+                      <div className=" ">
+                        <div className=" group hover:cursor-pointer flex justify-center items-center col-span-1 h-[50px] md:h-[150px] w-[100px] lg:w-[200px] rounded bg-[#1C274C] text-white">
+                          <div className=" block">
+                            <div className=" flex justify-center items-center">
+                              <svg
+                                className=" h-[70px] w-auto"
+                                fill="#ffffff"
+                                height="200px"
+                                width="200px"
+                                version="1.1"
+                                id="Layer_1"
+                                xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink"
+                                viewBox="0 0 299.97 299.97"
+                                xml:space="preserve"
+                                stroke="#ffffff"
+                              >
+                                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                                <g
+                                  id="SVGRepo_tracerCarrier"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                ></g>
+                                <g id="SVGRepo_iconCarrier">
+                                  {" "}
+                                  <g>
+                                    {" "}
+                                    <g>
+                                      {" "}
+                                      <g>
+                                        {" "}
+                                        <path d="M149.985,126.898c34.986,0,63.449-28.463,63.449-63.449C213.435,28.463,184.971,0,149.985,0S86.536,28.463,86.536,63.449 C86.536,98.436,114.999,126.898,149.985,126.898z M149.985,15.15c26.633,0,48.299,21.667,48.299,48.299 s-21.667,48.299-48.299,48.299s-48.299-21.667-48.299-48.299S123.353,15.15,149.985,15.15z"></path>{" "}
+                                        <path d="M255.957,271.919l-20.807-86.313c-2.469-10.244-11.553-17.399-22.093-17.399c-13.216,0-114.332,0-126.145,0 c-10.538,0-19.623,7.155-22.093,17.399l-20.807,86.313c-3.444,14.289,7.377,28.051,22.093,28.051h167.76 C248.563,299.97,259.407,286.229,255.957,271.919z M66.105,284.82c-4.898,0-8.513-4.581-7.364-9.35l20.807-86.314 c0.823-3.415,3.851-5.799,7.365-5.799H121.4l-9.553,67.577c-0.283,2,0.244,4.029,1.464,5.637l21.422,28.249H66.105z M127.291,249.932l9.411-66.574h26.567l9.411,66.574l-22.695,29.927L127.291,249.932z M233.865,284.82h-68.628l21.421-28.248 c1.22-1.609,1.747-3.638,1.464-5.637l-9.553-67.577h34.487c3.513,0,6.542,2.385,7.365,5.8l20.807,86.313 C242.377,280.235,238.769,284.82,233.865,284.82z"></path>{" "}
+                                      </g>{" "}
+                                    </g>{" "}
+                                  </g>{" "}
+                                </g>
+                              </svg>
+                            </div>
+
+                            <div className=" block m-2">
+                              <p className=" text-center text-sm font-medium">
+                                {group && group.teacher?.user.user_name}
+                              </p>
+                              <p className=" text-center text-sm font-medium">
+                                {group && group.teacher?.user.user_lastname}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        onClick={() =>
+                          (window.location.href = `mailto:${
+                            group && group.teacher?.user.user_email
+                          }`)
+                        }
+                        className="hover:cursor-pointer duration-500 col-span-3 rounded border-slate-300 border bg-gradient-to-br from-[#ffffff] to-[#94afbe] text-[#1C274C]"
+                        action=""
                       >
-                        <thead className=" rounded">
-                          <tr>
-                            <th className=" border border-white font-semibold text-[#1C274C]"></th>
-                            <th
-                              className="border hidden lg:table-cell bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold "
-                              colSpan="5"
+                        <div className=" flex h-full justify-center items-center">
+                          <h1 className=" text-base">
+                            Contactar docente a través del correo institucional
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className=" mx-3 md:mx-10 mt-10 font-semibold text-sm lg:text-lg">
+                  <div className=" grid grid-cols-1 md:grid-cols-4 hover:scale-[1.03] duration-500">
+                    <div>
+                      <div className=" group hover:cursor-pointer  flex justify-center items-center col-span-1 h-[50px] md:h-[150px] w-[100px] lg:w-[200px] rounded bg-[#1C274C] text-white">
+                        <div className=" block">
+                          <div className=" flex justify-center items-center">
+                            <svg
+                              className=" h-[70px] w-auto"
+                              fill="#ffffff"
+                              viewBox="0 0 1920 1920"
+                              xmlns="http://www.w3.org/2000/svg"
+                              stroke="#ffffff"
                             >
-                              1er hemisemestre
-                            </th>
-                            <th
-                              className="border hidden lg:table-cell bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold"
-                              colSpan="5"
+                              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                              <g
+                                id="SVGRepo_tracerCarrier"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              ></g>
+                              <g id="SVGRepo_iconCarrier">
+                                {" "}
+                                <path
+                                  d="M1801.441 0v1920H219.03v-439.216h-56.514c-31.196 0-56.515-25.299-56.515-56.47 0-31.172 25.319-56.47 56.515-56.47h56.514V1029.02h-56.514c-31.196 0-56.515-25.3-56.515-56.471 0-31.172 25.319-56.47 56.515-56.47h56.514V577.254h-56.514c-31.196 0-56.515-25.299-56.515-56.47 0-31.172 25.319-56.471 56.515-56.471h56.514V0h1582.412Zm-113.03 112.941H332.06v351.373h56.515c31.196 0 56.514 25.299 56.514 56.47 0 31.172-25.318 56.47-56.514 56.47H332.06v338.824h56.515c31.196 0 56.514 25.3 56.514 56.471 0 31.172-25.318 56.47-56.514 56.47H332.06v338.824h56.515c31.196 0 56.514 25.299 56.514 56.47 0 31.172-25.318 56.471-56.514 56.471H332.06v326.275h1356.353V112.94ZM640.289 425.201H1388.9v112.94H640.288v-112.94Zm0 214.83h639.439v112.94h-639.44v-112.94Zm0 534.845H1388.9v112.94H640.288v-112.94Zm0 214.83h639.439v112.94h-639.44v-112.94Z"
+                                  fillRule="evenodd"
+                                ></path>{" "}
+                              </g>
+                            </svg>
+                          </div>
+
+                          <div className=" m-2">
+                            <p className=" font-medium">Syllabus</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className=" hover:cursor-pointer col-span-3 rounded border-slate-300 border bg-gradient-to-br from-[#ffffff] to-[#94afbe] text-[#1C274C]"
+                      action=""
+                      onClick={() =>
+                        (window.location.href = `${
+                          group.subject.syllabus === null
+                            ? ""
+                            : group.subject.syllabus
+                        }`)
+                      }
+                    >
+                      <div className=" flex h-full justify-center items-center">
+                        <h1 className=" text-base">
+                          Accede al Syllabus de la materia
+                        </h1>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {user && user.role_id === 2 && (
+                  <div className="mx-3 md:mx-10 mt-10 font-semibold text-sm lg:text-lg">
+                    <div className=" flex justify-center items-center">
+                      <button
+                        onClick={() => setContent(2)}
+                        className=" p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#1C274C] text-white hover:text-white text-[13px] duration-500"
+                      >
+                        Modificar Syllabus
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                <div className=" mx-3 md:mx-10 mt-10 font-semibold text-sm lg:text-lg">
+                  <div className=" grid grid-cols-1 md:grid-cols-4 hover:scale-[1.03] duration-500">
+                    <div>
+                      <div className=" group hover:cursor-pointer flex justify-center items-center col-span-1 h-[50px] md:h-[150px] w-[100px] lg:w-[200px] rounded bg-[#1C274C] text-white">
+                        <div className=" block">
+                          <div className=" flex justify-center items-center">
+                            <svg
+                              className=" h-[70px] w-auto"
+                              fill="#ffffff"
+                              version="1.1"
+                              id="Capa_1"
+                              xmlns="http://www.w3.org/2000/svg"
+                              xmlns:xlink="http://www.w3.org/1999/xlink"
+                              viewBox="0 0 31.716 31.716"
+                              xml:space="preserve"
                             >
-                              2do hemisemestre
-                            </th>
-                            <th className=" border border-white font-semibold text-[#1C274C]"></th>
-                          </tr>
-                          <tr>
-                            <th className=" border bg-[#1C274C] py-2 px-10 sm:px-28 border-slate-300 font-semibold text-white">
-                              Estudiante
-                            </th>
-                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              Nota 1
-                            </th>
-                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              Nota 2
-                            </th>
-                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              Prueba
-                            </th>
-                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              Examen
-                            </th>
-                            <th className=" border p-2 hidden bg-[#1C274C]	sm:table-cell border-slate-300 font-semibold lg:bg-white text-white lg:text-[#1C274C]">
-                              Prom 1
-                            </th>
-                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              Nota 1
-                            </th>
-                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              Nota 2
-                            </th>
-                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              Prueba
-                            </th>
-                            <th className=" border p-2 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                              Examen
-                            </th>
-                            <th className=" border p-2 hidden bg-[#1C274C]	sm:table-cell border-slate-300 font-semibold lg:bg-white text-white lg:text-[#1C274C]">
-                              Prom 2
-                            </th>
-                            <th className=" border p-2 hidden sm:table-cell bg-[#1C274C] border-slate-300 font-semibold text-white">
-                              Supletorio
-                            </th>
-                            <th className=" border p-2 bg-[#1C274C] border-slate-300 font-semibold text-white">
-                              Nota final
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {sortedGrades &&
-                            sortedGrades.map((grade) => (
-                              <tr key={grade.grade_id}>
-                                <th className="border p-3 text-left border-slate-300 font-semibold text-[#1C274C]">
-                                  {grade &&
-                                    grade.student.user.user_lastname +
-                                      " " +
-                                      grade.student.user.user_name}
-                                </th>
-                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                  {grade && grade.grade_1}
-                                </th>
-                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                  {grade && grade.grade_2}
-                                </th>
-                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                  {grade && grade.test_1}
-                                </th>
-                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                  {grade && grade.exam_1}
-                                </th>
-                                <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                  {grade && grade.prom_1}
-                                </th>
-                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                  {grade && grade.grade_3}
-                                </th>
-                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                  {grade && grade.grade_4}
-                                </th>
-                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                  {grade && grade.test_2}
-                                </th>
-                                <th className="border p-3 hidden lg:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                  {grade && grade.exam_2}
-                                </th>
-                                <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                  {grade && grade.prom_2}
-                                </th>
-                                <th className="border p-3 hidden sm:table-cell border-slate-300 font-semibold text-[#1C274C]">
-                                  {grade && grade.resit}
-                                </th>
-                                <th className="border p-3 border-slate-300 font-semibold text-[#1C274C]">
-                                  {grade && grade.final_grade}
-                                </th>
-                                <th className="border p-3 border-white font-semibold group  text-[#1C274C]">
-                                  <a href={`/cursos/${id}/${grade.grade_id}`}>
-                                    <svg
-                                      width="20px"
-                                      height="20px"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      className="cursor-pointer"
-                                    >
-                                      <path
-                                        d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z"
-                                        stroke="#a19b3c"
-                                        strokeWidth="1.5"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className=" group-hover:stroke-slate-800"
-                                      />
-                                      <path
-                                        d="M11 4H6C4.93913 4 3.92178 4.42142 3.17163 5.17157C2.42149 5.92172 2 6.93913 2 8V18C2 19.0609 2.42149 20.0783 3.17163 20.8284C3.92178 21.5786 4.93913 22 6 22H17C19.21 22 20 20.2 20 18V13"
-                                        stroke="#a19b3c"
-                                        strokeWidth="1.5"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        className=" group-hover:stroke-slate-800"
-                                      />
-                                    </svg>
-                                  </a>
-                                </th>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
-                      <div className=" flex justify-center items-center mt-5">
-                        <button
-                          onClick={generatePDF}
-                          className=" w-fit my-8 mx-3 p-2 bg-gradient-to-br from-[#156436] to-[#55966e] hover:from-[#1C274C] hover:to-[#146898] transition hover:scale-105 duration-300 text-white rounded-lg"
-                        >
-                          Obtener Reporte
-                        </button>
+                              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                              <g
+                                id="SVGRepo_tracerCarrier"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              ></g>
+                              <g id="SVGRepo_iconCarrier">
+                                {" "}
+                                <g>
+                                  {" "}
+                                  <path d="M30.604,14.503v-3.815c0.709-0.606,1.112-1.479,1.112-2.416c0-1.322-0.832-2.52-2.069-2.98l-11.44-4.259 c-1.549-0.577-3.275-0.574-4.821,0.007L2.062,5.294C0.829,5.757,0,6.954,0,8.271c0,1.318,0.83,2.514,2.062,2.976l4.236,1.591 l0.005,3.199c-0.091,0.939-0.76,7.993,3.183,12.388c1.601,1.783,3.729,2.688,6.32,2.688c2.593,0,4.718-0.905,6.319-2.688 c4.014-4.474,3.248-11.748,3.18-12.434l0.004-3.126l3.68-1.37v3.008c-0.545,0.395-0.892,1.165-0.892,2.014 c0,1.123,0,2.284,1.697,2.284c1.698,0,1.698-1.162,1.698-2.284C31.494,15.669,31.15,14.898,30.604,14.503z M20.645,27.095 c-1.226,1.364-2.809,2.026-4.838,2.026c-2.031,0-3.611-0.664-4.836-2.026c-2.157-2.397-2.675-5.208-2.754-7.96 c1.834,1.184,4.739,1.792,7.587,1.792c2.853,0,5.761-0.61,7.593-1.802C23.318,21.879,22.804,24.695,20.645,27.095z M8.775,16.187 v-2.418l4.611,1.733c1.545,0.582,3.273,0.583,4.822,0.008l4.628-1.723v2.4c0,0.774-2.737,2.256-7.03,2.256 S8.775,16.961,8.775,16.187z M26.527,9.393l-9.547,3.554c-0.756,0.283-1.603,0.281-2.36-0.003L5.165,9.392 c-0.084-0.031-0.19-0.068-0.307-0.107c-0.542-0.18-1.552-0.518-1.552-1.014c0-0.505,0.963-0.822,1.538-1.011 c0.123-0.04,0.232-0.077,0.321-0.11l9.454-3.552C15,3.454,15.398,3.383,15.804,3.383c0.404,0,0.798,0.071,1.176,0.211l9.549,3.555 c0.078,0.029,0.172,0.062,0.277,0.097c0.52,0.178,1.602,0.544,1.602,1.025C28.408,8.466,28.091,8.815,26.527,9.393z"></path>{" "}
+                                </g>{" "}
+                              </g>
+                            </svg>
+                          </div>
+
+                          <div className=" m-2">
+                            <p className=" text-center text-sm py-2 font-medium">
+                              Lista de Estudiantes
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      onClick={() => setContent(1)}
+                      className=" hover:cursor-pointer col-span-3 rounded border-slate-300 border bg-gradient-to-br from-[#ffffff] to-[#94afbe] text-[#1C274C]"
+                      action=""
+                    >
+                      <div className=" flex h-full justify-center items-center">
+                        <h1 className=" text-base">
+                          {user && user.role_id === 1
+                            ? "Conoce a tus compañeros de clase"
+                            : "Conozca a sus alumnos"}
+                        </h1>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
+            {content === 1 && (
+              <div className=" flex justify-start items-center">
+                <div className=" block">
+                  <div className="  mt-10 font-semibold flex justify-start items-center w-full text-sm lg:text-lg"></div>
+                  {Students.length > 0 && (
+                    <div className=" block">
+                      <div className=" flex w-full justify-start mb-5 items-center">
+                        <h1 className=" text-left text-lg font-semibold text-white">
+                          Lista de estudiantes
+                        </h1>
+                      </div>
+                      <button
+                        onClick={() => setContent(0)}
+                        className=" my-5 p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#1C274C] text-white hover:text-white text-[13px] duration-500"
+                      >
+                        Regresar
+                      </button>
+                      <div className="relative mb-4 flex w-[100%] md:w-[25vw] flex-wrap items-stretch rounded-lg bg-white ">
+                        <input
+                          type="search"
+                          className="relative m-0 block w-[1px] min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-[#1C274C] focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none"
+                          placeholder="Search"
+                          aria-label="Search"
+                          aria-describedby="button-addon2"
+                          onChange={handleChange}
+                        />
+                        <span
+                          className="input-group-text flex items-center whitespace-nowrap rounded px-3 py-1.5 text-center text-base font-normal text-neutral-700 "
+                          id="basic-addon2"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            className="h-5 w-5 fill-[#1C274C]"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </span>
+                      </div>
+                      <table className=" border-collapse   text-[10px] sm:text-sm">
+                        <thead className=" rounded text-sm">
+                          <tr>
+                            <th className="border px-40 bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold ">
+                              Nombres
+                            </th>
+                            <th className="border px-10 bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold ">
+                              Correo Institucional
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {search === ""
+                            ? Students &&
+                              currentStudents.map((student) => (
+                                <tr
+                                  key={student.student_id}
+                                  className=" text-[13px]"
+                                >
+                                  <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
+                                    {`${student.user.user_lastname} ${student.user.user_name}`}
+                                  </th>
+                                  <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
+                                    {student.user.user_email}
+                                  </th>
+                                </tr>
+                              ))
+                            : studentsTable.map((student) => (
+                                <tr
+                                  key={student.student_id}
+                                  className=" text-[13px]"
+                                >
+                                  <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
+                                    {`${student.user.user_lastname} ${student.user.user_name}`}
+                                  </th>
+                                  <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
+                                    {student.user.user_email}
+                                  </th>
+                                </tr>
+                              ))}
+                        </tbody>
+                      </table>
+
+                      <nav
+                        aria-label="Page navigation example"
+                        className=" my-5 flex justify-center items-center"
+                      >
+                        <ul className="list-style-none flex">
+                          <li>
+                            <button
+                              className="relative block font-medium rounded bg-transparent px-3 py-1.5 text-[10px] sm:text-sm text-white border border-white w-28 hover:bg-[#146898] transition-all duration-300 "
+                              href="#"
+                              onClick={goToPreviousPage}
+                            >
+                              Previous
+                            </button>
+                          </li>
+
+                          <li>
+                            <button
+                              className="relative block font-medium rounded bg-transparent px-3 py-1.5 text-[10px] sm:text-sm text-white border border-white w-28 hover:bg-[#146898] transition-all duration-300 "
+                              href="#"
+                              onClick={goToNextPage}
+                            >
+                              Next
+                            </button>
+                          </li>
+                        </ul>
+                      </nav>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            {content === 2 && (
+              <div className=" flex justify-start items-center">
+                <div className=" block">
+                  <div className="  mt-10 font-semibold flex justify-start items-center text-white w-full text-sm lg:text-xl">
+                    <h1>Modificar Syllabus</h1>
+                  </div>
+                  <button
+                    onClick={() => setContent(0)}
+                    className=" my-8 p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#1C274C] text-white hover:text-white text-[13px] duration-500"
+                  >
+                    Regresar
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

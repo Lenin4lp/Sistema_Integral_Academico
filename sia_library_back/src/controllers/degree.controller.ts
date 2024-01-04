@@ -2,10 +2,17 @@ import { Request, Response } from "express";
 import { Degree } from "../models/degree.model";
 import { Student } from "../models/student.model";
 import { User } from "../models/user.model";
+import { Modality } from "../models/modality.model";
+import { Group } from "../models/group.model";
 
 //? Obtener todas las Carreras
 export const getDegrees = async (req: Request, res: Response) => {
-  const degrees = await Degree.findAll();
+  const degrees = await Degree.findAll({
+    include: [
+      { model: Student, include: [{ model: User }, { model: Group }] },
+      { model: Modality },
+    ],
+  });
   res.json(degrees);
 };
 

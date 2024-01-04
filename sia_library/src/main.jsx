@@ -186,7 +186,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/cursos/:id",
+        path: "/academico/cursos/:id",
         element: (
           <Suspense
             fallback={
