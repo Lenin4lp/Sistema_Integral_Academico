@@ -21,7 +21,7 @@ function ModifyGrades() {
       if (res.status === 200) {
         console.log(res.data);
         alert("Calificaciones modificadas");
-        navigate(`/cursos`);
+        window.location.href = "/calificaciones";
       }
     } catch (error) {
       console.log(error);
@@ -78,21 +78,21 @@ function ModifyGrades() {
   });
 
   return (
-    <div>
+    <div className=" flex justify-center items-center">
       <div className=" overflow-x-hidden">
         <form className=" block">
-          <div className=" mt-24 md:mt-28 mb-3 mx-3 md:mx-10 flex items-center text-xl sm:text-2xl md:text-3xl font-bold text-[#1C274C] text-left">
+          <div className=" mt-10 mb-3 mx-3 md:mx-10 justify-center flex items-center text-xl sm:text-2xl md:text-3xl font-bold text-white text-left">
             Registro de calificaciones
           </div>
-          <div className="mx-3 md:mx-10 mt-10 font-semibold text-[#1C274C] text-base lg:text-lg">
+          <div className="mx-3 md:mx-10 mt-10 font-semibold text-white text-base lg:text-lg">
             Estudiante:{" "}
-            <span className=" font-normal">{`  ${
+            <span className=" text-base font-normal">{`  ${
               grade.student && grade.student.user.user_name
             } ${grade.student && grade.student.user.user_lastname}`}</span>
           </div>
-          <div className="mx-3 md:mx-10 mt-5 mb-8 md:mb-14 font-semibold text-[#1C274C] text-base lg:text-lg">
+          <div className="mx-3 md:mx-10 mt-5 mb-8 md:mb-14 font-semibold text-white text-base lg:text-lg">
             Materia:{" "}
-            <span className=" font-normal">{`  ${
+            <span className=" text-base font-normal">{`  ${
               grade.group && grade.group.subject.subject_name
             }`}</span>
           </div>
@@ -107,7 +107,7 @@ function ModifyGrades() {
               >
                 <div className=" grid grid-cols-2 md:grid-cols-4 pt-10">
                   <div className=" text-center block">
-                    <p>Nota 1</p>
+                    <p className=" text-white">Nota 1</p>
                     <input
                       min={0}
                       max={10}
@@ -121,7 +121,7 @@ function ModifyGrades() {
                     />
                   </div>
                   <div className=" text-center block">
-                    <p>Nota 2</p>
+                    <p className=" text-white">Nota 2</p>
                     <input
                       min={0}
                       max={10}
@@ -136,7 +136,7 @@ function ModifyGrades() {
                     />
                   </div>
                   <div className=" text-center block">
-                    <p>Prueba</p>
+                    <p className=" text-white">Prueba</p>
                     <input
                       min={0}
                       max={10}
@@ -151,7 +151,7 @@ function ModifyGrades() {
                     />
                   </div>
                   <div className=" text-center block">
-                    <p>Examen</p>
+                    <p className=" text-white">Examen</p>
                     <input
                       min={0}
                       max={10}
@@ -180,7 +180,7 @@ function ModifyGrades() {
               >
                 <div className=" grid grid-cols-2 md:grid-cols-4 pt-10">
                   <div className=" text-center block">
-                    <p>Nota 1</p>
+                    <p className=" text-white">Nota 1</p>
                     <input
                       min={0}
                       max={10}
@@ -195,7 +195,7 @@ function ModifyGrades() {
                     />
                   </div>
                   <div className=" text-center block">
-                    <p>Nota 2</p>
+                    <p className=" text-white">Nota 2</p>
                     <input
                       min={0}
                       max={10}
@@ -210,7 +210,7 @@ function ModifyGrades() {
                     />
                   </div>
                   <div className=" text-center block">
-                    <p>Prueba</p>
+                    <p className=" text-white">Prueba</p>
                     <input
                       min={0}
                       max={10}
@@ -225,7 +225,7 @@ function ModifyGrades() {
                     />
                   </div>
                   <div className=" text-center block">
-                    <p>Examen</p>
+                    <p className=" text-white">Examen</p>
                     <input
                       min={0}
                       max={10}
@@ -245,7 +245,7 @@ function ModifyGrades() {
             <div className=" flex justify-center items-center mt-10 mb-20">
               <button
                 onClick={onSubmit}
-                className="mt-10 p-2 bg-gradient-to-br from-[#3a9161] text-base font-medium to-[#1ce09f] hover:from-[#1C274C] hover:to-[#146898] transition duration-300 text-white rounded-lg"
+                className=" p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#1C274C] text-white hover:text-white text-[13px] duration-500"
               >
                 Guardar cambios
               </button>

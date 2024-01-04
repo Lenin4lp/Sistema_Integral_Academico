@@ -539,8 +539,8 @@ function Academic() {
                     <div className=" grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-10">
                       {academicButtons &&
                         academicButtons.map((button, index) => (
-                          <a href={button.buttonLink}>
-                            <div key={index} className=" group ">
+                          <a key={index} href={button.buttonLink}>
+                            <div className=" group ">
                               <div className=" flex justify-center items-center">
                                 <div className=" h-[70px] md:h-[90px] lg:h-[120px] group-hover:scale-110 duration-300 group-hover:cursor-pointer bg-white w-[70px] md:w-[90px] lg:w-[120px] flex justify-center items-center rounded-full">
                                   {button.buttonSVG}

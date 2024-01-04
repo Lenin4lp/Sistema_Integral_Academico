@@ -65,8 +65,8 @@ const LazyUpdateGrades = React.lazy(() =>
 );
 const LazyAcademic = React.lazy(() => import("./pages/academic/Academic.jsx"));
 const LazyGrades = React.lazy(() => import("./pages/grade/Grades.jsx"));
-const LazyTeacherGrades = React.lazy(() =>
-  import("./pages/grade/TeacherGrades.jsx")
+const LazyUserDegrees = React.lazy(() =>
+  import("./pages/academic/Degrees.jsx")
 );
 
 const router = createBrowserRouter([
@@ -126,23 +126,39 @@ const router = createBrowserRouter([
           <Suspense
             fallback={
               <>
-                fallback=
-                {
-                  <>
-                    <div className="flex justify-center items-center w-screen h-screen bg-white">
-                      <div className="block">
-                        <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
-                        <h4 className=" text-center text-[#146898]  font-semibold mt-5">
-                          Cargando...
-                        </h4>
-                      </div>
-                    </div>
-                  </>
-                }
+                <div className="flex justify-center items-center w-screen h-screen bg-white">
+                  <div className="block">
+                    <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
+                    <h4 className=" text-center text-[#146898]  font-semibold mt-5">
+                      Cargando...
+                    </h4>
+                  </div>
+                </div>
               </>
             }
           >
             <LazyCourses />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/carreras",
+        element: (
+          <Suspense
+            fallback={
+              <>
+                <div className="flex justify-center items-center w-screen h-screen bg-white">
+                  <div className="block">
+                    <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
+                    <h4 className=" text-center text-[#146898]  font-semibold mt-5">
+                      Cargando...
+                    </h4>
+                  </div>
+                </div>
+              </>
+            }
+          >
+            <LazyUserDegrees />
           </Suspense>
         ),
       },
@@ -193,7 +209,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/cursos/:id/:gradeId",
+        path: "/calificaciones/:gradeId",
         element: (
           <Suspense
             fallback={
@@ -282,27 +298,6 @@ const router = createBrowserRouter([
             }
           >
             <LazyGrades />
-          </Suspense>
-        ),
-      },
-      {
-        path: "/docente/calificaciones",
-        element: (
-          <Suspense
-            fallback={
-              <>
-                <div className="flex justify-center items-center w-screen h-screen bg-white">
-                  <div className="block">
-                    <div className="w-20 h-20 rounded-full animate-spin border-x-[3px] border-solid border-[#146898] border-t-transparent shadow-md"></div>
-                    <h4 className=" text-center text-[#146898]  font-semibold mt-5">
-                      Cargando...
-                    </h4>
-                  </div>
-                </div>
-              </>
-            }
-          >
-            <LazyTeacherGrades />
           </Suspense>
         ),
       },

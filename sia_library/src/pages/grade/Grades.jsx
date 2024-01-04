@@ -209,7 +209,7 @@ function Grades() {
                     </div>
                   </div>
                 </div>
-                {user && user.role_id === 2 && (
+                {user && user.role_id === 2 && filteredGrades.length > 0 && (
                   <div className=" flex justify-center items-start">
                     <div className=" m-2 mt-8 h-fit bg-[#4784a0] w-fit md:w-full rounded-lg">
                       <div className=" m-5 block">
@@ -504,7 +504,7 @@ function Grades() {
                                   <th className="  font-semibold text-[#1C274C]"></th>
                                 </tr>
                                 <tr>
-                                  <th className=" border bg-[#1C274C] py-2 px-10 sm:px-20 border-[#4784a0] font-semibold text-white">
+                                  <th className=" border bg-[#1C274C] py-2 px-10 sm:px-10 border-[#4784a0] font-semibold text-white">
                                     Estudiante
                                   </th>
                                   <th className=" border p-2 hidden lg:table-cell border-[#4784a0] font-semibold text-white">
@@ -727,8 +727,10 @@ function Grades() {
                       ) : (
                         user &&
                         user.role_id === 2 && (
-                          <div>
-                            <h1>No se encontraron resultados</h1>
+                          <div className=" h-full py-24 w-full flex justify-center items-center">
+                            <h1 className=" text-lg text-center text-white ">
+                              Lo siento, no se encontraron resultados
+                            </h1>
                           </div>
                         )
                       )}
