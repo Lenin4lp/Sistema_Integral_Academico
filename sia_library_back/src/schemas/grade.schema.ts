@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+// ? Validacion para notas
+
 export const updateGradeSchema = z.object({
   grade_1: z.number().optional(),
   grade_2: z.number().optional(),

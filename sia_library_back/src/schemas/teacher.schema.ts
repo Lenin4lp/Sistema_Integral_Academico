@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+// ? Validacion para docentes
+
 export const updateTeacherSchema = z.object({
   speciality: z
     .string()

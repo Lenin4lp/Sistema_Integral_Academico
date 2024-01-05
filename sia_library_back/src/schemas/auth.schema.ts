@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+// ? Validacion de autenticacion
+
 export const registerSchema = z.object({
   user_name: z
     .string({

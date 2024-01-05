@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+// ? Validacion para carreras
+
 export const degreeRegisterSchema = z.object({
   degree_name: z
     .string({

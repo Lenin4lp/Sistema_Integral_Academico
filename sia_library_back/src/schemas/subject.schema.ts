@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+// ? Validacion para materias
+
 export const registerSubjectSchema = z.object({
   subject_name: z
     .string({

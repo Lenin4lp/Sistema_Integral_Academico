@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+// ? Validacion para grupos
+
 const grupoPattern = /^Grupo \d+$/;
 
 export const registerGroupSchema = z.object({

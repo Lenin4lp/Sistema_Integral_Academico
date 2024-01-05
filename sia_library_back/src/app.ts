@@ -16,6 +16,8 @@ import modalityRoutes from "./routes/modality.routes";
 import periodRoutes from "./routes/period.routes";
 import uploadRoutes from "./routes/upload.routes";
 
+// ? Creación del servidor
+
 const app = express();
 
 app.use(morgan("dev"));
