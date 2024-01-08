@@ -142,8 +142,8 @@ function Degrees() {
   console.log(FirstDegree);
 
   return (
-    <div>
-      <div className=" overflow-x-hidden relative ">
+    <div className="overflow-x-hidden">
+      <div className="  relative ">
         <div className=" fixed top-0 w-full h-fit bg-white z-30">
           <div>
             <h1 className=" text-left text-[12px] md:text-base p-2 text-[#1C274C]">
@@ -157,7 +157,7 @@ function Degrees() {
       <div className="  h-fit mt-10 md:mt-5 w-full flex justify-center items-center">
         <div className=" block">
           <div className=" flex justify-start items-start">
-            <div className="  mt-8 md:mt-14 mx-2 md:mx-10 inline-flex items-center justify-center gap-3">
+            <div className="  mt-8 md:mt-14 mx-2 lg:mx-10 inline-flex items-center justify-center gap-3">
               <svg
                 className="  h-[20px] w-[20px] sm:h-[30px] sm:w-[30px]"
                 fill="#ffffff"
@@ -183,9 +183,9 @@ function Degrees() {
               </h1>
             </div>
           </div>
-          <div className=" w-full h-fit flex justify-start p-10 items-center">
+          <div className=" w-full h-fit flex justify-start p-5 lg:p-10 items-center">
             <select
-              className=" w-[200px]"
+              className=" w-[150px] lg:w-[200px]"
               onChange={handleModalityChange}
               name=""
               id=""
@@ -197,48 +197,50 @@ function Degrees() {
               ))}
             </select>
           </div>
-          <div className=" flex justify-center items-center w-screen h-fit border-b border-white">
-            <div className=" grid grid-cols-4">
-              {degrees &&
-                filteredDegrees.map((degree) => (
-                  <div
-                    key={degree.degree_id}
-                    className=" m-3 flex justify-center items-center"
-                  >
+          <div className=" flex container justify-center items-center ">
+            <div className=" flex justify-center items-center w-full lg:mx-24 h-fit border-b border-white">
+              <div className=" justify-stretch grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4">
+                {degrees &&
+                  filteredDegrees.map((degree) => (
                     <div
-                      onClick={() => setSelectedDegree(degree.degree_id)}
-                      className={`p-3 border-b mb-3 rounded border-l border-r border-r-transparent border-t border-t-transparent hover:cursor-pointer  ${
-                        selectedDegree === degree.degree_id
-                          ? "bg-[#1C274C]"
-                          : "bg-[#4784a0]"
-                      } hover:border-r-white hover:border-t-white duration-300 border-white`}
+                      key={degree.degree_id}
+                      className=" m-3 flex justify-center items-center"
                     >
-                      <h1 className=" text-white text-center text-sm">
-                        {degree.degree_name}
-                      </h1>
+                      <div
+                        onClick={() => setSelectedDegree(degree.degree_id)}
+                        className={` p-2 md:p-3 border-b mb-3 rounded border-l border-r border-r-transparent border-t border-t-transparent hover:cursor-pointer  ${
+                          selectedDegree === degree.degree_id
+                            ? "bg-[#1C274C]"
+                            : "bg-[#4784a0]"
+                        } hover:border-r-white hover:border-t-white duration-300 border-white`}
+                      >
+                        <h1 className=" text-white text-center text-[12px] lg:text-sm">
+                          {degree.degree_name}
+                        </h1>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+              </div>
             </div>
           </div>
-          <div className=" flex justify-start items-center w-full h-fit">
+          <div className=" md:mt-5 flex justify-start items-center w-full h-fit">
             {selectedDegree !== "" ? (
-              <div className=" grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5">
+              <div className=" grid  grid-cols-1 md:grid-cols-4 lg:grid-cols-5">
                 <div className=" col-span-1 flex justify-center items-start">
-                  <div className=" m-2 md:m-5 h-fit bg-white w-fit md:w-full rounded-lg">
+                  <div className=" m-2 md:m-5 h-fit bg-white w-full rounded-lg">
                     <div className=" m-5 block">
                       <h1 className=" font-semibold text-[#1C274C]">
                         Carrera:
                       </h1>
-                      <div className=" mt-3 flex-wrap justify-center md:block">
+                      <div className=" mt-2 sm:mt-3 flex-wrap justify-center md:block">
                         <p className=" text-sm font-medium text-[#1C274C]">
                           {Degree && Degree.degree_name}
                         </p>
                       </div>
-                      <h1 className=" mt-5 font-semibold text-[#1C274C]">
+                      <h1 className=" mt-3 sm:mt-5 font-semibold text-[#1C274C]">
                         Modalidades:
                       </h1>
-                      <div className=" mt-3 flex-wrap justify-center md:block">
+                      <div className=" mt-2 sm:mt-3 flex-wrap justify-center md:block">
                         {Degree &&
                           Degree.modality.map((modality) => (
                             <p
@@ -249,18 +251,18 @@ function Degrees() {
                             </p>
                           ))}
                       </div>
-                      <h1 className=" mt-5 font-semibold text-[#1C274C]">
+                      <h1 className=" mt-3 sm:mt-5 font-semibold text-[#1C274C]">
                         Modalidad actual:
                       </h1>
-                      <div className=" mt-3 flex-wrap justify-center md:block">
+                      <div className=" mt-2 sm:mt-3 flex-wrap justify-center md:block">
                         <p className=" text-sm font-medium text-[#1C274C]">
                           {Modality && Modality.modality_name}
                         </p>
                       </div>
-                      <h1 className=" mt-5 font-semibold text-[#1C274C]">
+                      <h1 className=" mt-3 sm:mt-5 font-semibold text-[#1C274C]">
                         Nº de estudiantes:
                       </h1>
-                      <div className=" mt-3 flex-wrap justify-center md:block">
+                      <div className=" mt-2 sm:mt-3 flex-wrap justify-center md:block">
                         <p className=" text-sm font-medium text-[#1C274C]">
                           {Students && Students.length}
                         </p>
@@ -268,14 +270,14 @@ function Degrees() {
                     </div>
                   </div>
                 </div>
-                <div className=" m-10 col-span-1 md:col-span-3 lg:col-span-4 flex  items-start">
+                <div className=" mx-2 m-8 md:m-10 col-span-1 md:col-span-3 lg:col-span-4 flex  items-start">
                   <div className=" block">
                     <div className=" flex w-full justify-start mb-10 items-center">
-                      <h1 className=" text-left text-lg font-semibold text-white">
+                      <h1 className=" text-left text-sm sm:text-lg font-semibold text-white">
                         Lista de estudiantes
                       </h1>
                     </div>
-                    <div className="relative mb-4 flex w-[100%] md:w-[25vw] flex-wrap items-stretch rounded-lg bg-white ">
+                    <div className="relative mb-4 flex w-[200px] md:w-[25vw] flex-wrap items-stretch rounded-lg bg-white ">
                       <input
                         type="search"
                         className="relative m-0 block w-[1px] min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-[#1C274C] focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none"
@@ -301,13 +303,13 @@ function Degrees() {
                         </svg>
                       </span>
                     </div>
-                    <table className=" border-collapse   text-[10px] sm:text-sm">
-                      <thead className=" rounded text-sm">
+                    <table className=" border-collapse   text-[12px] lg:text-sm">
+                      <thead className=" rounded ">
                         <tr>
-                          <th className="border px-40 bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold ">
+                          <th className="border px-20 md:px-20 lg:px-40 bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold ">
                             Nombres
                           </th>
-                          <th className="border px-10 bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold ">
+                          <th className="border hidden sm:table-cell px-10 md:px-20 lg:px-20 bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold ">
                             Correo Institucional
                           </th>
                         </tr>
@@ -318,12 +320,12 @@ function Degrees() {
                             currentStudents.map((student) => (
                               <tr
                                 key={student.student_id}
-                                className=" text-[13px]"
+                                className=" text-[11px] md:text-[13px]"
                               >
                                 <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
                                   {`${student.user.user_lastname} ${student.user.user_name}`}
                                 </th>
-                                <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
+                                <th className="border hidden sm:table-cell p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
                                   {student.user.user_email}
                                 </th>
                               </tr>
@@ -331,12 +333,12 @@ function Degrees() {
                           : studentsTable.map((student) => (
                               <tr
                                 key={student.student_id}
-                                className=" text-[13px]"
+                                className=" text-[11px] md:text-[13px]"
                               >
                                 <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
                                   {`${student.user.user_lastname} ${student.user.user_name}`}
                                 </th>
-                                <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
+                                <th className="border hidden sm:table-cell p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
                                   {student.user.user_email}
                                 </th>
                               </tr>

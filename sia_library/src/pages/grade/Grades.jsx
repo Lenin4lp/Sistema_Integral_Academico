@@ -210,7 +210,7 @@ function Grades() {
                   </div>
                 </div>
                 {user && user.role_id === 2 && filteredGrades.length > 0 && (
-                  <div className=" flex justify-center items-start">
+                  <div className=" hidden md:flex justify-center items-start">
                     <div className=" m-2 mt-8 h-fit bg-[#4784a0] w-fit md:w-full rounded-lg">
                       <div className=" m-5 block">
                         <h1 className=" font-semibold text-white">Materia:</h1>
@@ -456,7 +456,7 @@ function Grades() {
                                         selectedSubject === group.group_id
                                           ? "bg-[#4784a0]"
                                           : "bg-transparent"
-                                      } text-[12px] duration-300 text-white border-t border-r rounded w-[200px] p-2`}
+                                      } text-[12px] duration-300 text-white border-t border-r rounded w-[150px] sm:w-[200px] p-2`}
                                     >
                                       {group.subject.subject_name}
                                       <br />
@@ -469,10 +469,10 @@ function Grades() {
                                   </div>
                                 ))}
                             </div>
-                            <div className=" w-full h-fit flex justify-end py-10 items-center">
+                            <div className=" w-full h-fit flex justify-center sm:justify-end py-10 items-center">
                               <select
                                 onChange={handleDegreeChange}
-                                className=" w-[230px]"
+                                className=" w-[180px] text-sm md:w-[230px]"
                                 name=""
                                 id=""
                               >
@@ -485,8 +485,8 @@ function Grades() {
                                   ))}
                               </select>
                             </div>
-                            <table className=" border-collapse   text-[10px] sm:text-sm">
-                              <thead className=" rounded text-[12px]">
+                            <table className=" border-collapse text-[10px] sm:text-sm">
+                              <thead className=" rounded text-[11px] sm:text-[12px]">
                                 <tr>
                                   <th className="  font-semibold text-[#1C274C]"></th>
                                   <th
@@ -504,7 +504,7 @@ function Grades() {
                                   <th className="  font-semibold text-[#1C274C]"></th>
                                 </tr>
                                 <tr>
-                                  <th className=" border bg-[#1C274C] py-2 px-10 sm:px-10 border-[#4784a0] font-semibold text-white">
+                                  <th className=" border bg-[#1C274C] py-2 px-7 sm:px-10 border-[#4784a0] font-semibold text-white">
                                     Estudiante
                                   </th>
                                   <th className=" border p-2 hidden lg:table-cell border-[#4784a0] font-semibold text-white">
@@ -559,7 +559,7 @@ function Grades() {
                                       .map((grade) => (
                                         <tr
                                           key={grade && grade.grade_id}
-                                          className=" text-[12px]"
+                                          className=" text-[10px] sm:text-[12px]"
                                         >
                                           <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">{`${grade.student.user.user_lastname} ${grade.student.user.user_name}`}</th>
                                           <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
@@ -603,12 +603,10 @@ function Grades() {
                                               href={`/calificaciones/${grade.grade_id}`}
                                             >
                                               <svg
-                                                width="20px"
-                                                height="20px"
                                                 viewBox="0 0 24 24"
                                                 fill="none"
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="cursor-pointer"
+                                                className="cursor-pointer w-[15px] h-[15px] sm:w-[20px] sm:h-[20px]"
                                               >
                                                 <path
                                                   d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z"
@@ -648,7 +646,7 @@ function Grades() {
                                       .map((grade) => (
                                         <tr
                                           key={grade && grade.grade_id}
-                                          className=" text-[12px]"
+                                          className=" text-[10px] sm:text-[12px]"
                                         >
                                           <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">{`${grade.student.user.user_lastname} ${grade.student.user.user_name}`}</th>
                                           <th className="border p-3 hidden lg:table-cell border-slate-300 font-medium text-white">
@@ -692,12 +690,10 @@ function Grades() {
                                               href={`/calificaciones/${grade.grade_id}`}
                                             >
                                               <svg
-                                                width="20px"
-                                                height="20px"
+                                                className="cursor-pointer w-[15px] h-[15px] sm:w-[20px] sm:h-[20px]"
                                                 viewBox="0 0 24 24"
                                                 fill="none"
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                className="cursor-pointer"
                                               >
                                                 <path
                                                   d="M21.2799 6.40005L11.7399 15.94C10.7899 16.89 7.96987 17.33 7.33987 16.7C6.70987 16.07 7.13987 13.25 8.08987 12.3L17.6399 2.75002C17.8754 2.49308 18.1605 2.28654 18.4781 2.14284C18.7956 1.99914 19.139 1.92124 19.4875 1.9139C19.8359 1.90657 20.1823 1.96991 20.5056 2.10012C20.8289 2.23033 21.1225 2.42473 21.3686 2.67153C21.6147 2.91833 21.8083 3.21243 21.9376 3.53609C22.0669 3.85976 22.1294 4.20626 22.1211 4.55471C22.1128 4.90316 22.0339 5.24635 21.8894 5.5635C21.7448 5.88065 21.5375 6.16524 21.2799 6.40005V6.40005Z"

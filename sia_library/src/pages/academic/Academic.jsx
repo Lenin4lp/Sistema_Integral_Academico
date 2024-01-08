@@ -518,14 +518,16 @@ function Academic() {
                         : user.roleTable &&
                           filteredGroups.map((group) => (
                             <div className=" mx-5 " key={group.group_id}>
-                              <Cards
-                                cardColor={
-                                  "bg-gradient-to-br from-white to-[#e7e7e7]"
-                                }
-                                cardTitle={group.subject.subject_name}
-                                cardDescription={group.group_id}
-                                cardFontColor={"text-[#1C274C]"}
-                              />
+                              <a href={`/academico/cursos/${group.group_id}`}>
+                                <Cards
+                                  cardColor={
+                                    "bg-gradient-to-br from-white to-[#e7e7e7]"
+                                  }
+                                  cardTitle={group.subject.subject_name}
+                                  cardDescription={group.group_id}
+                                  cardFontColor={"text-[#1C274C]"}
+                                />
+                              </a>
                             </div>
                           ))}
                     </div>

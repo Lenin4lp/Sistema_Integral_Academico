@@ -29,7 +29,7 @@ function Home() {
                 </div>
                 <div className=" flex justify-center items-center">
                   <div className="">
-                    <h1 className=" text-center mx-10 text-sm md:text-base text-white">
+                    <h1 className=" text-center mx-10 text-[12px] sm:text-sm md:text-base text-white">
                       Somos más que una plataforma académica; somos tu socio en
                       el viaje del aprendizaje. En el Instituto Superior
                       Tecnológico de la Vera Cruz, creemos en el poder de la
@@ -50,16 +50,16 @@ function Home() {
                   </div>
                   <div className=" flex justify-center items-center my-2">
                     <a href="mailto:tics.plataforma@istvc.edu.ec">
-                    <button className=" p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#146898] text-white hover:text-white text-[12px] md:text-sm lg:text-base duration-500">
-                      Soporte técnico
-                    </button>
+                      <button className=" p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#146898] text-white hover:text-white text-[12px] md:text-sm lg:text-base duration-500">
+                        Soporte técnico
+                      </button>
                     </a>
                   </div>
                   <div className=" flex justify-center items-center my-2">
                     <a href="/academico">
-                    <button className=" p-2 px-4 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#146898] text-white hover:text-white text-[12px] md:text-sm lg:text-base duration-500">
-                      Académico
-                    </button>
+                      <button className=" p-2 px-4 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#146898] text-white hover:text-white text-[12px] md:text-sm lg:text-base duration-500">
+                        Académico
+                      </button>
                     </a>
                   </div>
                 </div>

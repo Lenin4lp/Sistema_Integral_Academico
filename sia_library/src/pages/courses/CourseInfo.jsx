@@ -21,36 +21,35 @@ function CourseInfo() {
   const navigate = useNavigate();
 
   const modifySubject = async (id, content) => {
-          
     try {
       const res = await updateSubject(id, content);
       if (res.status === 200) {
         alert("Archivo cargado exitosamente");
-        
+
         window.location.reload();
       }
     } catch (error) {
       console.log(error);
       setErrors(error.response.data);
     }
-  }
- 
+  };
 
   const upload = () => {
     const formData = new FormData();
     formData.append("myFile", file);
     axios
       .post("http://localhost:8081/api/upload", formData)
-      .then((res) => { if (res.status === 200) {
-        const subjectId = group && group.subject_id;
-        const fileLocation = res.data.location;
-        const data = {
-          syllabus : fileLocation
-        }      
-        console.log(fileLocation);
-        modifySubject(subjectId, data);
-
-      }})
+      .then((res) => {
+        if (res.status === 200) {
+          const subjectId = group && group.subject_id;
+          const fileLocation = res.data.location;
+          const data = {
+            syllabus: fileLocation,
+          };
+          console.log(fileLocation);
+          modifySubject(subjectId, data);
+        }
+      })
       .catch((er) => console.log(er));
   };
 
@@ -122,16 +121,13 @@ function CourseInfo() {
     setStudentsTable(results);
   };
 
-
   useEffect(() => {
     getAGroup(id);
   }, []);
 
-  
-
   return (
-    <div className=" overflow-x-hidden">
-      <div className=" overflow-x-hidden relative ">
+    <div className=" overflow-x-hidden relative mb-10">
+      <div className=" ">
         <div className=" fixed top-0 w-full h-fit bg-white z-30">
           <div>
             <h1 className=" text-left text-[12px] md:text-base p-2 text-[#1C274C]">
@@ -142,22 +138,22 @@ function CourseInfo() {
           </div>
         </div>
       </div>
-      <div className=" bg-[#1C274C] h-fit mt-10 md:mt-5 w-full flex justify-center items-center">
+      <div className=" sm:bg-[#1C274C] mt-8 md:mt-5 w-full flex justify-center items-center">
         <div className=" block">
           <div className=" flex justify-center items-center">
-            <div className="  mt-8 md:my-14 mx-2 md:mx-10 inline-flex items-center justify-center gap-3">
-              <h1 className=" text-2xl text-white font-bold">
-                {group && group.subject?.subject_name}
+            <div className="  my-5 md:my-14 mx-2 md:mx-10 inline-flex items-center justify-center">
+              <h1 className=" text-lg md:text-2xl text-center text-white font-bold">
+                {(group && group.subject?.subject_name)?.toUpperCase()}
               </h1>
             </div>
           </div>
         </div>
       </div>
-      <div className=" flex justify-start w-full items-start mt-5  mx-10 my-10">
-        <div className=" grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5">
+      <div className=" flex justify-center md:justify-start w-full items-center md:items-start mt-5  md:mx-10  lg:my-10">
+        <div className=" grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           <div className=" col-span-1 block">
             <div className=" flex justify-center items-start">
-              <div className=" m-2 md:m-5 h-fit bg-white w-fit md:w-full rounded-lg">
+              <div className=" sm:m-2 md:m-5 h-fit bg-white w-fit md:w-full rounded-lg">
                 <div className=" m-5 block">
                   <h1 className=" font-semibold text-[#1C274C]">Grupo:</h1>
                   <div className=" mt-3 flex-wrap justify-center md:block">
@@ -199,8 +195,8 @@ function CourseInfo() {
                 </div>
               </div>
             </div>
-            <div className=" m-10">
-              <div>
+            <div className=" m-5 ">
+              <div className=" flex justify-center items-center">
                 <a href="/calificaciones">
                   <button className=" p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#1C274C] text-white hover:text-white text-[13px] duration-500">
                     Ir a calificaciones
@@ -209,21 +205,26 @@ function CourseInfo() {
               </div>
             </div>
           </div>
-          <div className=" px-12 col-span-1 md:col-span-3 lg:col-span-4 flex justify-start items-start">
+          <div className=" overscroll-none px-12 col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 flex justify-center md:justify-start items-start">
             {content === 0 && (
               <div className=" block">
                 {user && user.role_id === 1 && (
                   <div className=" mx-3 md:mx-10 mt-10 font-semibold text-sm lg:text-lg">
                     <div className=" grid grid-cols-1 md:grid-cols-4 hover:scale-[1.03] duration-500">
-                      <div className=" ">
-                        <div className=" group hover:cursor-pointer flex justify-center items-center col-span-1 h-[50px] md:h-[150px] w-[100px] lg:w-[200px] rounded bg-[#1C274C] text-white">
+                      <div
+                        onClick={() =>
+                          (window.location.href = `mailto:${
+                            group && group.teacher?.user.user_email
+                          }`)
+                        }
+                        className="  "
+                      >
+                        <div className=" group hover:cursor-pointer flex justify-center items-center col-span-1 h-[150px] w-[132px] lg:w-[200px] rounded bg-[#1C274C] text-white">
                           <div className=" block">
                             <div className=" flex justify-center items-center">
                               <svg
-                                className=" h-[70px] w-auto"
+                                className=" h-[40px] lg:h-[70px] w-auto"
                                 fill="#ffffff"
-                                height="200px"
-                                width="200px"
                                 version="1.1"
                                 id="Layer_1"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -256,10 +257,10 @@ function CourseInfo() {
                             </div>
 
                             <div className=" block m-2">
-                              <p className=" text-center text-sm font-medium">
+                              <p className=" text-center text-[12px] lg:text-sm font-medium">
                                 {group && group.teacher?.user.user_name}
                               </p>
-                              <p className=" text-center text-sm font-medium">
+                              <p className=" text-center text-[12px] lg:text-sm font-medium">
                                 {group && group.teacher?.user.user_lastname}
                               </p>
                             </div>
@@ -273,11 +274,11 @@ function CourseInfo() {
                             group && group.teacher?.user.user_email
                           }`)
                         }
-                        className="hover:cursor-pointer duration-500 col-span-3 rounded border-slate-300 border bg-gradient-to-br from-[#ffffff] to-[#94afbe] text-[#1C274C]"
+                        className="hover:cursor-pointer hidden md:flex justify-center duration-500 col-span-3 rounded border-slate-300 border bg-gradient-to-br from-[#ffffff] to-[#94afbe] text-[#1C274C]"
                         action=""
                       >
                         <div className=" flex h-full justify-center items-center">
-                          <h1 className=" text-base">
+                          <h1 className=" text-sm lg:text-base">
                             Contactar docente a través del correo institucional
                           </h1>
                         </div>
@@ -288,12 +289,20 @@ function CourseInfo() {
 
                 <div className=" mx-3 md:mx-10 mt-10 font-semibold text-sm lg:text-lg">
                   <div className=" grid grid-cols-1 md:grid-cols-4 hover:scale-[1.03] duration-500">
-                    <div>
-                      <div className=" group hover:cursor-pointer  flex justify-center items-center col-span-1 h-[50px] md:h-[150px] w-[100px] lg:w-[200px] rounded bg-[#1C274C] text-white">
+                    <div
+                      onClick={() =>
+                        (window.location.href = `${
+                          group.subject.syllabus === null
+                            ? ""
+                            : group.subject.syllabus
+                        }`)
+                      }
+                    >
+                      <div className=" group hover:cursor-pointer flex justify-center items-center col-span-1 h-[150px] w-[132px] lg:w-[200px] rounded bg-[#1C274C] text-white">
                         <div className=" block">
                           <div className=" flex justify-center items-center">
                             <svg
-                              className=" h-[70px] w-auto"
+                              className=" h-[40px] lg:h-[70px] w-auto"
                               fill="#ffffff"
                               viewBox="0 0 1920 1920"
                               xmlns="http://www.w3.org/2000/svg"
@@ -316,13 +325,15 @@ function CourseInfo() {
                           </div>
 
                           <div className=" m-2">
-                            <p className=" font-medium">Syllabus</p>
+                            <p className=" font-medium text-[12px] lg:text-sm">
+                              Syllabus
+                            </p>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div
-                      className=" hover:cursor-pointer col-span-3 rounded border-slate-300 border bg-gradient-to-br from-[#ffffff] to-[#94afbe] text-[#1C274C]"
+                      className=" hidden md:flex justify-center hover:cursor-pointer col-span-3 rounded border-slate-300 border bg-gradient-to-br from-[#ffffff] to-[#94afbe] text-[#1C274C]"
                       action=""
                       onClick={() =>
                         (window.location.href = `${
@@ -333,7 +344,7 @@ function CourseInfo() {
                       }
                     >
                       <div className=" flex h-full justify-center items-center">
-                        <h1 className=" text-base">
+                        <h1 className=" text-sm text-center lg:text-base">
                           Accede al Syllabus de la materia
                         </h1>
                       </div>
@@ -355,19 +366,19 @@ function CourseInfo() {
 
                 <div className=" mx-3 md:mx-10 mt-10 font-semibold text-sm lg:text-lg">
                   <div className=" grid grid-cols-1 md:grid-cols-4 hover:scale-[1.03] duration-500">
-                    <div>
-                      <div className=" group hover:cursor-pointer flex justify-center items-center col-span-1 h-[50px] md:h-[150px] w-[100px] lg:w-[200px] rounded bg-[#1C274C] text-white">
+                    <div onClick={() => setContent(1)}>
+                      <div className=" group hover:cursor-pointer flex justify-center items-center col-span-1 h-[150px] w-[132px] lg:w-[200px] rounded bg-[#1C274C] text-white">
                         <div className=" block">
                           <div className=" flex justify-center items-center">
                             <svg
-                              className=" h-[70px] w-auto"
+                              className=" h-[40px] lg:h-[70px] w-auto"
                               fill="#ffffff"
                               version="1.1"
                               id="Capa_1"
                               xmlns="http://www.w3.org/2000/svg"
-                              xmlns:xlink="http://www.w3.org/1999/xlink"
+                              xmlnsXlink="http://www.w3.org/1999/xlink"
                               viewBox="0 0 31.716 31.716"
-                              xml:space="preserve"
+                              xmlSpace="preserve"
                             >
                               <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
                               <g
@@ -386,7 +397,7 @@ function CourseInfo() {
                           </div>
 
                           <div className=" m-2">
-                            <p className=" text-center text-sm py-2 font-medium">
+                            <p className=" text-center text-[12px] lg:text-sm py-2 font-medium">
                               Lista de Estudiantes
                             </p>
                           </div>
@@ -395,7 +406,7 @@ function CourseInfo() {
                     </div>
                     <div
                       onClick={() => setContent(1)}
-                      className=" hover:cursor-pointer col-span-3 rounded border-slate-300 border bg-gradient-to-br from-[#ffffff] to-[#94afbe] text-[#1C274C]"
+                      className=" hidden md:flex justify-center hover:cursor-pointer col-span-3 rounded border-slate-300 border bg-gradient-to-br from-[#ffffff] to-[#94afbe] text-[#1C274C]"
                       action=""
                     >
                       <div className=" flex h-full justify-center items-center">
@@ -454,12 +465,12 @@ function CourseInfo() {
                         </span>
                       </div>
                       <table className=" border-collapse   text-[10px] sm:text-sm">
-                        <thead className=" rounded text-sm">
+                        <thead className=" rounded text-[12px] lg:text-sm">
                           <tr>
-                            <th className="border px-40 bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold ">
+                            <th className="border px-20 sm:px-32 md:px-20 lg:px-40 bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold ">
                               Nombres
                             </th>
-                            <th className="border px-10 bg-[#1C274C] p-2 border-[#4784a0] text-white font-semibold ">
+                            <th className="border px-10 bg-[#1C274C] hidden md:table-cell p-2 border-[#4784a0] text-white font-semibold ">
                               Correo Institucional
                             </th>
                           </tr>
@@ -470,12 +481,12 @@ function CourseInfo() {
                               currentStudents.map((student) => (
                                 <tr
                                   key={student.student_id}
-                                  className=" text-[13px]"
+                                  className="  text-[12px] lg:text-sm"
                                 >
                                   <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
                                     {`${student.user.user_lastname} ${student.user.user_name}`}
                                   </th>
-                                  <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
+                                  <th className="border p-3 hidden md:table-cell text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
                                     {student.user.user_email}
                                   </th>
                                 </tr>
@@ -483,12 +494,12 @@ function CourseInfo() {
                             : studentsTable.map((student) => (
                                 <tr
                                   key={student.student_id}
-                                  className=" text-[13px]"
+                                  className=" text-[12px] lg:text-sm"
                                 >
                                   <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
                                     {`${student.user.user_lastname} ${student.user.user_name}`}
                                   </th>
-                                  <th className="border p-3 text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
+                                  <th className="border p-3 hidden md:table-cell text-left bg-white border-slate-300 font-semibold hover:text-[#146898] duration-300 text-[#1C274C]">
                                     {student.user.user_email}
                                   </th>
                                 </tr>
@@ -528,9 +539,9 @@ function CourseInfo() {
               </div>
             )}
             {content === 2 && (
-              <div className=" flex justify-start items-center">
+              <div className=" flex justify-center md:justify-start items-center">
                 <div className=" block">
-                  <div className="  mt-10 font-semibold flex justify-start items-center text-white w-full text-sm lg:text-xl">
+                  <div className="  mt-10 font-semibold flex-wrap justify-start items-center text-white w-full text-sm lg:text-xl">
                     <h1>Modificar Syllabus</h1>
                   </div>
                   <button
@@ -540,7 +551,7 @@ function CourseInfo() {
                     Regresar
                   </button>
                   <div className=" mt-5">
-                    <div>
+                    <div className=" flex justify-start items-center">
                       <h1 className=" text-white text-sm">
                         Selecciona el archivo correspondiente al Syllabus
                       </h1>
@@ -548,14 +559,18 @@ function CourseInfo() {
                   </div>
                   <div className=" mt-5 text-white">
                     <input
+                      accept="application/pdf"
                       type="file"
                       onChange={(e) => setFile(e.target.files[0])}
                     />
-                    
                   </div>
-                  <button className=" text-white mt-10 p-2 hover:border-r-white bg-[#146898] hover:border-t-white duration-300 border-white border-b mb-3 rounded border-l border-r border-r-transparent border-t border-t-transparent hover:cursor-pointer" type="button" onClick={upload}>
-                      Guardar Cambios
-                    </button>
+                  <button
+                    className=" text-white mt-10 p-2 hover:border-r-white bg-[#146898] hover:border-t-white duration-300 border-white border-b mb-3 rounded border-l border-r border-r-transparent border-t border-t-transparent hover:cursor-pointer"
+                    type="button"
+                    onClick={upload}
+                  >
+                    Guardar Cambios
+                  </button>
                 </div>
               </div>
             )}

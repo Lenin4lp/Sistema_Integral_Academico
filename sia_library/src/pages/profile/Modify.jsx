@@ -60,9 +60,9 @@ function Modify() {
   }, [errors]);
 
   return (
-    <div className=" overflow-x-hidden">
+    <div className=" overflow-x-hidden flex justify-center w-full">
       <div className=" block">
-        <div className=" pt-12 mb-14 md:mb-10 mx-7 flex items-center text-xl md:text-2xl lg:text-3xl font-bold text-white text-left">
+        <div className=" w-full pt-5 sm:pt-12 mb-3 md:mb-10 mx-7 flex items-center text-base sm:text-xl md:text-2xl lg:text-3xl font-bold text-white text-left">
           {user && user.role_id === 1
             ? "Cambiar Contraseña"
             : "Actualizar información"}
@@ -70,7 +70,7 @@ function Modify() {
         <div className=" flex justify-center items-center">
           <div className=" block">
             {user && user.role_id === 1 ? (
-              <div>
+              <div className=" mx-7">
                 <p className=" my-5 text-white text-base  font-semibold">
                   Escribe tu nueva contraseña
                 </p>
@@ -79,7 +79,7 @@ function Modify() {
                     name="password"
                     type="password"
                     placeholder="**********************"
-                    className=" w-56 lg:w-full bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
+                    className=" w-[190px] sm:w-full bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
                     {...register("user_password", {
                       maxLength: 20,
                       required: true,
@@ -91,14 +91,14 @@ function Modify() {
             ) : (
               <div className="">
                 <form className=" ">
-                  <div className=" grid grid-cols-4">
-                    <div className="m-10 ">
+                  <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    <div className="m-3 sm:m-10 ">
                       <p className=" text-white">No. Cédula</p>
                       <input
                         name="ci"
                         type="text"
                         placeholder="1777777777"
-                        className=" w-56  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
+                        className="  w-[180px] lg:w-[225px] bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
                         {...register("user_ci", {
                           maxLength: 10,
                           required: false,
@@ -107,23 +107,23 @@ function Modify() {
                         })}
                       />
                     </div>
-                    <div className="m-10 ">
+                    <div className="m-3 sm:m-10 ">
                       <p className=" text-white">Profesión</p>
                       <input
                         name="speciality"
                         type="text"
                         placeholder="Profesión"
-                        className=" w-56  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
+                        className="  w-[180px] lg:w-[225px]  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
                         {...register("speciality", { required: false })}
                       />
                     </div>
-                    <div className="m-10 ">
+                    <div className="m-3 sm:m-10">
                       <p className=" text-white">Teléfono</p>
                       <input
                         name="phone"
                         type="text"
                         placeholder="0999999999"
-                        className=" w-56  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
+                        className="  w-[180px] lg:w-[225px]  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
                         {...register("user_phone", {
                           maxLength: 10,
                           required: false,
@@ -132,13 +132,13 @@ function Modify() {
                         })}
                       />
                     </div>
-                    <div className="m-10 ">
+                    <div className="m-3 sm:m-10 ">
                       <p className=" text-white">Cambiar contraseña</p>
                       <input
                         name="password"
                         type="password"
                         placeholder="**********************"
-                        className=" w-56  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
+                        className=" w-[180px] lg:w-[225px]  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
                         {...register("user_password", {
                           maxLength: 20,
                           required: false,
@@ -151,10 +151,10 @@ function Modify() {
               </div>
             )}
 
-            <div className=" flex justify-center">
+            <div className=" mx-7 mt-5 flex justify-left sm:justify-center">
               <button
                 onClick={onSubmit}
-                className=" mt-10 p-2 bg-gradient-to-br from-[#3a9161] to-[#1ce09f] hover:from-[#1C274C] hover:to-[#146898] transition duration-300 text-white rounded-lg"
+                className=" p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#146898] text-white hover:text-white text-[13px] duration-500"
               >
                 Guardar cambios
               </button>

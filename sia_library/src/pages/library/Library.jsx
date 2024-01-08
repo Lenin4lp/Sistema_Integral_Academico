@@ -138,7 +138,7 @@ function Library() {
         <div>
           <select
             onChange={handleCategoryChange}
-            className=" w-[250px] p-1"
+            className=" w-[150px] sm:w-[250px] p-1"
             name=""
             id=""
           >
@@ -154,7 +154,6 @@ function Library() {
       </div>
       <div className="  flex justify-center items-center">
         <div className=" block">
-          <div className=" mx-3 mt-6 md:mt-10"></div>
           <div className="mx-3 mt-6 md:mt-10">
             <div className=" flex justify-center items-center">
               <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
@@ -166,7 +165,7 @@ function Library() {
                         href={book.book_url}
                         target="_blank"
                       >
-                        <div className="group relative h-fit w-fit bg-white my-5 mx-7 cursor-pointer hover:shadow-lg hover:shadow-[#0c0d14] duration-300 active:transform active:scale-90 hover:z-10">
+                        <div className="group relative h-fit w-fit bg-white my-5 mx-4 sm:mx-7 cursor-pointer hover:shadow-lg hover:shadow-[#0c0d14] duration-300 active:transform active:scale-90 hover:z-10">
                           <span className="absolute top-0 left-0 right-0 text-center hidden lg:flex scale-0 transition-all rounded bg-gray-800 p-2 text-sm text-white group-hover:scale-100">
                             {book.book_name}
                           </span>
@@ -185,7 +184,7 @@ function Library() {
                         href={book.book_url}
                         target="_blank"
                       >
-                        <div className="group relative h-fit w-fit bg-white my-5 mx-7 cursor-pointer hover:shadow-lg hover:shadow-[#0c0d14] duration-300 active:transform active:scale-90 hover:z-10">
+                        <div className="group relative h-fit w-fit bg-white my-5 mx-4 sm:mx-7 cursor-pointer hover:shadow-lg hover:shadow-[#0c0d14] duration-300 active:transform active:scale-90 hover:z-10">
                           <span className="absolute top-0 left-0 right-0 text-center hidden lg:flex scale-0 transition-all rounded bg-gray-800 p-2 text-sm text-white group-hover:scale-100">
                             {book.book_name}
                           </span>
@@ -200,7 +199,6 @@ function Library() {
               </div>
             </div>
           </div>
-          
         </div>
       </div>
     </div>
