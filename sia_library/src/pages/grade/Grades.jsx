@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../auth/AuthProvider";
 import { getPeriods } from "../../api/academic";
 import { getModalities } from "../../api/academic";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function Grades() {
   const { user } = useAuth();
@@ -117,6 +119,165 @@ function Grades() {
       }
       return acc;
     }, []);
+
+    const generatePDF = async () => {
+      const doc = new jsPDF();
+  
+      doc.text("Instituto Superior Tecnologico de la Vera Cruz", 50, 10);
+      doc.setFontSize(16);
+      doc.text("Hoja de Calificaciones", 10, 30);
+      doc.setFontSize(10);
+      doc.text(`Materia: ${filteredGroup && filteredGroup.subject?.subject_name}`, 10, 50);
+      doc.text(`Grupo: ${filteredGroup && filteredGroup.group_name}`, 90, 50);
+      doc.text(`Periodo: ${filteredGroup && filteredGroup.period?.period_name}`, 150, 50);
+      doc.text(
+        `Docente: ${filteredGroup && filteredGroup.teacher?.user.user_name} ${filteredGroup && filteredGroup.teacher?.user.user_lastname}`,
+        10,
+        60
+      );
+  
+      // crear una tabla
+      doc.autoTable({
+        head: [
+          [
+            {
+              content: "",
+              colSpan: 3,
+              styles: { halign: "center", lineWidth: 0 },
+            },
+            {
+              content: "1er\nHEMISEMESTRE",
+              colSpan: 2,
+              styles: { halign: "center", valign: "middle" },
+            },
+            {
+              content: "2do\nHEMISEMESTRE",
+              colSpan: 2,
+              styles: { halign: "center", valign: "middle" },
+            },
+            {
+              content: "RECUP.",
+              colSpan: 1,
+              styles: { halign: "center", valign: "middle" },
+            },
+            {
+              content: "PROMEDIO",
+              colSpan: 2,
+              styles: { halign: "center", valign: "middle" },
+            },
+            {
+              content: "ESTADO",
+              colSpan: 1,
+              rowSpan: 2,
+              styles: { halign: "center", valign: "middle" },
+            },
+          ],
+          [
+            {
+              content: "ID",
+              colSpan: 1,
+              styles: { halign: "center", valign: "middle" },
+            },
+            {
+              content: "CEDULA",
+              colSpan: 1,
+              styles: { halign: "center", valign: "middle" },
+            },
+            {
+              content: "NOMBRES",
+              colSpan: 1,
+              styles: { halign: "center", valign: "middle" },
+            },
+            {
+              content: "NOTA",
+              colSpan: 1,
+              styles: { halign: "center", valign: "middle" },
+            },
+            {
+              content: "ASIST",
+              colSpan: 1,
+              styles: { halign: "center", valign: "middle" },
+            },
+            {
+              content: "NOTA",
+              colSpan: 1,
+              styles: { halign: "center", valign: "middle" },
+            },
+            {
+              content: "ASIST",
+              colSpan: 1,
+              styles: { halign: "center", valign: "middle" },
+            },
+            {
+              content: "NOTA",
+              colSpan: 1,
+              styles: { halign: "center", valign: "middle" },
+            },
+            {
+              content: "NOTA",
+              colSpan: 1,
+              styles: { halign: "center", valign: "middle" },
+            },
+            {
+              content: "ASIST",
+              colSpan: 1,
+              styles: { halign: "center", valign: "middle" },
+            },
+          ],
+        ],
+        body:
+          filteredGroup &&
+          filteredGroup.grades.map((grade) => {
+            return [
+              `${grade.student && grade.student.student_id}`,
+              `-----`,
+  
+              {
+                content: `${grade.student && grade.student.user.user_lastname} ${
+                  grade.student && grade.student.user.user_name
+                }`,
+                colSpan: 1,
+                styles: { halign: "left", valign: "middle" },
+              },
+              `${grade && grade.prom_1 === null ? `0.00` : grade.prom_1}`,
+              `${grade && grade.attendance_1 === null ? `0%` : `${grade.attendance_1}%`}`,
+              `${grade && grade.prom_2 === null ? `0.00` : grade.prom_2}`,
+              `${grade && grade.attendance_2 === null ? `0%` : `${grade.attendance_2}%`}`,
+              `${grade && grade.resit === null ? `0.00` : grade.resit}`,
+              `${
+                grade && grade.final_grade === null ? `0.00` : grade.final_grade
+              }`,
+              `${grade && grade.total_attendance === null ? `0%` : `${grade.total_attendance}%`}`,
+              `${grade && grade.final_grade > 7 ? "APROBADO" : (grade.prom_1 + grade.prom_2 + grade.resit)/3 > 7 ? "APROBADO" : "REPROBADO"}`,
+            ];
+          }),
+        theme: "plain",
+        startY: 65,
+        headStyles: {
+          lineWidth: 0.2,
+          lineColor: [0, 0, 0],
+          fontSize: 7,
+        },
+        bodyStyles: {
+          halign: "center",
+          fontSize: 7,
+          lineWidth: 0.05,
+          lineColor: [0, 0, 0],
+        },
+      });
+  
+      const tableY = doc.lastAutoTable.finalY;
+  
+      doc.setFontSize(8);
+      doc.text("______________", 90, tableY + 30);
+      doc.text("Docente", 96, tableY + 37);
+  
+      doc.save(
+        `Reporte de Calificaciones ${
+          filteredGroup.subject && filteredGroup.subject?.subject_name
+        } ${filteredGroup && filteredGroup.group_name} ${filteredGroup && filteredGroup.period?.period_id}.pdf`
+      );
+    };
 
   console.log(filteredGroup);
   console.log(selectedDegree);
@@ -234,7 +395,7 @@ function Grades() {
                           </p>
                         </div>
                         <div className=" py-8 flex justify-center items-center">
-                          <button className=" p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#146898] text-white hover:text-white text-[13px] duration-500">
+                          <button onClick={generatePDF} className=" p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#146898] text-white hover:text-white text-[13px] duration-500">
                             Obtener reporte
                           </button>
                         </div>

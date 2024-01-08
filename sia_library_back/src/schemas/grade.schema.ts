@@ -15,5 +15,9 @@ export const updateGradeSchema = z.object({
   prom_2: z.number().optional(),
   status: z.string().optional(),
   resit: z.number().optional(),
+  attendance_1: z.number().optional(),
+  attendance_2: z.number().optional(),
+  total_attendance: z.number().optional(),
   final_grade: z.number().optional(),
+  total_resit: z.number().optional(),
 });

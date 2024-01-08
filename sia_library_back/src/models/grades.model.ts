@@ -117,6 +117,34 @@ export class Grade extends Model {
   final_grade!: number;
 
   @Column({
+    type: DataType.DECIMAL(4, 2),
+    allowNull: true,
+    field: "final_recup",
+  })
+  final_resit!: number;
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+    field: "asistencia_1",
+  })
+  attendance_1!: number;
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+    field: "asistencia_2",
+  })
+  attendance_2!: number;
+
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: true,
+    field: "asistencia_total",
+  })
+  total_attendance!: number;
+
+  @Column({
     type: DataType.STRING,
     allowNull: true,
     field: "estado",
@@ -173,4 +201,22 @@ export class Grade extends Model {
     const finalGrade = (prom1 + prom2) / 2;
     grade.final_grade = finalGrade;
   }
+  @BeforeCreate
+  @BeforeUpdate
+  static async updateAttendance(grade: Grade) {
+    const attend1 = grade.attendance_1;
+    const attend2 = grade.attendance_2;
+    const totalAttendance = (attend1 + attend2) / 2;
+    grade.total_attendance = totalAttendance;
+  }
+  @BeforeCreate
+  @BeforeUpdate
+  static async updateFinalResit(grade: Grade) {
+    const prom1 = grade.prom_1;
+    const prom2 = grade.prom_2;
+    const finalGrade = (prom1 + prom2) / 2;
+    const finalResit = (grade.resit + finalGrade)/2
+    grade.final_resit = finalResit;
+  }
+  
 }

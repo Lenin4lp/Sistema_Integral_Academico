@@ -39,7 +39,8 @@ export const createGrade = async (req: Request, res: Response) => {
       final_grade: 0,
       prom_1: 0,
       prom_2: 0,
-      resit: 0,
+      final_resit: 0,
+      total_resit: 0,
       status: "En curso",
       student_id,
       group_id,
@@ -67,6 +68,10 @@ export const updateGrade = async (req: Request, res: Response) => {
     status,
     resit,
     final_grade,
+    attendance_1,
+    attendance_2,
+    total_attendance,
+    final_resit
   } = req.body;
   const grade = await Grade.findByPk(req.params.id);
   if (grade) {
@@ -84,6 +89,10 @@ export const updateGrade = async (req: Request, res: Response) => {
       status,
       resit,
       final_grade,
+      attendance_1,
+      attendance_2,
+      total_attendance,
+      final_resit
     });
   } else {
     return res

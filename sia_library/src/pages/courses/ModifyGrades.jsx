@@ -43,6 +43,9 @@ function ModifyGrades() {
   const onSubmit = handleSubmit((data) => {
     const modifiedData = {};
 
+    if (data.resit) {
+      data.resit = parseFloat(data.resit).toFixed(2);
+    }
     if (data.grade_1) {
       data.grade_1 = parseFloat(data.grade_1).toFixed(2);
     }
@@ -67,6 +70,13 @@ function ModifyGrades() {
     if (data.exam_2) {
       data.exam_2 = parseFloat(data.exam_2).toFixed(2);
     }
+    
+    if(data.attendance_1){
+      data.attendance_1 = parseInt(data.attendance_1)
+    }
+    if(data.attendance_2){
+      data.attendance_2 = parseInt(data.attendance_2)
+    }
 
     for (const key in data) {
       if (data[key] !== "") {
@@ -76,6 +86,8 @@ function ModifyGrades() {
 
     updateAGrade(gradeId, modifiedData);
   });
+
+  
 
   return (
     <div className=" flex justify-center items-center">
@@ -165,6 +177,22 @@ function ModifyGrades() {
                       })}
                     />
                   </div>
+                  
+                  <div className=" text-center block">
+                    <p className=" text-white">Asistencia</p>
+                    <input
+                      min={0}
+                      max={10}
+                      step={0.1}
+                      pattern="\d+(\.\d{1,2})?"
+                      className=" my-5 border rounded text-center border-slate-300 focus:border-slate-400 w-28 lg:w-40"
+                      type="number"
+                      placeholder={grade.attendance_1}
+                      {...register("attendance_1", {
+                        required: false,
+                      })}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -235,6 +263,37 @@ function ModifyGrades() {
                       type="number"
                       placeholder={grade.exam_2}
                       {...register("exam_2", {
+                        required: false,
+                      })}
+                    />
+                  </div>
+                  
+                  <div className=" text-center block">
+                    <p className=" text-white">Asistencia</p>
+                    <input
+                      min={0}
+                      max={10}
+                      step={0.1}
+                      pattern="\d+(\.\d{1,2})?"
+                      className=" my-5 border rounded text-center border-slate-300 focus:border-slate-400 w-28 lg:w-40"
+                      type="number"
+                      placeholder={grade.attendance_2}
+                      {...register("attendance_2", {
+                        required: false,
+                      })}
+                    />
+                  </div>
+                  <div className=" text-center block">
+                    <p className=" text-white">Recup.</p>
+                    <input
+                      min={0}
+                      max={10}
+                      step={0.1}
+                      pattern="\d+(\.\d{1,2})?"
+                      className=" my-5 border rounded text-center border-slate-300 focus:border-slate-400 w-28 lg:w-40"
+                      type="number"
+                      placeholder={grade.resit}
+                      {...register("resit", {
                         required: false,
                       })}
                     />

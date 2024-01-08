@@ -18,17 +18,15 @@ function Login() {
   } = useAuth();
 
   if (isAuthenticated) {
-    if (user.user_status == 0 || user.user_status === null) {
+    
       if (user.role_id === 3) {
         return <Navigate to="/admin/dashboard" />;
       } else {
         return <Navigate to="/home" />;
       }
-    } else {
-      alert("Cuenta inactiva");
-      logout();
+    
     }
-  }
+  
 
   const onSubmit = handleSubmit((data) => {
     signin(data);

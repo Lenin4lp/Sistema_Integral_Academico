@@ -130,7 +130,7 @@ export const login = async (req: Request, res: Response) => {
           user_id: userFound.user_id,
         },
         include: [
-          { model: Group, include: [{ model: Subject }, { model: Period }, {model: Student, include:[{model:User}, {model:Degree}]}, {model: Grade , include:[{model:Student, include:[{model:User}]}]}, {model: Student, include:[{model:User}]}] },
+          { model: Group, include: [{ model: Subject }, { model: Period }, {model: Teacher, include:[{model:User}]}, {model: Student, include:[{model:User}, {model:Degree}]}, {model: Grade , include:[{model:Student, include:[{model:User}]}]}, {model: Student, include:[{model:User}]}] },
         ],
       });
     } else if (userFound.role_id === 3) {
@@ -197,7 +197,7 @@ export const verifyToken = async (req: Request, res: Response) => {
           user_id: userFound.user_id,
         },
         include: [
-          { model: Group, include: [{ model: Subject }, { model: Period }, {model: Grade, include:[{model:Student, include:[{model:User}, {model:Degree}]}]}, {model: Student, include:[{model:User}, {model:Degree}]}] },
+          { model: Group, include: [{ model: Subject }, { model: Period }, {model: Teacher, include:[{model:User}]}, {model: Grade, include:[{model:Student, include:[{model:User}, {model:Degree}]}]}, {model: Student, include:[{model:User}, {model:Degree}]}] },
         ],
       });
     } else if (userFound.role_id === 3) {
