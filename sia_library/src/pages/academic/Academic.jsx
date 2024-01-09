@@ -357,9 +357,7 @@ function Academic() {
                             <span className="font-medium">
                               {user.roleTable &&
                                 user.roleTable.group.filter(
-                                  (group) =>
-                                    group.group_status === 1 ||
-                                    group.group_status === null
+                                  (group) => group.group_status == 1
                                 ).length}
                             </span>
                           </p>
@@ -368,11 +366,7 @@ function Academic() {
                           </p>
                           {user.roleTable &&
                             user.roleTable.group
-                              .filter(
-                                (group) =>
-                                  group.group_status === 1 ||
-                                  group.group_status === null
-                              )
+                              .filter((group) => group.group_status == 1)
                               .map((group) => (
                                 <a href={`/academico/curso/${group.group_id}`}>
                                   <div className="font-medium my-2 text-[14px] text-[#1C274C] hover:text-[#146898] duration-300">
@@ -403,9 +397,7 @@ function Academic() {
                             <span className="font-medium">
                               {user.roleTable &&
                                 user.roleTable.group.filter(
-                                  (group) =>
-                                    group.group_status === 1 ||
-                                    group.group_status === null
+                                  (group) => group.group_status == 1
                                 ).length}
                             </span>
                           </p>
@@ -414,11 +406,7 @@ function Academic() {
                           </p>
                           {user.roleTable &&
                             user.roleTable.group
-                              .filter(
-                                (group) =>
-                                  group.group_status === 1 ||
-                                  group.group_status === null
-                              )
+                              .filter((group) => group.group_status == 1)
                               .map((group) => (
                                 <a
                                   key={group.group_id}
@@ -493,11 +481,7 @@ function Academic() {
                       {selectedPeriod === ""
                         ? user.roleTable &&
                           user.roleTable.group
-                            .filter(
-                              (group) =>
-                                group.group_status === 1 ||
-                                group.group_status === null
-                            )
+                            .filter((group) => group.group_status == 1)
                             .map((group) => (
                               <div
                                 className=" mx-2 md:mx-5 "

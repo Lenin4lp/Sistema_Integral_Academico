@@ -25,8 +25,6 @@ function ModifyUser() {
   const navigate = useNavigate();
   const { userId } = useParams();
 
-  console.log(user && user.user?.student.group[0].period?.period_id);
-
   const generatePDF = async () => {
     const doc = new jsPDF();
 
@@ -41,15 +39,16 @@ function ModifyUser() {
       10,
       50
     );
+    doc.text(`C.I: ${user && user.user.user_ci}`, 10, 60);
     doc.text(
       `Carrera: ${user && user.user.student.degree.degree_name}`,
       10,
-      60
+      70
     );
     doc.text(
       `Periodo: ${user && user.user?.student.group[0].period?.period_name}`,
       150,
-      60
+      70
     );
 
     doc.autoTable({
@@ -149,19 +148,33 @@ function ModifyUser() {
               styles: { halign: "left", valign: "middle" },
             },
             `${grade && grade.prom_1 === null ? `0.00` : grade.prom_1}`,
-            `100%`,
+            `${
+              grade && grade.attendance_1 === null ? `0.00` : grade.attendance_1
+            }%`,
             `${grade && grade.prom_2 === null ? `0.00` : grade.prom_2}`,
-            `100%`,
+            `${
+              grade && grade.attendance_2 === null ? `0.00` : grade.attendance_2
+            }`,
             `${grade && grade.resit === null ? `0.00` : grade.resit}`,
             `${
               grade && grade.final_grade === null ? `0.00` : grade.final_grade
             }`,
-            `100%`,
-            `${grade && grade.final_grade < 7 ? "REPROBADO" : "APROBADO"}`,
+            `${
+              grade && grade.total_attendance === null
+                ? `0.00`
+                : grade.total_attendance
+            }`,
+            `${
+              grade && grade.final_grade > 7
+                ? "APROBADO"
+                : grade.total >= 6.5
+                ? "APROBADO"
+                : "REPROBADO"
+            }`,
           ];
         }),
       theme: "plain",
-      startY: 65,
+      startY: 75,
       headStyles: {
         lineWidth: 0.2,
         lineColor: [0, 0, 0],
@@ -211,6 +224,8 @@ function ModifyUser() {
 
   const sortedSubjects =
     user &&
+    user.role_id == 1 &&
+    user &&
     user.user.student.grades.sort((a, b) => {
       const subjectA = a.group?.subject.subject_name || "";
       const subjectB = b.group?.subject.subject_name || "";
@@ -259,12 +274,6 @@ function ModifyUser() {
     }
 
     modifiedData.user_status = isChecked;
-
-    if (modifiedData.user_status === true) {
-      modifiedData.user_status = false;
-    } else if (modifiedData.user_status === false) {
-      modifiedData.user_status = true;
-    }
 
     ModifyUser(userId, modifiedData);
   });
@@ -413,7 +422,10 @@ function ModifyUser() {
             <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 text-sm sm:text-[15px] text-white gap-4">
               <div
                 className={` ${
-                  user && user.user.role_id === 3 ? "hidden" : ""
+                  (user && user.user.role_id === 3) ||
+                  (user && user.user.role_id === 2)
+                    ? "hidden"
+                    : ""
                 } h-[318px] md:h-[400px] lg:h-[368px]   sm:w-[40vw] md:w-[28vw] lg:w-[20vw] border border-slate-300`}
               >
                 <div>
@@ -429,9 +441,7 @@ function ModifyUser() {
                       <p className=" mb-3">
                         {user &&
                           user.user.student.group.filter(
-                            (group) =>
-                              group.group_status === 1 ||
-                              group.group_status === null
+                            (group) => group.group_status == 1
                           ).length}
                       </p>
                       <p className=" font-semibold mb-2">Modalidad</p>
@@ -442,7 +452,6 @@ function ModifyUser() {
                       </p>
                     </div>
                   )}
-                  {user && user.user.role_id === 3 && <></>}
                 </div>
               </div>
               <div
@@ -457,18 +466,14 @@ function ModifyUser() {
                       user.user.role_id === 1 &&
                       user.user.student.group &&
                       user.user.student.group
-                        .filter(
-                          (group) =>
-                            group.group_status === 1 ||
-                            group.group_status === null
-                        )
+                        .filter((group) => group.group_status == 1)
                         .map((group) => (
                           <div
                             key={group.group_id}
                             className=" my-2 hover:text-[#146898]"
                           >
                             <div className=" block">
-                              <a href={`/cursos/${group.group_id}`}>
+                              <a href={`/admin/grupos/${group.group_id}`}>
                                 <p>{group && group.subject.subject_name}</p>
                               </a>
                               <p className=" text-xs md:text-sm opacity-50">
@@ -480,21 +485,25 @@ function ModifyUser() {
                     {user &&
                       user.user.role_id === 2 &&
                       user.user.teacher.group &&
-                      user.user.teacher.group.map((group) => (
-                        <div
-                          key={group.group_id}
-                          className=" my-2 hover:text-[#146898]"
-                        >
-                          <div className=" block">
-                            <a href={`/cursos/${group.group_id}`}>
-                              <p>{group.subject.subject_name}</p>
-                            </a>
-                            <p className=" text-xs md:text-sm opacity-50">
-                              {group.group_id}
-                            </p>
+                      user.user.teacher.group
+                        .filter((group) => group.group_status == true)
+                        .map((group) => (
+                          <div
+                            key={group.group_id}
+                            className=" my-2 hover:text-[#146898]"
+                          >
+                            <div className=" block">
+                              <a href={`/admin/grupos/${group.group_id}`}>
+                                <p className=" text-[12px]">
+                                  {group.subject.subject_name}
+                                </p>
+                              </a>
+                              <p className=" text-[12px] opacity-50">
+                                {group.group_id}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
                   </div>
                 </div>
               </div>
@@ -548,28 +557,7 @@ function ModifyUser() {
                     <span className=" font-normal">{` ${
                       user &&
                       user.user.student.group.filter(
-                        (group) =>
-                          group.group_status === 1 ||
-                          group.group_status === null
-                      ).length
-                    }`}</span>
-                  </h1>
-                </>
-              )}
-              {user && user.user.role_id === 2 && (
-                <>
-                  <h1 className="text-white text-lg lg:text-xl">Docente</h1>
-                  <h1 className=" text-white text-lg font-medium opacity-50 lg:text-xl">
-                    {userId}
-                  </h1>
-                  <h1 className=" text-white mt-10 text-lg lg:text-xl">
-                    No. de Materias:{" "}
-                    <span className=" font-normal">{` ${
-                      user &&
-                      user.user.teacher.group.filter(
-                        (group) =>
-                          group.group_status === 1 ||
-                          group.group_status === null
+                        (group) => group.group_status == 1
                       ).length
                     }`}</span>
                   </h1>

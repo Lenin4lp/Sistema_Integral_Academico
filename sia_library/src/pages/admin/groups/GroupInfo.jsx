@@ -15,6 +15,7 @@ import { getStudents, getTeachers } from "../../../api/user";
 import { useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import axios from "axios";
 
 function GroupInfo() {
   const { groupId2 } = useParams();
@@ -26,6 +27,7 @@ function GroupInfo() {
   const [users, setUsers] = useState([]);
   const [modalities, setModalities] = useState([]);
   const [teachers, setTeachers] = useState([]);
+  const [studentId, setStudentId] = useState("");
   const navigate = useNavigate();
 
   const getTeacherList = async () => {
@@ -39,20 +41,6 @@ function GroupInfo() {
       console.log(error);
       setErrors(error.response.data);
     }
-  };
-
-  const removeGroup = async (id) => {
-    try {
-      const res = await deleteGroup(id);
-      if (res.status === 204) {
-        alert("Grupo eliminado exitosamente");
-        window.history.go(-1);
-        console.log(res.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-    s;
   };
 
   const modifyGroup = async (id, data) => {
@@ -367,21 +355,37 @@ function GroupInfo() {
     modifyGroup(groupId2, modifiedData);
   });
 
-  const onDelete = handleSubmit((data) => {
-    const modifiedData = {};
-
-    if (data.student_id == "Selecciona un estudiante") {
-      data.student_id = undefined;
-    }
-
-    for (const key in data) {
-      if (data[key] !== "") {
-        modifiedData[key] = data[key];
+  const removeStudent = handleSubmit(async (data) => {
+    if (!data.student_id || data.student_id === "") {
+      window.alert("Por favor, selecciona un estudiante");
+    } else {
+      const deleteStudent = await axios.delete(
+        `http://localhost:8081/api/groups/${groupId2}/students`,
+        data
+      );
+      if (deleteStudent.status === 204) {
+        alert("Estudiante eliminado exitosamente");
+        window.location.reload();
       }
     }
-    DeleteStudentFromGroup(groupId2, modifiedData);
   });
 
+  console.log(studentId);
+
+  const deleteItem = async () => {
+    if (!studentId || studentId == "") {
+      window.alert("Por favor, selecciona un estudiante");
+    } else {
+      const deleteStudent = await axios.delete(
+        `http://localhost:8081/api/groups/${groupId2}/students`,
+        studentId
+      );
+      if (deleteStudent.status === 204) {
+        alert("Estudiante eliminado exitosamente");
+        window.location.reload();
+      }
+    }
+  };
   const estudiantesMatriculados =
     sortedUsers && sortedUsers.map((student) => student.student_id);
 
@@ -439,6 +443,16 @@ function GroupInfo() {
             Modalidad:
             <span className=" font-normal">
               {group && group.modality_id === 1 ? " Presencial" : " Virtual"}
+            </span>
+          </h1>
+        </div>
+        <div className=" font-bold text-base mt-5">
+          <h1 className=" text-white text-base lg:text-xl ">
+            Periodo:
+            <span className=" font-normal">
+              <span className=" font-normal">{` ${
+                group && group.period_id
+              }`}</span>
             </span>
           </h1>
         </div>
@@ -556,8 +570,8 @@ function GroupInfo() {
 
                         <th className="border text-[9px] sm:text-[12px] lg:text-base hidden md:table-cell p-3 text-center border-slate-300 font-semibold text-white">
                           {user && user.user.user_status === true
-                            ? "Inactivo"
-                            : "Activo"}
+                            ? "Activo"
+                            : "Inactivo"}
                         </th>
                         <th className="border p-3 text-center border-slate-300 font-semibold text-white flex justify-center items-center">
                           <Link
@@ -989,6 +1003,7 @@ function GroupInfo() {
             </div>
             <form className=" mt-5 md:mt-10" action="">
               <select
+                onChange={(e) => setStudentId(e.target.value)}
                 className=" w-36 sm:w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 px-1 mt-3"
                 {...register("student_id")}
               >
@@ -1002,7 +1017,7 @@ function GroupInfo() {
               </select>
             </form>
             <button
-              onClick={onDelete}
+              onClick={removeStudent}
               className=" p-2 mt-10 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#146898] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500"
             >
               Eliminar estudiante

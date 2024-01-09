@@ -169,11 +169,7 @@ function Profile() {
                     {user && user.role_id === 1
                       ? student.group &&
                         student.group
-                          .filter(
-                            (group) =>
-                              group.group_status === 1 ||
-                              group.group_status === null
-                          )
+                          .filter((group) => group.group_status == 1)
                           .map((group) => (
                             <div
                               key={group.group_id}
@@ -181,11 +177,11 @@ function Profile() {
                             >
                               <div className=" block">
                                 <a href={`/cursos/${group.group_id}`}>
-                                  <p className=" text-[13px] sm:text-sm">
+                                  <p className=" text-[12px] ">
                                     {group.subject.subject_name}
                                   </p>
                                 </a>
-                                <p className=" text-[10px] sm:text-sm  opacity-50">
+                                <p className=" text-[10px]   opacity-50">
                                   {group.group_id}
                                 </p>
                               </div>
@@ -193,11 +189,7 @@ function Profile() {
                           ))
                       : teacher.group &&
                         teacher.group
-                          .filter(
-                            (group) =>
-                              group.group_status === 1 ||
-                              group.group_status === null
-                          )
+                          .filter((group) => group.group_status == 1)
                           .map((group) => (
                             <div
                               key={group.group_id}
@@ -205,11 +197,11 @@ function Profile() {
                             >
                               <div className=" block">
                                 <a href={`/cursos/${group.group_id}`}>
-                                  <p className=" text-[13px] sm:text-sm">
+                                  <p className=" text-[12px] ">
                                     {group.subject.subject_name}
                                   </p>
                                 </a>
-                                <p className=" text-[10px] sm:text-sm  opacity-50">
+                                <p className=" text-[10px] opacity-50">
                                   {group.group_id}
                                 </p>
                               </div>

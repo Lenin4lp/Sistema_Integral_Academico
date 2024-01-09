@@ -11,6 +11,7 @@ import {
 import { Degree } from "./degree.model";
 import { Student } from "./student.model";
 import { Group } from "./group.model";
+import { ClassHours } from "./classHours.model";
 
 @Table({
   tableName: "modalidad",
@@ -59,6 +60,9 @@ export class Modality extends Model {
 
   @HasMany(() => Group)
   group!: Group[];
+
+  @HasMany(() => ClassHours)
+  classHours!: ClassHours[];
 
   @AfterSync
   static createDefaultModalities = async () => {

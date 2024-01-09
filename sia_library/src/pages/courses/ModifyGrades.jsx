@@ -44,7 +44,7 @@ function ModifyGrades() {
     const modifiedData = {};
 
     if (data.resit) {
-      data.resit = parseFloat(data.resit).toFixed(2);
+      data.resit = parseFloat(data.resit);
     }
     if (data.grade_1) {
       data.grade_1 = parseFloat(data.grade_1).toFixed(2);
@@ -70,12 +70,12 @@ function ModifyGrades() {
     if (data.exam_2) {
       data.exam_2 = parseFloat(data.exam_2).toFixed(2);
     }
-    
-    if(data.attendance_1){
-      data.attendance_1 = parseInt(data.attendance_1)
+
+    if (data.attendance_1) {
+      data.attendance_1 = parseInt(data.attendance_1);
     }
-    if(data.attendance_2){
-      data.attendance_2 = parseInt(data.attendance_2)
+    if (data.attendance_2) {
+      data.attendance_2 = parseInt(data.attendance_2);
     }
 
     for (const key in data) {
@@ -86,8 +86,6 @@ function ModifyGrades() {
 
     updateAGrade(gradeId, modifiedData);
   });
-
-  
 
   return (
     <div className=" flex justify-center items-center">
@@ -177,7 +175,7 @@ function ModifyGrades() {
                       })}
                     />
                   </div>
-                  
+
                   <div className=" text-center block">
                     <p className=" text-white">Asistencia</p>
                     <input
@@ -267,7 +265,7 @@ function ModifyGrades() {
                       })}
                     />
                   </div>
-                  
+
                   <div className=" text-center block">
                     <p className=" text-white">Asistencia</p>
                     <input
@@ -289,7 +287,6 @@ function ModifyGrades() {
                       min={0}
                       max={10}
                       step={0.1}
-                      pattern="\d+(\.\d{1,2})?"
                       className=" my-5 border rounded text-center border-slate-300 focus:border-slate-400 w-28 lg:w-40"
                       type="number"
                       placeholder={grade.resit}

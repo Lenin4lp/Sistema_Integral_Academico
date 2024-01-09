@@ -117,13 +117,6 @@ export class Grade extends Model {
   final_grade!: number;
 
   @Column({
-    type: DataType.DECIMAL(4, 2),
-    allowNull: true,
-    field: "final_recup",
-  })
-  final_resit!: number;
-
-  @Column({
     type: DataType.INTEGER,
     allowNull: true,
     field: "asistencia_1",
@@ -150,6 +143,13 @@ export class Grade extends Model {
     field: "estado",
   })
   status!: string;
+
+  @Column({
+    type: DataType.DECIMAL(4, 2),
+    allowNull: true,
+    field: "total",
+  })
+  total!: number;
 
   @ForeignKey(() => Student)
   @Column({
@@ -193,13 +193,16 @@ export class Grade extends Model {
     grade.prom_1 = grade1 + grade2 + test1 + exam1;
     grade.prom_2 = grade3 + grade4 + test2 + exam2;
   }
+
   @BeforeCreate
   @BeforeUpdate
   static async updateFinalGrade(grade: Grade) {
     const prom1 = grade.prom_1;
     const prom2 = grade.prom_2;
     const finalGrade = (prom1 + prom2) / 2;
+    const resit = grade.resit;
     grade.final_grade = finalGrade;
+    grade.total = (finalGrade + resit) / 2;
   }
   @BeforeCreate
   @BeforeUpdate
@@ -209,14 +212,4 @@ export class Grade extends Model {
     const totalAttendance = (attend1 + attend2) / 2;
     grade.total_attendance = totalAttendance;
   }
-  @BeforeCreate
-  @BeforeUpdate
-  static async updateFinalResit(grade: Grade) {
-    const prom1 = grade.prom_1;
-    const prom2 = grade.prom_2;
-    const finalGrade = (prom1 + prom2) / 2;
-    const finalResit = (grade.resit + finalGrade)/2
-    grade.final_resit = finalResit;
-  }
-  
 }

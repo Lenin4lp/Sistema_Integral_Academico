@@ -164,8 +164,8 @@ function Users() {
                       </th>
                       <th className="border text-[9px] sm:text-[12px] lg:text-base hidden md:table-cell p-3 text-center border-slate-300 font-semibold text-white">
                         {user && user.user_status === true
-                          ? "Inactivo"
-                          : "Activo"}
+                          ? "Activo"
+                          : "Inactivo"}
                       </th>
                       <th className="border p-3 text-center border-slate-300 font-semibold text-white flex justify-center items-center">
                         <a
@@ -248,8 +248,8 @@ function Users() {
                       </th>
                       <th className="border text-[9px] sm:text-[12px] lg:text-base hidden md:table-cell p-3 text-center border-slate-300 font-semibold text-white">
                         {user && user.user_status === true
-                          ? "Inactivo"
-                          : "Activo"}
+                          ? "Activo"
+                          : "Inactivo"}
                       </th>
                       <th className="border p-3 text-center border-slate-300 font-semibold text-white flex justify-center items-center">
                         <Link
