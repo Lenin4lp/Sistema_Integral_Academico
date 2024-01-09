@@ -17,6 +17,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import axios from "axios";
 
+
 function GroupInfo() {
   const { groupId2 } = useParams();
   const [group, setGroup] = useState();
@@ -29,6 +30,11 @@ function GroupInfo() {
   const [teachers, setTeachers] = useState([]);
   const [studentId, setStudentId] = useState("");
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setStudentId(e.target.value);
+  
+  }
 
   const getTeacherList = async () => {
     try {
@@ -258,9 +264,9 @@ function GroupInfo() {
     }
   };
 
-  const DeleteStudentFromGroup = async (id, data) => {
+  const deleteStudentFromGroup = async (id, student) => {
     try {
-      const res = await removeStudentFromGroup(id, data);
+      const res = await axios.delete(`/groups/${id}/students`, { data: student })
       if (res.status === 204) {
         alert("Estudiante eliminado exitosamente");
         setPage(1);
@@ -321,8 +327,19 @@ function GroupInfo() {
         modifiedData[key] = data[key];
       }
     }
-    modifiedData.group_status = isChecked;
+
     AddStudentToGroup(groupId2, modifiedData);
+  });
+
+  const onDelete = handleSubmit((data) => {
+    
+    console.log(data);
+
+    if (data.student_id == "" || data.student_id == undefined) {
+      alert("Debe seleccionar un estudiante");
+    }
+    
+    removeStudentFromGroup(groupId2, data.student_id);
   });
 
   const onSubmit2 = handleSubmit((data) => {
@@ -355,37 +372,9 @@ function GroupInfo() {
     modifyGroup(groupId2, modifiedData);
   });
 
-  const removeStudent = handleSubmit(async (data) => {
-    if (!data.student_id || data.student_id === "") {
-      window.alert("Por favor, selecciona un estudiante");
-    } else {
-      const deleteStudent = await axios.delete(
-        `http://localhost:8081/api/groups/${groupId2}/students`,
-        data
-      );
-      if (deleteStudent.status === 204) {
-        alert("Estudiante eliminado exitosamente");
-        window.location.reload();
-      }
-    }
-  });
-
   console.log(studentId);
 
-  const deleteItem = async () => {
-    if (!studentId || studentId == "") {
-      window.alert("Por favor, selecciona un estudiante");
-    } else {
-      const deleteStudent = await axios.delete(
-        `http://localhost:8081/api/groups/${groupId2}/students`,
-        studentId
-      );
-      if (deleteStudent.status === 204) {
-        alert("Estudiante eliminado exitosamente");
-        window.location.reload();
-      }
-    }
-  };
+  
   const estudiantesMatriculados =
     sortedUsers && sortedUsers.map((student) => student.student_id);
 
@@ -1003,21 +992,21 @@ function GroupInfo() {
             </div>
             <form className=" mt-5 md:mt-10" action="">
               <select
-                onChange={(e) => setStudentId(e.target.value)}
+                
                 className=" w-36 sm:w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 px-1 mt-3"
                 {...register("student_id")}
               >
                 <option>Selecciona un estudiante</option>
                 {sortedUsers &&
                   sortedUsers.map((user) => (
-                    <option value={user.user.user_id} key={user.user.user_id}>
+                    <option value={user.user.user_id} key={user.user.user_id}  >
                       {`${user.user.user_lastname} ${user.user.user_name}`}
                     </option>
                   ))}
               </select>
             </form>
             <button
-              onClick={removeStudent}
+              onClick={onDelete}
               className=" p-2 mt-10 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#146898] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500"
             >
               Eliminar estudiante

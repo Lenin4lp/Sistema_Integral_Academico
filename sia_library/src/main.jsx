@@ -705,7 +705,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      <div className=" font-mono">
+      <div className=" font-mono" translate="no">
         <RouterProvider router={router} />
       </div>
     </AuthProvider>

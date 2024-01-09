@@ -6,6 +6,7 @@ import { User } from "../models/user.model";
 import { connection } from "../connection/connection";
 import { Group } from "../models/group.model";
 import { Grade } from "../models/grades.model";
+import { QueryTypes } from "sequelize";
 
 //? Obtener todos los estudiantes
 export const getStudents = async (req: Request, res: Response) => {
@@ -73,12 +74,14 @@ export const assignStudentToSubject = async (req: Request, res: Response) => {
 //? Eliminar estudiante de materia
 export const removeStudentFromSubject = async (req: Request, res: Response) => {
   const { id: student_id } = req.params;
-  const { subject_id } = req.body;
+  const { group_id } = req.body;
 
   try {
-    const query = `DELETE FROM estudiante_materia WHERE id_materia = ? AND id_estudiante = ?`;
-    await connection.query(query, { replacements: [subject_id, student_id] });
-    res.status(200).json({ message: "Estudiante eliminado de materia" });
+    const query = `DELETE FROM grupo_estudiante WHERE id_grupo = ? AND id_estudiante = ?`;
+    await connection.query(query, { replacements: [group_id, student_id],
+      type: QueryTypes.DELETE
+     });
+    res.status(200).json({ message: "Estudiante eliminado del grupo" });
   } catch (error) {
     console.log("Algo malio sal: ", error);
     res.status(500).json(["Ha ocurrido un error con el servidor"]);

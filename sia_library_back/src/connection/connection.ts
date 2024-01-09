@@ -15,6 +15,7 @@ import { Grade } from "../models/grades.model";
 import { ClassHours } from "../models/classHours.model";
 import { Schedule } from "../models/schedule.model";
 
+
 export const connection = new Sequelize({
   dialect: "mysql",
   host: "localhost",

@@ -19,6 +19,7 @@ import {
   degreeUpdateSchema,
 } from "../schemas/degree.schema";
 import { registerSubjectSchema, updateSubjectSchema } from "../schemas/subject.schema";
+import { removeStudentFromSubject } from "../controllers/student.controller";
 
 const router = Router();
 
@@ -37,5 +38,7 @@ router.get("/subject/:id", getSubject);
 router.post("/subject", validateSchema(registerSubjectSchema), createSubject);
 router.put("/subject/:id", validateSchema(updateSubjectSchema), updateSubject);
 router.delete("/subject/:id", deleteSubject);
+
+router.delete("/student/:id/group", removeStudentFromSubject);
 
 export default router;

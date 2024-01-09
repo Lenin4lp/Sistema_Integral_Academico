@@ -7,7 +7,6 @@ import {
   ForeignKey,
   BelongsTo,
   BelongsToMany,
-  HasOne,
   HasMany,
 } from "sequelize-typescript";
 import { User } from "./user.model";
