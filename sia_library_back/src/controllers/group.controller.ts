@@ -131,7 +131,6 @@ export const deleteStudentFromGroup = async (req: Request, res: Response) => {
     const { student_id } = req.body;
 
     console.log("Estudiante a eliminar:", student_id);
-    
 
     // Verificar si el estudiante existe en el grupo antes de eliminarlo
     const existingStudent = await connection.query(
@@ -140,7 +139,9 @@ export const deleteStudentFromGroup = async (req: Request, res: Response) => {
     );
 
     if (existingStudent.length === 0) {
-      return res.status(404).json({ message: "Estudiante no encontrado en el grupo" });
+      return res
+        .status(404)
+        .json({ message: "Estudiante no encontrado en el grupo" });
     }
 
     // Eliminar el estudiante del grupo

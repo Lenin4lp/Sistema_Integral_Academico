@@ -17,6 +17,7 @@ import { Period } from "./period.model";
 import { Grade } from "./grades.model";
 import { Teacher } from "./teacher.model";
 import { v4 as uuidv4 } from "uuid";
+import { StudentGroup } from "./studentGroup.model";
 
 @Table({
   tableName: "grupo",
@@ -78,12 +79,7 @@ export class Group extends Model {
   })
   teacher_id!: string;
 
-  @BelongsToMany(() => Student, {
-    through: "grupo_estudiante",
-    foreignKey: "id_grupo",
-    otherKey: "id_estudiante",
-    timestamps: false,
-  })
+  @BelongsToMany(() => Student, () => StudentGroup)
   student!: Student[];
 
   @BelongsTo(() => Modality)

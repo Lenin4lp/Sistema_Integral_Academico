@@ -27,6 +27,5 @@ router.post(
   validateSchema(assignStudentToSubjectSchema),
   addStudentToGroup
 );
-router.delete("/groups/:id/students", deleteStudentFromGroup);
 
 export default router;

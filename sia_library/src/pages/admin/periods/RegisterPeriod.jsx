@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { registerPeriod } from "../../../api/academic";
 import { useNavigate } from "react-router-dom";
+import { Toaster, toast } from "sonner";
 
 function RegisterPeriod() {
   const { register, handleSubmit } = useForm();
@@ -12,13 +13,17 @@ function RegisterPeriod() {
     try {
       const res = await registerPeriod(data);
       if (res.status === 200) {
-        alert("Periodo creado exitosamente");
-        navigate("/admin/materias");
-        console.log(res.data);
+        toast.success("Periodo creado exitosamente");
+        setTimeout(() => {
+          window.history.go(-1);
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
       setErrors(error.response.data);
+      toast.error("Error al registrar el periodo", {
+        duration: 3000,
+      });
     }
   };
 
@@ -104,6 +109,7 @@ function RegisterPeriod() {
           </div>
         </div>
       </div>
+      <Toaster position="top-center" richColors />
     </div>
   );
 }

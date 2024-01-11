@@ -15,6 +15,7 @@ import gradesRoutes from "./routes/grades.routes";
 import modalityRoutes from "./routes/modality.routes";
 import periodRoutes from "./routes/period.routes";
 import uploadRoutes from "./routes/upload.routes";
+import studentGroupRoutes from "./routes/studentGroup.routes";
 
 // ? Creación del servidor
 
@@ -39,6 +40,7 @@ app.use("/api", gradesRoutes);
 app.use("/api", modalityRoutes);
 app.use("/api", periodRoutes);
 app.use("/api", uploadRoutes);
+app.use("/api", studentGroupRoutes);
 app.get("/", (_req, res) => {
   res.send("Hola mundo");
 });

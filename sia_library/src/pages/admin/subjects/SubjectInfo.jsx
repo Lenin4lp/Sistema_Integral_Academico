@@ -12,6 +12,7 @@ import {
 import { getTeachers } from "../../../api/user";
 import SubjectCard from "../../../components/SubjectCard";
 import { Link } from "react-router-dom";
+import { Toaster, toast } from "sonner";
 
 function SubjectInfo() {
   const { register, handleSubmit } = useForm();
@@ -62,13 +63,17 @@ function SubjectInfo() {
     try {
       const res = await registerGroup(data);
       if (res.status === 200) {
-        alert("Materia registrada exitosamente");
-        navigate("/admin/materias");
-        console.log(res.data);
+        toast.success("Grupo registrado exitosamente");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
       setErrors(error.response.data);
+      toast.error("Error al registrar el grupo", {
+        duration: 3000,
+      });
     }
   };
 
@@ -76,13 +81,17 @@ function SubjectInfo() {
     try {
       const res = await updateSubject(id, data);
       if (res.status === 200) {
-        alert("Materia actualizada exitosamente");
-        navigate("/admin/materias");
-        console.log(res.data);
+        toast.success("Materia actualizada exitosamente");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
       setErrors(error.response.data);
+      toast.error("Error al actualizar la materia", {
+        duration: 3000,
+      });
     }
   };
 
@@ -495,6 +504,7 @@ function SubjectInfo() {
           </>
         )}
       </div>
+      <Toaster position="top-center" richColors />
     </div>
   );
 }

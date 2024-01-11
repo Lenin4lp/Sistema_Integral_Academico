@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { registerSubject } from "../../../api/academic";
+import { Toaster, toast } from "sonner";
 
 function RegisterSubject() {
   const { register, handleSubmit } = useForm();
   const [errors, setErrors] = useState([]);
-  const navigate = useNavigate();
 
   const createSubject = async (data) => {
     try {
       const res = await registerSubject(data);
       if (res.status === 200) {
-        alert("Materia registrada exitosamente");
-        navigate("/admin/materias");
-        console.log(res.data);
+        toast.success("Materia registrada exitosamente");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
       setErrors(error.response.data);
+      toast.error("Error al registrar la materia", {
+        duration: 3000,
+      });
     }
   };
 
@@ -108,6 +112,7 @@ function RegisterSubject() {
           </div>
         </>
       </div>
+      <Toaster position="top-center" richColors />
     </div>
   );
 }

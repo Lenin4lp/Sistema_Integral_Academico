@@ -15,6 +15,7 @@ import { Subject } from "./subject.model";
 import { Modality } from "./modality.model";
 import { Grade } from "./grades.model";
 import { Group } from "./group.model";
+import { StudentGroup } from "./studentGroup.model";
 
 @Table({
   tableName: "estudiante",
@@ -53,12 +54,7 @@ export class Student extends Model {
   })
   modality_id!: number;
 
-  @BelongsToMany(() => Group, {
-    through: "grupo_estudiante",
-    foreignKey: "id_estudiante",
-    otherKey: "id_grupo",
-    timestamps: false,
-  })
+  @BelongsToMany(() => Group, () => StudentGroup)
   group!: Group[];
 
   @HasMany(() => Grade)

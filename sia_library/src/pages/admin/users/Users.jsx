@@ -67,7 +67,10 @@ function Users() {
 
   const searchedUsers = (search) => {
     let results = sortedUsers.filter((user) => {
-      if (user.user_name.toLowerCase().includes(search.toLowerCase())) {
+      if (
+        user.user_name.toLowerCase().includes(search.toLowerCase()) ||
+        user.user_lastname.toLowerCase().includes(search.toLowerCase())
+      ) {
         return user;
       }
     });

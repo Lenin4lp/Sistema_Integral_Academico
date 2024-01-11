@@ -425,7 +425,7 @@ function CourseInfo() {
               <div className=" flex justify-start items-center">
                 <div className=" block">
                   <div className="  mt-10 font-semibold flex justify-start items-center w-full text-sm lg:text-lg"></div>
-                  {Students.length > 0 && (
+                  {Students && Students.length > 0 && (
                     <div className=" block">
                       <div className=" flex w-full justify-start mb-5 items-center">
                         <h1 className=" text-left text-lg font-semibold text-white">

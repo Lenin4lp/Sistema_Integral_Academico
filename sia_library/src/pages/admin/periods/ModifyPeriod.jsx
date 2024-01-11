@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { updatePeriod, getPeriod, deletePeriod } from "../../../api/academic";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { Toaster, toast } from "sonner";
 
 function ModifyPeriod() {
   const { register, handleSubmit } = useForm();
@@ -15,25 +16,33 @@ function ModifyPeriod() {
     try {
       const res = await deletePeriod(id);
       if (res.status === 204) {
-        alert("Periodo eliminado exitosamente");
-        window.history.go(-1);
-        console.log(res.data);
+        toast.success("Periodo eliminado exitosamente");
+        setTimeout(() => {
+          window.history.go(-1);
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
+      setErrors(error.response.data);
+      toast.error("Error al eliminar el periodo", {
+        duration: 3000,
+      });
     }
   };
   const editPeriod = async (id, data) => {
     try {
       const res = await updatePeriod(id, data);
       if (res.status === 200) {
-        alert("Periodo modificado exitosamente");
-        navigate("/admin/materias");
-        console.log(res.data);
+        toast.success("Periodo modificado exitosamente");
+        setTimeout(() => {
+          window.history.go(-1);
+        }, 2000);
       }
     } catch (error) {
-      console.log(error);
       setErrors(error.response.data);
+      toast.error("Error al modificar el periodo", {
+        duration: 3000,
+      });
     }
   };
 
@@ -139,6 +148,7 @@ function ModifyPeriod() {
           </div>
         </div>
       </div>
+      <Toaster position="top-center" richColors />
     </div>
   );
 }

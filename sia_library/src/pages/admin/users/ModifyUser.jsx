@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { Toaster, toast } from "sonner";
 
 function ModifyUser() {
   const { register, handleSubmit } = useForm();
@@ -282,12 +283,16 @@ function ModifyUser() {
     try {
       const res = await updateStudent(id, data);
       if (res.status === 200) {
-        alert("Usuario actualizado exitosamente");
-        navigate("/admin/usuarios");
+        toast.success("Usuario actualizado exitosamente");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
     } catch (error) {
       setErrors(error.response.data);
-      console.log(error.response.data);
+      toast.error("Error al registrar el usuario", {
+        duration: 3000,
+      });
     }
   };
 
@@ -310,8 +315,10 @@ function ModifyUser() {
         if (res.data.role_id === 1) {
           editStudent(userId, data);
         } else {
-          alert("Usuario actualizado exitosamente");
-          navigate("/admin/usuarios");
+          toast.success("Usuario actualizado exitosamente");
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         }
         console.log(res.data);
       }

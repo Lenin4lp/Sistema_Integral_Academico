@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Cards from "../../../components/Cards";
-import { Link, redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   getGroup,
   assignStudentToGroup,
   updateGroup,
   getModalities,
-  removeStudentFromGroup,
-  deleteGroup,
+  deleteStudentFromGroup,
 } from "../../../api/academic";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getStudents, getTeachers } from "../../../api/user";
-import { useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import axios from "axios";
-
+import { Toaster, toast } from "sonner";
 
 function GroupInfo() {
   const { groupId2 } = useParams();
@@ -29,12 +26,6 @@ function GroupInfo() {
   const [modalities, setModalities] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [studentId, setStudentId] = useState("");
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setStudentId(e.target.value);
-  
-  }
 
   const getTeacherList = async () => {
     try {
@@ -53,12 +44,34 @@ function GroupInfo() {
     try {
       const res = await updateGroup(id, data);
       if (res.status === 200) {
-        alert("Grupo actualizado exitosamente");
-        setPage(1);
+        toast.success("Grupo actualizado exitosamente");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
     } catch (error) {
       setErrors(error.response.data);
+      toast.error("Error al actualizar el grupo", {
+        duration: 3000,
+      });
+    }
+  };
+
+  const removeStudentFromGroup = async (id, student) => {
+    try {
+      const res = await deleteStudentFromGroup(id, student);
+      if (res.status === 204) {
+        toast.success("Estudiante eliminado exitosamente");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
+    } catch (error) {
       console.log(error);
+      setErrors(error.response.data);
+      toast.error("Error al eliminar el estudiante", {
+        duration: 3000,
+      });
     }
   };
 
@@ -198,7 +211,7 @@ function GroupInfo() {
         sortedGrades.map((grade) => {
           return [
             `${grade.student && grade.student.student_id}`,
-            `1724063860`,
+            `${grade.student && grade.student.user.user_ci}`,
 
             {
               content: `${grade.student && grade.student.user.user_lastname} ${
@@ -208,15 +221,33 @@ function GroupInfo() {
               styles: { halign: "left", valign: "middle" },
             },
             `${grade && grade.prom_1 === null ? `0.00` : grade.prom_1}`,
-            `100%`,
+            `${
+              grade && grade.attendance_1 === null
+                ? `0%`
+                : `${grade.attendance_1}%`
+            }`,
             `${grade && grade.prom_2 === null ? `0.00` : grade.prom_2}`,
-            `100%`,
+            `${
+              grade && grade.attendance_2 === null
+                ? `0%`
+                : `${grade.attendance_2}%`
+            }`,
             `${grade && grade.resit === null ? `0.00` : grade.resit}`,
             `${
               grade && grade.final_grade === null ? `0.00` : grade.final_grade
             }`,
-            `100%`,
-            `${grade && grade.final_grade < 7 ? "REPROBADO" : "APROBADO"}`,
+            `${
+              grade && grade.total_attendance === null
+                ? `0%`
+                : `${grade.total_attendance}%`
+            }`,
+            `${
+              grade && grade.final_grade > 7
+                ? "APROBADO"
+                : grade.total >= 6.5
+                ? "APROBADO"
+                : "REPROBADO"
+            }`,
           ];
         }),
       theme: "plain",
@@ -245,6 +276,8 @@ function GroupInfo() {
         group.subject && group.subject.subject_name
       } ${group && group.group_name} ${group && group.period.period_id}.pdf`
     );
+
+    toast.success("Reporte de calificaciones descargado");
   };
 
   const handleCheckboxChange = () => {
@@ -255,25 +288,17 @@ function GroupInfo() {
     try {
       const res = await assignStudentToGroup(id, data);
       if (res.status === 200) {
-        alert("Estudiante agregado exitosamente");
-        window.location.reload();
+        toast.success("Estudiante agregado exitosamente");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
       setErrors(error.response.data);
-    }
-  };
-
-  const deleteStudentFromGroup = async (id, student) => {
-    try {
-      const res = await axios.delete(`/groups/${id}/students`, { data: student })
-      if (res.status === 204) {
-        alert("Estudiante eliminado exitosamente");
-        setPage(1);
-      }
-    } catch (error) {
-      console.log(error);
-      setErrors(error.response.data);
+      toast.error("Error al agregar estudiante", {
+        duration: 3000,
+      });
     }
   };
 
@@ -318,8 +343,8 @@ function GroupInfo() {
   const onSubmit = handleSubmit((data) => {
     const modifiedData = {};
 
-    if (data.student_id == "Selecciona un estudiante") {
-      data.student_id = undefined;
+    if (data.student_id == "") {
+      toast.error("Por favor selecciona un estudiante");
     }
 
     for (const key in data) {
@@ -332,13 +357,6 @@ function GroupInfo() {
   });
 
   const onDelete = handleSubmit((data) => {
-    
-    console.log(data);
-
-    if (data.student_id == "" || data.student_id == undefined) {
-      alert("Debe seleccionar un estudiante");
-    }
-    
     removeStudentFromGroup(groupId2, data.student_id);
   });
 
@@ -372,17 +390,16 @@ function GroupInfo() {
     modifyGroup(groupId2, modifiedData);
   });
 
-  console.log(studentId);
-
-  
   const estudiantesMatriculados =
     sortedUsers && sortedUsers.map((student) => student.student_id);
 
   const estudiantesDisponibles = sortedStudents.filter(
-    (student) => !estudiantesMatriculados.includes(student.student_id)
+    (student) =>
+      estudiantesMatriculados &&
+      !estudiantesMatriculados.includes(student.student_id)
   );
 
-  console.log(sortedUsers);
+  console.log(studentId);
 
   useEffect(() => {
     getAGroup(groupId2);
@@ -519,6 +536,12 @@ function GroupInfo() {
               >
                 Matricular alumno
               </button>
+              <button
+                onClick={() => setPage(6)}
+                className=" ml-10 p-2 border border-white active:transform active:scale-90 bg-transparent rounded-lg hover:bg-[#981414] text-white text-sm lg:text-base duration-500"
+              >
+                Eliminar alumno
+              </button>
             </div>
 
             <div className=" my-10 flex justify-center items-center">
@@ -593,35 +616,6 @@ function GroupInfo() {
                               />
                             </svg>
                           </Link>
-
-                          <button onClick={() => setPage(6)}>
-                            <svg
-                              className=" mx-1 hover:cursor-pointer"
-                              width="20px"
-                              height="20px"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                              stroke="#d75656"
-                            >
-                              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                              <g
-                                id="SVGRepo_tracerCarrier"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              ></g>
-                              <g id="SVGRepo_iconCarrier">
-                                {" "}
-                                <path
-                                  d="M18 6L17.1991 18.0129C17.129 19.065 17.0939 19.5911 16.8667 19.99C16.6666 20.3412 16.3648 20.6235 16.0011 20.7998C15.588 21 15.0607 21 14.0062 21H9.99377C8.93927 21 8.41202 21 7.99889 20.7998C7.63517 20.6235 7.33339 20.3412 7.13332 19.99C6.90607 19.5911 6.871 19.065 6.80086 18.0129L6 6M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M14 10V17M10 10V17"
-                                  stroke="#d75656"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                ></path>{" "}
-                              </g>
-                            </svg>
-                          </button>
                         </th>
                       </tr>
                     ))}
@@ -992,14 +986,14 @@ function GroupInfo() {
             </div>
             <form className=" mt-5 md:mt-10" action="">
               <select
-                
+                onChange={(e) => setStudentId(e.target.value)}
                 className=" w-36 sm:w-42 md:w-56  bg-white text-[1rem] font-normal placeholder-[#1c274cbb] text-[#1c274c] border border-gray-200 rounded py-2 px-1 mt-3"
                 {...register("student_id")}
               >
                 <option>Selecciona un estudiante</option>
                 {sortedUsers &&
                   sortedUsers.map((user) => (
-                    <option value={user.user.user_id} key={user.user.user_id}  >
+                    <option value={user.user.user_id} key={user.user.user_id}>
                       {`${user.user.user_lastname} ${user.user.user_name}`}
                     </option>
                   ))}
@@ -1007,11 +1001,10 @@ function GroupInfo() {
             </form>
             <button
               onClick={onDelete}
-              className=" p-2 mt-10 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#146898] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500"
+              className=" p-2 mt-10 active:transform active:scale-90 bg-white rounded-lg hover:bg-[#981414] text-[#1C274C] hover:text-white text-sm lg:text-base duration-500"
             >
               Eliminar estudiante
             </button>
-
             <div className=" block mt-5 md:mt-10">
               {errors && errors.length > 0 && (
                 <div className=" bg-red-800 w-fit p-1 text-white text-center rounded">
@@ -1022,6 +1015,7 @@ function GroupInfo() {
           </>
         )}
       </div>
+      <Toaster richColors position="top-center" />
     </div>
   );
 }

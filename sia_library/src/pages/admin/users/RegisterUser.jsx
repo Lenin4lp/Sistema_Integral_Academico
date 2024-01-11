@@ -5,6 +5,7 @@ import { registerRequest } from "../../../api/auth";
 import { updateStudent } from "../../../api/user";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { Toaster, toast } from "sonner";
 
 function RegisterUser() {
   const { register, handleSubmit } = useForm();
@@ -91,12 +92,16 @@ function RegisterUser() {
     try {
       const res = await updateStudent(id, data);
       if (res.status === 200) {
-        alert("Usuario creado exitosamente");
-        navigate("/admin/usuarios");
+        toast.success("Usuario creado exitosamente");
+        setTimeout(() => {
+          window.history.go(-1);
+        }, 2000);
       }
     } catch (error) {
       setErrors(error.response.data);
-      console.log(error.response.data);
+      toast.error("Error al registrar el usuario", {
+        duration: 3000,
+      });
     }
   };
 
@@ -107,8 +112,10 @@ function RegisterUser() {
         if (res.data.role_id === 1) {
           editStudent(res.data.id, data);
         } else {
-          alert("Usuario creado exitosamente");
-          navigate("/admin/usuarios");
+          toast.success("Usuario creado exitosamente");
+          setTimeout(() => {
+            window.history.go(-1);
+          }, 2000);
         }
         console.log(res.data);
       }
@@ -396,6 +403,7 @@ function RegisterUser() {
           </div>
         </div>
       </div>
+      <Toaster position="top-center" richColors />
     </div>
   );
 }

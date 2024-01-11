@@ -14,7 +14,7 @@ import { Period } from "../models/period.model";
 import { Grade } from "../models/grades.model";
 import { ClassHours } from "../models/classHours.model";
 import { Schedule } from "../models/schedule.model";
-
+import { StudentGroup } from "../models/studentGroup.model";
 
 export const connection = new Sequelize({
   dialect: "mysql",
@@ -34,6 +34,7 @@ export const connection = new Sequelize({
     Subject,
     Period,
     Group,
+    StudentGroup,
     Grade,
     Book,
     ClassHours,
