@@ -38,7 +38,7 @@ function CourseInfo() {
     const formData = new FormData();
     formData.append("myFile", file);
     axios
-      .post("https://api-sia.istvc.edu.ec/api/upload", formData)
+      .post("https://api.istvc.edu.ec/api/upload", formData)
       .then((res) => {
         if (res.status === 200) {
           const subjectId = group && group.subject_id;
