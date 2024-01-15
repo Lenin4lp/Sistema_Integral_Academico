@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.assignStudentToSubjectSchema = exports.updateGroupSchema = exports.registerGroupSchema = void 0;
 const zod_1 = require("zod");
+// ? Validacion para grupos
 const grupoPattern = /^Grupo \d+$/;
 exports.registerGroupSchema = zod_1.z.object({
     group_name: zod_1.z

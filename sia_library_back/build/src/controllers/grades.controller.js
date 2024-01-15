@@ -53,7 +53,8 @@ const createGrade = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             final_grade: 0,
             prom_1: 0,
             prom_2: 0,
-            resit: 0,
+            final_resit: 0,
+            total_resit: 0,
             status: "En curso",
             student_id,
             group_id,
@@ -68,7 +69,7 @@ const createGrade = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.createGrade = createGrade;
 // ? Actualizar una nota
 const updateGrade = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { grade_1, grade_2, test_1, exam_1, grade_3, grade_4, test_2, exam_2, prom_1, prom_2, status, resit, final_grade, } = req.body;
+    const { grade_1, grade_2, test_1, exam_1, grade_3, grade_4, test_2, exam_2, prom_1, prom_2, status, resit, final_grade, attendance_1, attendance_2, total_attendance, final_resit } = req.body;
     const grade = yield grades_model_1.Grade.findByPk(req.params.id);
     if (grade) {
         yield grade.update({
@@ -85,6 +86,10 @@ const updateGrade = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             status,
             resit,
             final_grade,
+            attendance_1,
+            attendance_2,
+            total_attendance,
+            final_resit
         });
     }
     else {

@@ -21,6 +21,7 @@ const period_model_1 = require("../models/period.model");
 const connection_1 = require("../connection/connection");
 const grades_model_1 = require("../models/grades.model");
 const teacher_model_1 = require("../models/teacher.model");
+const sequelize_1 = require("sequelize");
 // ? Obtener todos los grupos
 const getGroups = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const groups = yield group_model_1.Group.findAll({
@@ -139,15 +140,23 @@ const addStudentToGroup = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.addStudentToGroup = addStudentToGroup;
 //? Eliminar estudiantes de grupo
 const deleteStudentFromGroup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id: group_id } = req.params;
-    const { student_id } = req.body;
     try {
-        const query = `DELETE FROM grupo_estudiante WHERE id_grupo = ? AND id_estudiante = ?`;
-        yield connection_1.connection.query(query, { replacements: [group_id, student_id] });
-        res.status(200).json({ message: "Estudiante eliminado del grupo" });
+        const { id: group_id } = req.params;
+        const { student_id } = req.body;
+        console.log("Estudiante a eliminar:", student_id);
+        // Verificar si el estudiante existe en el grupo antes de eliminarlo
+        const existingStudent = yield connection_1.connection.query(`SELECT * FROM grupo_estudiante WHERE id_grupo = ? AND id_estudiante = ?`, { replacements: [group_id, student_id], type: sequelize_1.QueryTypes.SELECT });
+        if (existingStudent.length === 0) {
+            return res
+                .status(404)
+                .json({ message: "Estudiante no encontrado en el grupo" });
+        }
+        // Eliminar el estudiante del grupo
+        yield connection_1.connection.query(`DELETE FROM grupo_estudiante WHERE id_grupo = ? AND id_estudiante = ?`, { replacements: [group_id, student_id], type: sequelize_1.QueryTypes.DELETE });
+        return res.status(200).json({ message: "Estudiante eliminado del grupo" });
     }
     catch (error) {
-        console.log("Algo malio sal: ", error);
+        console.log("Algo salió mal:", error);
         res.status(500).json({ message: "Error al eliminar estudiante del grupo" });
     }
 });

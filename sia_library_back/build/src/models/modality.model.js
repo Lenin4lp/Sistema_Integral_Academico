@@ -21,6 +21,7 @@ const sequelize_typescript_1 = require("sequelize-typescript");
 const degree_model_1 = require("./degree.model");
 const student_model_1 = require("./student.model");
 const group_model_1 = require("./group.model");
+const classHours_model_1 = require("./classHours.model");
 let Modality = Modality_1 = class Modality extends sequelize_typescript_1.Model {
 };
 exports.Modality = Modality;
@@ -94,6 +95,9 @@ __decorate([
 __decorate([
     (0, sequelize_typescript_1.HasMany)(() => group_model_1.Group)
 ], Modality.prototype, "group", void 0);
+__decorate([
+    (0, sequelize_typescript_1.HasMany)(() => classHours_model_1.ClassHours)
+], Modality.prototype, "classHours", void 0);
 __decorate([
     sequelize_typescript_1.AfterSync
 ], Modality, "createDefaultModalities", void 0);

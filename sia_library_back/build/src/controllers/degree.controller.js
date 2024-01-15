@@ -13,9 +13,16 @@ exports.deleteDegree = exports.updateDegree = exports.createDegree = exports.get
 const degree_model_1 = require("../models/degree.model");
 const student_model_1 = require("../models/student.model");
 const user_model_1 = require("../models/user.model");
+const modality_model_1 = require("../models/modality.model");
+const group_model_1 = require("../models/group.model");
 //? Obtener todas las Carreras
 const getDegrees = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const degrees = yield degree_model_1.Degree.findAll();
+    const degrees = yield degree_model_1.Degree.findAll({
+        include: [
+            { model: student_model_1.Student, include: [{ model: user_model_1.User }, { model: group_model_1.Group }] },
+            { model: modality_model_1.Modality },
+        ],
+    });
     res.json(degrees);
 });
 exports.getDegrees = getDegrees;

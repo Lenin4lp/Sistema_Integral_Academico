@@ -104,7 +104,7 @@ function GroupInfo() {
   const generatePDF = async () => {
     const doc = new jsPDF();
 
-    doc.text("Instituto Superior Tecnologico de la Vera Cruz", 50, 10);
+    doc.text("Instituto Superior Tecnológico de la Vera Cruz", 50, 10);
     doc.setFontSize(16);
     doc.text("Hoja de Calificaciones", 10, 30);
     doc.setFontSize(10);

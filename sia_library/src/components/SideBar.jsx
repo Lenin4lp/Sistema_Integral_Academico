@@ -38,7 +38,9 @@ function SideBar({ MenuOption, children }) {
         </div>
         <ul className=" mt-8 pt-6">
           {Menus.map((menu, index) =>
-            menu && menu.title !== "Calificaciones" ? (
+            menu &&
+            menu.title !== "Calificaciones" &&
+            menu.title !== "Perfil" ? (
               <div key={index} className=" group relative">
                 <span className="absolute top-0 left-14 hidden lg:flex scale-0 transition-all rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100">
                   {menu.title}

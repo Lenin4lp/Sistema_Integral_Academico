@@ -11,5 +11,4 @@ router.post("/group", (0, validator_middleware_1.validateSchema)(group_schema_1.
 router.put("/group/:id", (0, validator_middleware_1.validateSchema)(group_schema_1.updateGroupSchema), group_controller_1.updateGroup);
 router.delete("/group/:id", group_controller_1.deleteGroup);
 router.post("/groups/:id/students", (0, validator_middleware_1.validateSchema)(group_schema_1.assignStudentToSubjectSchema), group_controller_1.addStudentToGroup);
-router.delete("/groups/:id/students", group_controller_1.deleteStudentFromGroup);
 exports.default = router;

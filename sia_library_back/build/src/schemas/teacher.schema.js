@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateTeacherSchema = void 0;
 const zod_1 = require("zod");
+// ? Validacion para docentes
 exports.updateTeacherSchema = zod_1.z.object({
     speciality: zod_1.z
         .string()

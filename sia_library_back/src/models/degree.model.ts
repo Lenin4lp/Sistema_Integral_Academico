@@ -38,7 +38,7 @@ export class Degree extends Model {
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
-    field: "n°_semestres",
+    field: "n_semestres",
   })
   degree_duration!: number;
 

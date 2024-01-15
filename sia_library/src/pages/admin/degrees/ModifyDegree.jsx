@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { updateDegree } from "../../../api/academic";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { getDegree, deleteDegree } from "../../../api/academic";
 import { Link } from "react-router-dom";
+import { Toaster, toast } from "sonner";
 
 function ModifyDegree() {
   const { register, handleSubmit } = useForm();
@@ -17,12 +18,16 @@ function ModifyDegree() {
     try {
       const res = await deleteDegree(id);
       if (res.status === 204) {
-        alert("Carrera eliminada exitosamente");
-        window.history.go(-1);
-        console.log(res.data);
+        toast.success("Carrera eliminada exitosamente");
+        setTimeout(() => {
+          window.history.go(-1);
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
+      toast.error("Error al eliminar la carrera", {
+        duration: 3000,
+      });
     }
   };
 
@@ -30,13 +35,16 @@ function ModifyDegree() {
     try {
       const res = await updateDegree(id, data);
       if (res.status === 200) {
-        alert("Carrera actualizada exitosamente");
-        navigate("/admin/carreras");
-        console.log(res.data);
+        toast.success("Carrera actualizada exitosamente");
+        setTimeout(() => {
+          navigate("/admin/carreras");
+        }, 2000);
       }
     } catch (error) {
-      console.log(error);
       setErrors(error.response.data);
+      toast.error("Error al actualizar la carrera", {
+        duration: 3000,
+      });
     }
   };
 
@@ -198,6 +206,7 @@ function ModifyDegree() {
             )}
           </div>
         </div>
+        <Toaster position="top-center" richColors />
       </div>
     </div>
   );

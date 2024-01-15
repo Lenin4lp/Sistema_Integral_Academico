@@ -6,6 +6,7 @@ const subject_controller_1 = require("../controllers/subject.controller");
 const validator_middleware_1 = require("../middlewares/validator.middleware");
 const degree_schema_1 = require("../schemas/degree.schema");
 const subject_schema_1 = require("../schemas/subject.schema");
+const student_controller_1 = require("../controllers/student.controller");
 const router = (0, express_1.Router)();
 // ? Carrera
 router.get("/degrees", degree_controller_1.getDegrees);
@@ -19,4 +20,5 @@ router.get("/subject/:id", subject_controller_1.getSubject);
 router.post("/subject", (0, validator_middleware_1.validateSchema)(subject_schema_1.registerSubjectSchema), subject_controller_1.createSubject);
 router.put("/subject/:id", (0, validator_middleware_1.validateSchema)(subject_schema_1.updateSubjectSchema), subject_controller_1.updateSubject);
 router.delete("/subject/:id", subject_controller_1.deleteSubject);
+router.delete("/student/:id/group", student_controller_1.removeStudentFromSubject);
 exports.default = router;

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginSchema = exports.updateSchema = exports.registerSchema = void 0;
 const zod_1 = require("zod");
+// ? Validacion de autenticacion
 exports.registerSchema = zod_1.z.object({
     user_name: zod_1.z
         .string({

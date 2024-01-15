@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.degreeUpdateSchema = exports.degreeRegisterSchema = void 0;
 const zod_1 = require("zod");
+// ? Validacion para carreras
 exports.degreeRegisterSchema = zod_1.z.object({
     degree_name: zod_1.z
         .string({

@@ -61,7 +61,16 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             where: {
                 student_id: user.user_id,
             },
-            include: [degree_model_1.Degree, group_model_1.Group],
+            include: [
+                { model: degree_model_1.Degree },
+                {
+                    model: grades_model_1.Grade,
+                    include: [
+                        { model: group_model_1.Group, include: [{ model: subject_model_1.Subject }, { model: period_model_1.Period }] },
+                    ],
+                },
+                { model: group_model_1.Group, include: [{ model: subject_model_1.Subject }, { model: period_model_1.Period }] },
+            ],
         });
     }
     else if (user.role_id === 2) {

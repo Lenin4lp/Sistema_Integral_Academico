@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../../auth/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { updateUser, updateTeacher } from "../../api/user";
+import { toast, Toaster } from "sonner";
 
 function Modify() {
   const { user } = useAuth();
@@ -14,10 +15,16 @@ function Modify() {
     try {
       const res = await updateTeacher(userId, data);
       if (res.status === 200) {
+        toast.success("Información actualizada");
+        setTimeout(() => {
+          window.location.href = "/perfil";
+        }, 2000);
       }
     } catch (error) {
-      console.log(error);
       setErrors(error.response.data);
+      toast.error("Error al actualizar la información", {
+        duration: 3000,
+      });
     }
   };
 
@@ -26,17 +33,19 @@ function Modify() {
       const res = await updateUser(userId, data);
       if (res.status === 200) {
         if (user.role_id === 1) {
-          alert("Información actualizada");
-          navigate("/perfil");
+          toast.success("Información actualizada");
+          setTimeout(() => {
+            window.location.href = "/perfil";
+          }, 2000);
         } else {
           updateATeacher(user.user_id, data);
-          alert("Información actualizada");
-          navigate("/perfil");
         }
       }
     } catch (error) {
-      console.log(error);
       setErrors(error.response.data);
+      toast.error("Error al actualizar la información", {
+        duration: 3000,
+      });
     }
   };
 
@@ -79,7 +88,7 @@ function Modify() {
                     name="password"
                     type="password"
                     placeholder="**********************"
-                    className=" w-[190px] sm:w-full bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
+                    className=" w-[190px] sm:w-full text-[#1c274cbb] bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb]  border border-gray-200 rounded py-2 px-1 mb-3"
                     {...register("user_password", {
                       maxLength: 20,
                       required: true,
@@ -98,7 +107,7 @@ function Modify() {
                         name="ci"
                         type="text"
                         placeholder="1777777777"
-                        className="  w-[180px] lg:w-[225px] bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
+                        className="  w-[180px] lg:w-[225px] text-[#1c274cbb] bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb]  border border-gray-200 rounded py-2 px-1 mb-3"
                         {...register("user_ci", {
                           maxLength: 10,
                           required: false,
@@ -113,7 +122,7 @@ function Modify() {
                         name="speciality"
                         type="text"
                         placeholder="Profesión"
-                        className="  w-[180px] lg:w-[225px]  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
+                        className="  w-[180px] lg:w-[225px] text-[#1c274cbb]  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb]  border border-gray-200 rounded py-2 px-1 mb-3"
                         {...register("speciality", { required: false })}
                       />
                     </div>
@@ -123,7 +132,7 @@ function Modify() {
                         name="phone"
                         type="text"
                         placeholder="0999999999"
-                        className="  w-[180px] lg:w-[225px]  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
+                        className="  w-[180px] lg:w-[225px] text-[#1c274cbb]  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] border border-gray-200 rounded py-2 px-1 mb-3"
                         {...register("user_phone", {
                           maxLength: 10,
                           required: false,
@@ -138,7 +147,7 @@ function Modify() {
                         name="password"
                         type="password"
                         placeholder="**********************"
-                        className=" w-[180px] lg:w-[225px]  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb] text-white border border-gray-200 rounded py-2 px-1 mb-3"
+                        className=" w-[180px] lg:w-[225px] text-[# 1c274cbb]  bg-white text-[1rem] dark:bg-[#b4b4b4] font-normal placeholder-[#1c274cbb]  border border-gray-200 rounded py-2 px-1 mb-3"
                         {...register("user_password", {
                           maxLength: 20,
                           required: false,
@@ -171,6 +180,7 @@ function Modify() {
             )}
           </div>
         </div>
+        <Toaster position="top-center" richColors />
       </div>
     </div>
   );

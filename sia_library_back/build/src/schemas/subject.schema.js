@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateSubjectSchema = exports.registerSubjectSchema = void 0;
 const zod_1 = require("zod");
+// ? Validacion para materia
 exports.registerSubjectSchema = zod_1.z.object({
     subject_name: zod_1.z
         .string({

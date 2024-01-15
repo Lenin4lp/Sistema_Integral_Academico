@@ -47,7 +47,17 @@ let Grade = class Grade extends sequelize_typescript_1.Model {
             const prom1 = grade.prom_1;
             const prom2 = grade.prom_2;
             const finalGrade = (prom1 + prom2) / 2;
+            const resit = grade.resit;
             grade.final_grade = finalGrade;
+            grade.total = (finalGrade + resit) / 2;
+        });
+    }
+    static updateAttendance(grade) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const attend1 = grade.attendance_1;
+            const attend2 = grade.attendance_2;
+            const totalAttendance = (attend1 + attend2) / 2;
+            grade.total_attendance = totalAttendance;
         });
     }
 };
@@ -147,11 +157,39 @@ __decorate([
 ], Grade.prototype, "final_grade", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
+        allowNull: true,
+        field: "asistencia_1",
+    })
+], Grade.prototype, "attendance_1", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
+        allowNull: true,
+        field: "asistencia_2",
+    })
+], Grade.prototype, "attendance_2", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
+        allowNull: true,
+        field: "asistencia_total",
+    })
+], Grade.prototype, "total_attendance", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,
         allowNull: true,
         field: "estado",
     })
 ], Grade.prototype, "status", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.DECIMAL(4, 2),
+        allowNull: true,
+        field: "total",
+    })
+], Grade.prototype, "total", void 0);
 __decorate([
     (0, sequelize_typescript_1.ForeignKey)(() => student_model_1.Student),
     (0, sequelize_typescript_1.Column)({
@@ -185,6 +223,10 @@ __decorate([
     sequelize_typescript_1.BeforeCreate,
     sequelize_typescript_1.BeforeUpdate
 ], Grade, "updateFinalGrade", null);
+__decorate([
+    sequelize_typescript_1.BeforeCreate,
+    sequelize_typescript_1.BeforeUpdate
+], Grade, "updateAttendance", null);
 exports.Grade = Grade = __decorate([
     (0, sequelize_typescript_1.Table)({
         tableName: "calificaciones",

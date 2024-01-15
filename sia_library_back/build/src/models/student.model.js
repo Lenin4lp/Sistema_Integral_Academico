@@ -14,6 +14,7 @@ const degree_model_1 = require("./degree.model");
 const modality_model_1 = require("./modality.model");
 const grades_model_1 = require("./grades.model");
 const group_model_1 = require("./group.model");
+const studentGroup_model_1 = require("./studentGroup.model");
 let Student = class Student extends sequelize_typescript_1.Model {
 };
 exports.Student = Student;
@@ -50,12 +51,7 @@ __decorate([
     })
 ], Student.prototype, "modality_id", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsToMany)(() => group_model_1.Group, {
-        through: "grupo_estudiante",
-        foreignKey: "id_estudiante",
-        otherKey: "id_grupo",
-        timestamps: false,
-    })
+    (0, sequelize_typescript_1.BelongsToMany)(() => group_model_1.Group, () => studentGroup_model_1.StudentGroup)
 ], Student.prototype, "group", void 0);
 __decorate([
     (0, sequelize_typescript_1.HasMany)(() => grades_model_1.Grade)

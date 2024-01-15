@@ -24,6 +24,9 @@ const group_model_1 = require("../models/group.model");
 const modality_model_1 = require("../models/modality.model");
 const period_model_1 = require("../models/period.model");
 const grades_model_1 = require("../models/grades.model");
+const classHours_model_1 = require("../models/classHours.model");
+const schedule_model_1 = require("../models/schedule.model");
+const studentGroup_model_1 = require("../models/studentGroup.model");
 exports.connection = new sequelize_typescript_1.Sequelize({
     dialect: "mysql",
     host: "localhost",
@@ -42,8 +45,11 @@ exports.connection = new sequelize_typescript_1.Sequelize({
         subject_model_1.Subject,
         period_model_1.Period,
         group_model_1.Group,
+        studentGroup_model_1.StudentGroup,
         grades_model_1.Grade,
         book_model_1.Book,
+        classHours_model_1.ClassHours,
+        schedule_model_1.Schedule,
     ],
     sync: { alter: true },
 });

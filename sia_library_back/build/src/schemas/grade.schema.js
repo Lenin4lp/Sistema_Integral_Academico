@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateGradeSchema = void 0;
 const zod_1 = require("zod");
+// ? Validacion para notas
 exports.updateGradeSchema = zod_1.z.object({
     grade_1: zod_1.z.number().optional(),
     grade_2: zod_1.z.number().optional(),
@@ -15,5 +16,9 @@ exports.updateGradeSchema = zod_1.z.object({
     prom_2: zod_1.z.number().optional(),
     status: zod_1.z.string().optional(),
     resit: zod_1.z.number().optional(),
+    attendance_1: zod_1.z.number().optional(),
+    attendance_2: zod_1.z.number().optional(),
+    total_attendance: zod_1.z.number().optional(),
     final_grade: zod_1.z.number().optional(),
+    total_resit: zod_1.z.number().optional(),
 });

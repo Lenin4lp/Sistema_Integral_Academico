@@ -4,6 +4,7 @@ import { getPeriods } from "../../api/academic";
 import { getModalities } from "../../api/academic";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { toast, Toaster } from "sonner";
 
 function Grades() {
   const { user } = useAuth();
@@ -123,7 +124,7 @@ function Grades() {
   const generatePDF = async () => {
     const doc = new jsPDF();
 
-    doc.text("Instituto Superior Tecnologico de la Vera Cruz", 50, 10);
+    doc.text("Instituto Superior Tecnológico de la Vera Cruz", 50, 10);
     doc.setFontSize(16);
     doc.text("Hoja de Calificaciones", 10, 30);
     doc.setFontSize(10);
@@ -307,10 +308,8 @@ function Grades() {
         filteredGroup && filteredGroup.period?.period_id
       }.pdf`
     );
+    toast.success("Reporte generado con exito");
   };
-
-  console.log(filteredGroup);
-  console.log(selectedDegree);
 
   return (
     <div>
@@ -372,7 +371,7 @@ function Grades() {
                       <h1 className=" font-semibold text-[#1C274C]">
                         Periodos:
                       </h1>
-                      <div className=" mt-5 flex justify-center md:block">
+                      <div className=" mt-5 flex-wrap sm:flex justify-center md:block">
                         {periods
                           .sort((a, b) => {
                             const periodA = a.period_id;
@@ -931,6 +930,7 @@ function Grades() {
             </div>
           </div>
         </div>
+        <Toaster position="top-center" richColors />
       </div>
     </div>
   );

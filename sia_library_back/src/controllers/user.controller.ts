@@ -49,6 +49,12 @@ export const getUser = async (req: Request, res: Response) => {
       },
       include: [
         { model: Degree },
+        {
+          model: Grade,
+          include: [
+            { model: Group, include: [{ model: Subject }, { model: Period }] },
+          ],
+        },
         { model: Group, include: [{ model: Subject }, { model: Period }] },
       ],
     });

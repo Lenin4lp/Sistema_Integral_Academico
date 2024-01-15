@@ -17,6 +17,7 @@ const user_model_1 = require("../models/user.model");
 const connection_1 = require("../connection/connection");
 const group_model_1 = require("../models/group.model");
 const grades_model_1 = require("../models/grades.model");
+const sequelize_1 = require("sequelize");
 //? Obtener todos los estudiantes
 const getStudents = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const students = yield student_model_1.Student.findAll({
@@ -85,11 +86,13 @@ exports.assignStudentToSubject = assignStudentToSubject;
 //? Eliminar estudiante de materia
 const removeStudentFromSubject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id: student_id } = req.params;
-    const { subject_id } = req.body;
+    const { group_id } = req.body;
     try {
-        const query = `DELETE FROM estudiante_materia WHERE id_materia = ? AND id_estudiante = ?`;
-        yield connection_1.connection.query(query, { replacements: [subject_id, student_id] });
-        res.status(200).json({ message: "Estudiante eliminado de materia" });
+        const query = `DELETE FROM grupo_estudiante WHERE id_grupo = ? AND id_estudiante = ?`;
+        yield connection_1.connection.query(query, { replacements: [group_id, student_id],
+            type: sequelize_1.QueryTypes.DELETE
+        });
+        res.status(200).json({ message: "Estudiante eliminado del grupo" });
     }
     catch (error) {
         console.log("Algo malio sal: ", error);

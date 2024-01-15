@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { registerDegree } from "../../../api/academic";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { toast, Toaster } from "sonner";
 
 function RegisterDegree() {
   const { register, handleSubmit } = useForm();
@@ -13,13 +14,16 @@ function RegisterDegree() {
     try {
       const res = await registerDegree(data);
       if (res.status === 200) {
-        alert("Carrera creada exitosamente");
-        navigate("/admin/carreras");
-        console.log(res.data);
+        toast.success("Carrera creada exitosamente");
+        setTimeout(() => {
+          navigate("/admin/carreras");
+        }, 2000);
       }
     } catch (error) {
-      console.log(error);
       setErrors(error.response.data);
+      toast.error("Error al crear la carrera", {
+        duration: 3000,
+      });
     }
   };
 
@@ -137,6 +141,7 @@ function RegisterDegree() {
             )}
           </div>
         </div>
+        <Toaster position="top-center" richColors />
       </div>
     </div>
   );

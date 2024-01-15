@@ -15,72 +15,54 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Degree = void 0;
+exports.Schedule = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
-const student_model_1 = require("./student.model");
 const uuid_1 = require("uuid");
-const book_model_1 = require("./book.model");
-const modality_model_1 = require("./modality.model");
-let Degree = class Degree extends sequelize_typescript_1.Model {
-    static automatizeDegreeId(degree) {
+const classHours_model_1 = require("./classHours.model");
+let Schedule = class Schedule extends sequelize_typescript_1.Model {
+    static automatizeScheduleId(schedule) {
         return __awaiter(this, void 0, void 0, function* () {
-            const acronym = degree.degree_acronym;
-            const generatedUuid = (0, uuid_1.v4)().substring(0, 6);
-            degree.degree_id = `${acronym}-${generatedUuid}`;
+            const uuid = (0, uuid_1.v4)().substring(0, 6);
+            const identificator = "SC";
+            schedule.schedule_id = `${identificator}${uuid}`;
         });
     }
 };
-exports.Degree = Degree;
+exports.Schedule = Schedule;
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING(10),
+        type: sequelize_typescript_1.DataType.STRING(8),
         allowNull: true,
-        field: "id_carrera",
+        field: "id_horario",
         primaryKey: true,
         unique: true,
     })
-], Degree.prototype, "degree_id", void 0);
+], Schedule.prototype, "schedule_id", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING(30),
-        allowNull: false,
-        field: "nombre_carrera",
-        unique: true,
+        type: sequelize_typescript_1.DataType.JSON,
+        allowNull: true,
+        field: "dias_semana",
+        defaultValue: ["Lu", "Ma", "Mi", "Ju", "Vi"],
     })
-], Degree.prototype, "degree_name", void 0);
+], Schedule.prototype, "days", void 0);
 __decorate([
+    (0, sequelize_typescript_1.ForeignKey)(() => classHours_model_1.ClassHours),
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.INTEGER,
-        allowNull: false,
-        field: "n_semestres",
+        allowNull: true,
+        field: "id_hora_clase",
     })
-], Degree.prototype, "degree_duration", void 0);
+], Schedule.prototype, "classHours_id", void 0);
 __decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING(3),
-        allowNull: false,
-        field: "acronimo",
-    })
-], Degree.prototype, "degree_acronym", void 0);
-__decorate([
-    (0, sequelize_typescript_1.HasMany)(() => student_model_1.Student)
-], Degree.prototype, "student", void 0);
-__decorate([
-    (0, sequelize_typescript_1.BelongsToMany)(() => modality_model_1.Modality, {
-        through: "carrera_modalidad",
-        foreignKey: "id_carrera",
-        otherKey: "id_modalidad",
-    })
-], Degree.prototype, "modality", void 0);
-__decorate([
-    (0, sequelize_typescript_1.HasMany)(() => book_model_1.Book)
-], Degree.prototype, "book", void 0);
+    (0, sequelize_typescript_1.BelongsTo)(() => classHours_model_1.ClassHours)
+], Schedule.prototype, "classHours", void 0);
 __decorate([
     sequelize_typescript_1.BeforeCreate
-], Degree, "automatizeDegreeId", null);
-exports.Degree = Degree = __decorate([
+], Schedule, "automatizeScheduleId", null);
+exports.Schedule = Schedule = __decorate([
     (0, sequelize_typescript_1.Table)({
-        tableName: "carrera",
+        tableName: "horario",
         timestamps: false,
     })
-], Degree);
+], Schedule);

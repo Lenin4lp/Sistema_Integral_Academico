@@ -42,6 +42,9 @@ const group_routes_1 = __importDefault(require("./routes/group.routes"));
 const grades_routes_1 = __importDefault(require("./routes/grades.routes"));
 const modality_routes_1 = __importDefault(require("./routes/modality.routes"));
 const period_routes_1 = __importDefault(require("./routes/period.routes"));
+const upload_routes_1 = __importDefault(require("./routes/upload.routes"));
+const studentGroup_routes_1 = __importDefault(require("./routes/studentGroup.routes"));
+// ? Creación del servidor
 const app = (0, express_1.default)();
 app.use((0, morgan_1.default)("dev"));
 app.use((0, cors_1.default)({ origin: "https://sia.istvc.edu.ec", credentials: true }));
@@ -57,6 +60,8 @@ app.use("/api", group_routes_1.default);
 app.use("/api", grades_routes_1.default);
 app.use("/api", modality_routes_1.default);
 app.use("/api", period_routes_1.default);
+app.use("/api", upload_routes_1.default);
+app.use("/api", studentGroup_routes_1.default);
 app.get("/", (_req, res) => {
     res.send("Hola mundo");
 });

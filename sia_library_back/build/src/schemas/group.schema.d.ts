@@ -6,15 +6,15 @@ export declare const registerGroupSchema: z.ZodObject<{
     period_id: z.ZodString;
     teacher_id: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    modality_id: number;
     group_name: string;
     subject_id: string;
+    modality_id: number;
     period_id: string;
     teacher_id: string;
 }, {
-    modality_id: number;
     group_name: string;
     subject_id: string;
+    modality_id: number;
     period_id: string;
     teacher_id: string;
 }>;

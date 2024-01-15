@@ -12,7 +12,11 @@ export declare const updateGradeSchema: z.ZodObject<{
     prom_2: z.ZodOptional<z.ZodNumber>;
     status: z.ZodOptional<z.ZodString>;
     resit: z.ZodOptional<z.ZodNumber>;
+    attendance_1: z.ZodOptional<z.ZodNumber>;
+    attendance_2: z.ZodOptional<z.ZodNumber>;
+    total_attendance: z.ZodOptional<z.ZodNumber>;
     final_grade: z.ZodOptional<z.ZodNumber>;
+    total_resit: z.ZodOptional<z.ZodNumber>;
 }, "strip", z.ZodTypeAny, {
     grade_1?: number | undefined;
     grade_2?: number | undefined;
@@ -26,7 +30,11 @@ export declare const updateGradeSchema: z.ZodObject<{
     prom_2?: number | undefined;
     status?: string | undefined;
     resit?: number | undefined;
+    attendance_1?: number | undefined;
+    attendance_2?: number | undefined;
+    total_attendance?: number | undefined;
     final_grade?: number | undefined;
+    total_resit?: number | undefined;
 }, {
     grade_1?: number | undefined;
     grade_2?: number | undefined;
@@ -40,5 +48,9 @@ export declare const updateGradeSchema: z.ZodObject<{
     prom_2?: number | undefined;
     status?: string | undefined;
     resit?: number | undefined;
+    attendance_1?: number | undefined;
+    attendance_2?: number | undefined;
+    total_attendance?: number | undefined;
     final_grade?: number | undefined;
+    total_resit?: number | undefined;
 }>;

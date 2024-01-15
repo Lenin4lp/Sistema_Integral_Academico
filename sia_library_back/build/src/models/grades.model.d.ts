@@ -15,7 +15,11 @@ export declare class Grade extends Model {
     prom_2: number;
     resit: number;
     final_grade: number;
+    attendance_1: number;
+    attendance_2: number;
+    total_attendance: number;
     status: string;
+    total: number;
     student_id: string;
     group_id: string;
     student: Student;
@@ -23,4 +27,5 @@ export declare class Grade extends Model {
     static automatizeGradeId(grade: Grade): Promise<void>;
     static updateProm(grade: Grade): Promise<void>;
     static updateFinalGrade(grade: Grade): Promise<void>;
+    static updateAttendance(grade: Grade): Promise<void>;
 }

@@ -3,13 +3,13 @@ import { useParams } from "react-router-dom";
 import { updateGrade, getGrade } from "../../api/academic";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { Toaster, toast } from "sonner";
 
 function ModifyGrades() {
   const { gradeId } = useParams();
   const { handleSubmit, register } = useForm();
   const [errors, setErrors] = useState([]);
   const [grade, setGrade] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     getAGrade(gradeId);
@@ -20,8 +20,10 @@ function ModifyGrades() {
       const res = await updateGrade(gradeId, grade);
       if (res.status === 200) {
         console.log(res.data);
-        alert("Calificaciones modificadas");
-        window.location.href = "/calificaciones";
+        toast.success("Calificaciones modificadas");
+        setTimeout(() => {
+          window.location.href = "/calificaciones";
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
@@ -308,6 +310,7 @@ function ModifyGrades() {
             </div>
           </div>
         </form>
+        <Toaster position="top-center" richColors />
       </div>
     </div>
   );

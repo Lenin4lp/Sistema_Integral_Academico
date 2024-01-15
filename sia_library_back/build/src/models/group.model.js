@@ -25,6 +25,7 @@ const period_model_1 = require("./period.model");
 const grades_model_1 = require("./grades.model");
 const teacher_model_1 = require("./teacher.model");
 const uuid_1 = require("uuid");
+const studentGroup_model_1 = require("./studentGroup.model");
 let Group = class Group extends sequelize_typescript_1.Model {
     static createGroupUUID(group) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -96,12 +97,7 @@ __decorate([
     })
 ], Group.prototype, "teacher_id", void 0);
 __decorate([
-    (0, sequelize_typescript_1.BelongsToMany)(() => student_model_1.Student, {
-        through: "grupo_estudiante",
-        foreignKey: "id_grupo",
-        otherKey: "id_estudiante",
-        timestamps: false,
-    })
+    (0, sequelize_typescript_1.BelongsToMany)(() => student_model_1.Student, () => studentGroup_model_1.StudentGroup)
 ], Group.prototype, "student", void 0);
 __decorate([
     (0, sequelize_typescript_1.BelongsTo)(() => modality_model_1.Modality)
