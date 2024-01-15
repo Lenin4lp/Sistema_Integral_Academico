@@ -30,9 +30,9 @@ const studentGroup_model_1 = require("../models/studentGroup.model");
 exports.connection = new sequelize_typescript_1.Sequelize({
     dialect: "mysql",
     host: "localhost",
-    username: "istvcedu_siav1",
+    username: "istvcedu_sia",
     password: process.env.DB_PASSWORD,
-    database: "istvcedu_siav1",
+    database: "istvcedu_sia",
     port: 3306,
     models: [
         role_model_1.Role,
