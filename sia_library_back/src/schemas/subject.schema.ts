@@ -13,7 +13,7 @@ export const registerSubjectSchema = z.object({
     .max(50, {
       message: "La materia debe tener como máximo 50 caracteres",
     }),
-  
+
   subject_acronym: z
     .string({
       required_error: "El acrónimo es requerido",
@@ -27,7 +27,11 @@ export const registerSubjectSchema = z.object({
     .refine((value) => value === value.toUpperCase(), {
       message: "El acrónimo debe estar en mayúscula",
     }),
-    syllabus: z.string().min(10,{message:"El syllabus debe tener como mínimo 10 caracteres"}).max(100,{message:"El syllabus debe tener como máximo 100 caracteres"}).optional()
+  syllabus: z
+    .string()
+    .min(10, { message: "El syllabus debe tener como mínimo 10 caracteres" })
+    .max(200, { message: "El syllabus debe tener como máximo 200 caracteres" })
+    .optional(),
 });
 
 export const updateSubjectSchema = z.object({
@@ -52,5 +56,9 @@ export const updateSubjectSchema = z.object({
       message: "El acrónimo debe estar en mayúscula",
     })
     .optional(),
-    syllabus: z.string().min(10,{message:"El syllabus debe tener como mínimo 10 caracteres"}).max(100,{message:"El syllabus debe tener como máximo 100 caracteres"}).optional()
+  syllabus: z
+    .string()
+    .min(10, { message: "El syllabus debe tener como mínimo 10 caracteres" })
+    .max(100, { message: "El syllabus debe tener como máximo 100 caracteres" })
+    .optional(),
 });

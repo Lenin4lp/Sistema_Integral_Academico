@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
     cb(null, "uploads");
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+    cb(null, `${file.originalname}`);
   },
 });
 
@@ -18,8 +18,6 @@ export const uploadFile = (req: Request, res: Response) => {
   const file = req.file;
   if (!file) return res.status(400).send("Please upload a file");
 
-  const fileLocation = `https://api.istvc.edu.ec/uploads/${Date.now()}-${
-    file.originalname
-  }`;
+  const fileLocation = `https://api.istvc.edu.ec/uploads/${file.originalname}`;
   res.send({ location: fileLocation });
 };
