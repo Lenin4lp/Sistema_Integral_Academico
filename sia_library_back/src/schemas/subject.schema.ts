@@ -59,6 +59,6 @@ export const updateSubjectSchema = z.object({
   syllabus: z
     .string()
     .min(10, { message: "El syllabus debe tener como mínimo 10 caracteres" })
-    .max(100, { message: "El syllabus debe tener como máximo 100 caracteres" })
+    .max(200, { message: "El syllabus debe tener como máximo 200 caracteres" })
     .optional(),
 });
