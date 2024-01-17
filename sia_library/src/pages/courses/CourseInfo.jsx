@@ -7,6 +7,7 @@ import "jspdf-autotable";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { updateSubject } from "../../api/academic";
+import { toast, Toaster } from "sonner";
 
 function CourseInfo() {
   const { user } = useAuth();
@@ -24,13 +25,17 @@ function CourseInfo() {
     try {
       const res = await updateSubject(id, content);
       if (res.status === 200) {
-        alert("Archivo cargado exitosamente");
-
-        window.location.reload();
+        toast.success("Archivo cargado exitosamente");
+        setTimeout(() => {
+          window.location.reload(); 
+        }, 2000);   
+        
       }
     } catch (error) {
-      console.log(error);
       setErrors(error.response.data);
+      toast.error("Error al cargar el archivo", {
+        duration: 3000,
+      })
     }
   };
 
@@ -576,6 +581,7 @@ function CourseInfo() {
             )}
           </div>
         </div>
+        <Toaster position="top-center" richColors />
       </div>
     </div>
   );

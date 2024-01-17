@@ -176,7 +176,7 @@ function Profile() {
                               className=" my-3 hover:text-[#58c2ff]"
                             >
                               <div className=" block">
-                                <a href={`/cursos/${group.group_id}`}>
+                                <a href={`/academico/cursos/${group.group_id}`}>
                                   <p className=" text-[12px] ">
                                     {group.subject.subject_name}
                                   </p>
@@ -196,7 +196,7 @@ function Profile() {
                               className=" my-3 hover:text-[#58c2ff]"
                             >
                               <div className=" block">
-                                <a href={`/cursos/${group.group_id}`}>
+                                <a href={`/academico/cursos/${group.group_id}`}>
                                   <p className=" text-[12px] ">
                                     {group.subject.subject_name}
                                   </p>
