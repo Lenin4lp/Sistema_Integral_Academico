@@ -375,8 +375,8 @@ function GroupInfo() {
     console.log(sortedGrades);
 
     const careers = group && group?.student?.reduce((acc, student) => {
-      if (!acc.includes(student.degree.degree_name)) {
-        acc.push(student.degree.degree_name);
+      if (!acc.includes(student.degree?.degree_name)) {
+        acc.push(student.degree?.degree_name);
       }
       return acc;
     },[])
