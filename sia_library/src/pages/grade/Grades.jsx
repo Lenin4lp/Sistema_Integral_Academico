@@ -133,19 +133,20 @@ function Grades() {
       10,
       50
     );
-    doc.text(`Grupo: ${filteredGroup && filteredGroup.group_name}`, 90, 50);
+    doc.text(`Grupo: ${filteredGroup && filteredGroup.group_name}`, 10, 60);
     doc.text(
       `Periodo: ${filteredGroup && filteredGroup.period?.period_name}`,
       150,
-      50
+      60
     );
     doc.text(
       `Docente: ${filteredGroup && filteredGroup.teacher?.user.user_name} ${
         filteredGroup && filteredGroup.teacher?.user.user_lastname
       }`,
       10,
-      60
+      70
     );
+    doc.text(`${selectedDegree === ""?``:`Carrera: ${selectedDegree}`}`, 10, 80);
 
     // crear una tabla
     doc.autoTable({
@@ -237,8 +238,68 @@ function Grades() {
         ],
       ],
       body:
+        selectedDegree === "" ?
         filteredGroup &&
-        filteredGroup.grades.map((grade) => {
+        filteredGroup.grades.sort((a, b) => {
+          const gradeA =
+            a.student.user.user_lastname;
+          const gradeB =
+            b.student.user.user_lastname;
+          return gradeA.localeCompare(gradeB);
+        }).map((grade) => {
+          return [
+            `${grade.student && grade.student.student_id}`,
+            `${grade.student && grade.student.user.user_ci}`,
+
+            {
+              content: `${grade.student && grade.student.user.user_lastname} ${
+                grade.student && grade.student.user.user_name
+              }`,
+              colSpan: 1,
+              styles: { halign: "left", valign: "middle" },
+            },
+            `${grade && grade.prom_1 === null ? `0.00` : grade.prom_1}`,
+            `${
+              grade && grade.attendance_1 === null
+                ? `0%`
+                : `${grade.attendance_1}%`
+            }`,
+            `${grade && grade.prom_2 === null ? `0.00` : grade.prom_2}`,
+            `${
+              grade && grade.attendance_2 === null
+                ? `0%`
+                : `${grade.attendance_2}%`
+            }`,
+            `${grade && grade.resit === null ? `0.00` : grade.resit}`,
+            `${
+              grade && grade.final_grade === null ? `0.00` : grade.final_grade
+            }`,
+            `${
+              grade && grade.total_attendance === null
+                ? `0%`
+                : `${grade.total_attendance}%`
+            }`,
+            `${
+              grade && grade.final_grade > 7
+                ? "APROBADO"
+                : grade.total >= 6.5
+                ? "APROBADO"
+                : "REPROBADO"
+            }`,
+          ];
+        }):filteredGroup &&
+        filteredGroup.grades.sort((a, b) => {
+          const gradeA =
+            a.student.user.user_lastname;
+          const gradeB =
+            b.student.user.user_lastname;
+          return gradeA.localeCompare(gradeB);
+        })
+        .filter(
+          (grade) =>
+            grade.student?.degree?.degree_name ==
+            selectedDegree
+        ).map((grade) => {
           return [
             `${grade.student && grade.student.student_id}`,
             `${grade.student && grade.student.user.user_ci}`,
@@ -281,7 +342,7 @@ function Grades() {
           ];
         }),
       theme: "plain",
-      startY: 65,
+      startY: 85,
       headStyles: {
         lineWidth: 0.2,
         lineColor: [0, 0, 0],

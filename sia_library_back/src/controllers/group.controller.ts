@@ -8,12 +8,13 @@ import { connection } from "../connection/connection";
 import { Grade } from "../models/grades.model";
 import { Teacher } from "../models/teacher.model";
 import { QueryTypes } from "sequelize";
+import { Degree } from "../models/degree.model";
 
 // ? Obtener todos los grupos
 export const getGroups = async (req: Request, res: Response) => {
   const groups = await Group.findAll({
     include: [
-      { model: Student, include: [{ model: User }] },
+      { model: Student, include: [{ model: User },{ model: Degree }] },
       { model: Teacher, include: [{ model: User }] },
       { model: Subject },
       { model: Period },
@@ -30,13 +31,13 @@ export const getGroups = async (req: Request, res: Response) => {
 export const getGroup = async (req: Request, res: Response) => {
   const group = await Group.findByPk(req.params.id, {
     include: [
-      { model: Student, include: [{ model: User }] },
+      { model: Student, include: [{ model: User },{ model: Degree } ] },
       { model: Teacher, include: [{ model: User }] },
       { model: Subject },
       { model: Period },
       {
         model: Grade,
-        include: [{ model: Student, include: [{ model: User }] }],
+        include: [{ model: Student, include: [{ model: User },{ model: Degree }] }],
       },
     ],
   });

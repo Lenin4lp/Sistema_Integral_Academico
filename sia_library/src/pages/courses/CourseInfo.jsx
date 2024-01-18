@@ -19,7 +19,6 @@ function CourseInfo() {
   const [content, setContent] = useState(0);
   const [file, setFile] = useState();
   let { id } = useParams();
-  const navigate = useNavigate();
 
   const modifySubject = async (id, content) => {
     try {

@@ -1,6 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useAuth } from "../../auth/AuthProvider";
 
 function Home() {
+  const { user } = useAuth();
+  console.log(user.role_id);
+
+  const manual = user && user.role_id === 1 ? "https://api.istvc.edu.ec/uploads/Manual_SIA_para_estudiantes.pdf" : "https://api.istvc.edu.ec/uploads/Manual_SIA_para_docentes.pdf";
+
   return (
     <>
       <div className=" overflow-x-hidden relative">
@@ -44,9 +50,11 @@ function Home() {
               <div className=" flex justify-center items-center">
                 <div className=" mt-5 sm:mt-10 grid grid-cols-1 sm:grid-cols-3 gap-x-2 sm:gap-x-10 md:gap-x-20">
                   <div className=" flex justify-center items-center my-2">
+                    <a href={manual} target="_blank">
                     <button className=" p-2 active:transform active:scale-90 border border-white rounded-lg hover:bg-[#146898] text-white hover:text-white text-[12px] md:text-sm lg:text-base duration-500">
                       Manual de uso
                     </button>
+                    </a>
                   </div>
                   <div className=" flex justify-center items-center my-2">
                     <a href="mailto:tics.plataforma@istvc.edu.ec">
