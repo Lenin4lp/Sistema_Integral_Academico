@@ -18,10 +18,10 @@ import { StudentGroup } from "../models/studentGroup.model";
 
 export const connection = new Sequelize({
   dialect: "mysql",
-  host: "127.0.0.1",
-  username: "istvcedu_sia",
+  host: "localhost",
+  username: "root",
   password: process.env.DB_PASSWORD,
-  database: "istvcedu_sia",
+  database: "sia_library",
   port: 3306,
   models: [
     Role,

@@ -71,7 +71,7 @@ function Degrees() {
       .filter(
         (student) =>
           student.degree_id === selectedDegree &&
-          student.group[0].modality_id == selectedModality
+          student.group[0]?.modality_id == selectedModality
       )
       .sort((a, b) => {
         const studentA = a.user.user_lastname;

@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import { AuthProvider } from "./auth/AuthProvider";
 import AdminRoutes from "./pages/AdminRoutes.jsx";
+import Error from "./pages/error/Error.jsx";
 const LazyHome = React.lazy(() => import("./pages/home/Home.jsx"));
 const LazyCourses = React.lazy(() => import("./pages/courses/Courses.jsx"));
 const LazyLibrary = React.lazy(() => import("./pages/library/Library.jsx"));
@@ -72,10 +73,12 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
+    errorElement: <Error />,
   },
   {
     path: "/",
     element: <ProtectedRoute />,
+    errorElement: <Error />,
     children: [
       {
         path: "/home",
