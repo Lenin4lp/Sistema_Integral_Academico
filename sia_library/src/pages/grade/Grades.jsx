@@ -358,9 +358,26 @@ function Grades() {
 
     const tableY = doc.lastAutoTable.finalY;
 
+    const text = `${filteredGroup && filteredGroup.teacher?.user?.user_name} ${
+      filteredGroup && filteredGroup.teacher?.user?.user_lastname
+    }`;
+const fontSize = 8;
+const pageWidth = doc.internal.pageSize.getWidth();
+const textWidth = doc.getStringUnitWidth(text) * fontSize / doc.internal.scaleFactor;
+
+// Punto central en el eje X
+const centerX = pageWidth / 2;
+
+// Posición de inicio del texto
+const textStartX = centerX - (textWidth / 2);
+
     doc.setFontSize(8);
-    doc.text("______________", 90, tableY + 30);
-    doc.text("Docente", 96, tableY + 37);
+    doc.text("______________", 84 + 10, tableY + 30);
+    doc.text(`${filteredGroup && filteredGroup.teacher?.user?.user_name} ${
+      filteredGroup && filteredGroup.teacher?.user?.user_lastname
+    }`, textStartX, tableY + 37);
+    doc.text(`${filteredGroup && filteredGroup.teacher?.user?.user_ci}`, 96.5, tableY + 43);
+    doc.text("Docente", 99.5, tableY + 49);
 
     doc.save(
       `Reporte de Calificaciones ${

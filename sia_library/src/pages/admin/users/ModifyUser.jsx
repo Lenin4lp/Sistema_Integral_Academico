@@ -215,8 +215,8 @@ function ModifyUser() {
 
     doc.setFontSize(8);
     doc.text("______________", 90, tableY + 30);
-    doc.text("MBA. Jorge Macías", 88.5, tableY + 37);
-    doc.text("Vicerrector", 94, tableY + 44);
+    doc.text("Lcda. Janice Soria", 89.5, tableY + 37);
+    doc.text("Secretaria", 94, tableY + 44);
 
     doc.save(
       `Reporte de Calificaciones ${user?.user.user_lastname} ${
