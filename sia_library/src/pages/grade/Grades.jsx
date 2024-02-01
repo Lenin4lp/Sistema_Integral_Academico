@@ -72,6 +72,9 @@ function Grades() {
 
   const FirstGroup = user && user.role_id === 2 && filteredGrades[0];
 
+  const lastElement = periods && periods[periods.length - 1];
+  console.log(lastElement);
+
   const getPeriodsList = async () => {
     try {
       const res = await getPeriods();
